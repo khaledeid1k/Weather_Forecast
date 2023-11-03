@@ -1,22 +1,22 @@
 package com.kh.mo.weatherforecast.model
 
 data class Daily(
-    val clouds: Int?,
-    val dew_point: Double?,
-    val dt: Int?,
+    val clouds: Double?,
+    val dew_poDouble: Double?,
+    val dt: Double?,
     val feels_like: FeelsLike?,
-    val humidity: Int?,
+    val humidity: Double?,
     val moon_phase: Double?,
-    val moonrise: Int?,
-    val moonset: Int?,
-    val pop: Int?,
-    val pressure: Int?,
-    val sunrise: Int?,
-    val sunset: Int?,
+    val moonrise: Double?,
+    val moonset: Double?,
+    val pop: Double?,
+    val pressure: Double?,
+    val sunrise: Double?,
+    val sunset: Double?,
     val temp: Temp?,
     val uvi: Double?,
     val weather: List<WeatherX>?,
-    val wind_deg: Int?,
+    val wind_deg: Double?,
     val wind_gust: Double?,
     val wind_speed: Double?
 )
