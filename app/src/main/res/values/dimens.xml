@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="font_size_11">11sp</dimen>
+    <dimen name="font_size_15">15sp</dimen>
+    <dimen name="font_size_20">20sp</dimen>
+    <dimen name="font_size_24">24sp</dimen>
+    <dimen name="font_size_28">28sp</dimen>
+    <dimen name="font_size_50">50sp</dimen>
+    <dimen name="font_size_60">60sp</dimen>
+
+
+    <dimen name="height_0">0dp</dimen>
+
+
+
+    <dimen name="width_0">0dp</dimen>
+
+
+
+    <dimen name="radius_8">8dp</dimen>
+    <dimen name="radius_12">12dp</dimen>
+    <dimen name="radius_16">16dp</dimen>
+
+
+
+    <dimen name="padding_16">7dp</dimen>
+    <dimen name="padding_8">8dp</dimen>
+
+
+    <dimen name="margin_4">4dp</dimen>
+    <dimen name="margin_3">3dp</dimen>
+    <dimen name="margin_6">6dp</dimen>
+    <dimen name="margin_10">10dp</dimen>
+    <dimen name="margin_8">8dp</dimen>
+    <dimen name="margin_12">12dp</dimen>
+    <dimen name="margin_14">14dp</dimen>
+    <dimen name="margin_16">16dp</dimen>
+    <dimen name="margin_24">24dp</dimen>
+    <dimen name="margin_28">28dp</dimen>
+    <dimen name="margin_32">32dp</dimen>
+    <dimen name="margin_30">30dp</dimen>
+    <dimen name="margin_40">40dp</dimen>
+    <dimen name="margin_50">50dp</dimen>
+    <dimen name="margin_56">56dp</dimen>
+    <dimen name="margin_60">60dp</dimen>
+    <dimen name="margin_170">170dp</dimen>
+    <dimen name="margin_208">208dp</dimen>
+
+
+</resources>
