@@ -1,6 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="Theme.WeatherForecast" parent="Theme.Material3.Dark.NoActionBar">
+
+        <item name="android:fontFamily">@font/lato_regular</item>
+
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">?attr/isLightTheme</item>
 
@@ -12,7 +15,7 @@
         <item name="colorSecondaryContainer">@color/md_theme_dark_secondaryContainer</item>
         <item name="colorOnSecondary">@color/md_theme_dark_onSecondary</item>
         <item name="colorOnSecondaryContainer">@color/md_theme_dark_onSecondaryContainer</item>
-        <!--        <item name="android:drawableTint">@color/md_theme_dark_onBackground_opacity</item>-->
+                <item name="android:drawableTint">@color/md_theme_dark_onBackground_opacity</item>
         <item name="colorAccent">@color/back_text_dark</item>
 
         <item name="backgroundColor">@color/md_theme_dark_background</item>
@@ -24,5 +27,16 @@
         <item name="android:elevation">6dp</item>
         <item name="android:textColor">@color/md_theme_dark_onSurface</item>
     </style>
+    <style name="title">
+        <item name="android:textSize">@dimen/font_size_24</item>
+    </style>
+
+    <style name="sub_title">
+        <item name="android:textSize">@dimen/font_size_20</item>
+    </style>
+    <style name="small_title">
+        <item name="android:textSize">@dimen/font_size_18</item>
+    </style>
+
 
 </resources>
