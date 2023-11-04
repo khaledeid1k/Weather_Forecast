@@ -13,7 +13,7 @@
         <item name="colorOnSecondary">@color/md_theme_light_onSecondary</item>
         <item name="colorSecondaryContainer">@color/md_theme_light_secondaryContainer</item>
         <item name="colorOnSecondaryContainer">@color/md_theme_light_onSecondaryContainer</item>
-                <item name="android:drawableTint">@color/md_theme_light_onBackground_opacity</item>
+        <item name="android:drawableTint">@color/md_theme_light_onBackground_opacity</item>
         <item name="backgroundColor">@color/md_theme_light_background</item>
         <item name="colorAccent">@color/back_text_light</item>
 

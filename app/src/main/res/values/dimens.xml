@@ -47,6 +47,7 @@
     <dimen name="margin_60">60dp</dimen>
     <dimen name="margin_170">170dp</dimen>
     <dimen name="margin_208">208dp</dimen>
+    <dimen name="radius_20">20dp</dimen>
 
 
 </resources>
