@@ -1,53 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/margin_8"
-    android:layout_marginVertical="@dimen/margin_8"
-    app:cardCornerRadius="@dimen/radius_16"
-    app:layout_constraintTop_toTopOf="parent">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <data>
+
+        <variable
+            name="weatherHourData"
+            type="com.kh.mo.weatherforecast.model.ui.WeatherHourData" />
+    </data>
+
+    <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/container_of_weather"
-        android:padding="@dimen/padding_16"
-        >
+        android:layout_marginHorizontal="@dimen/margin_8"
+        android:layout_marginVertical="@dimen/margin_8"
+        app:cardCornerRadius="@dimen/radius_16"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/weather_state"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_8"
-            style="@style/small_title"
-            app:layout_constraintEnd_toEndOf="@+id/container_of_weather"
-            app:layout_constraintStart_toStartOf="@+id/container_of_weather"
-            app:layout_constraintTop_toTopOf="@+id/container_of_weather"
-            tools:text="20 Am" />
+            android:id="@+id/container_of_weather"
+            android:padding="@dimen/padding_16">
 
-        <ImageView
-            android:id="@+id/weather_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_8"
-            app:layout_constraintEnd_toEndOf="@+id/container_of_weather"
-            app:layout_constraintStart_toStartOf="@+id/container_of_weather"
-            app:layout_constraintTop_toBottomOf="@+id/weather_state"
-            tools:src="@drawable/weather_icon" />
+            <TextView
+                android:id="@+id/weather_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                style="@style/small_title"
+                app:layout_constraintEnd_toEndOf="@+id/container_of_weather"
+                app:layout_constraintStart_toStartOf="@+id/container_of_weather"
+                app:layout_constraintTop_toTopOf="@+id/container_of_weather"
+                tools:text="20 Am"
+                android:text="@{weatherHourData.hour}"
+                />
 
-        <TextView
-            android:id="@+id/weather_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_8"
-            style="@style/small_title"
+            <ImageView
+                android:id="@+id/weather_image"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_marginTop="@dimen/margin_8"
+                app:layout_constraintBottom_toTopOf="@+id/weather_state"
+                app:layout_constraintEnd_toEndOf="@+id/container_of_weather"
+                app:layout_constraintStart_toStartOf="@+id/container_of_weather"
+                app:layout_constraintTop_toBottomOf="@+id/weather_time"
+                app:setImageUrl="@{weatherHourData.weatherIcon}"
+                tools:src="@drawable/weather_icon" />
 
-            app:layout_constraintEnd_toEndOf="@+id/container_of_weather"
-            app:layout_constraintStart_toStartOf="@+id/container_of_weather"
-            app:layout_constraintTop_toBottomOf="@+id/weather_image"
-            tools:text="13°C" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/weather_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                style="@style/small_title"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/container_of_weather"
+                app:layout_constraintStart_toStartOf="@+id/container_of_weather"
+                android:text="@{String.valueOf( weatherHourData.temperature + ` °C`)}"
+                tools:text="13°C" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
+</layout>

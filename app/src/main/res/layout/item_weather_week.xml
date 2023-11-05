@@ -1,68 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    android:layout_marginVertical="@dimen/margin_8"
-    app:cardCornerRadius="@dimen/radius_16"
-    app:layout_constraintTop_toTopOf="parent">
+    <data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/container_of_weather_day"
+        <variable
+            name="weatherWeekData"
+            type="com.kh.mo.weatherforecast.model.ui.WeatherWeekData" />
+    </data>
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/padding_16">
 
-        <TextView
-            android:id="@+id/name_day"
-            android:layout_width="wrap_content"
+        android:layout_marginVertical="@dimen/margin_8"
+        app:cardCornerRadius="@dimen/radius_16"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container_of_weather_day"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_8"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:padding="@dimen/padding_16">
 
-            tools:text="Sun" />
+            <TextView
+                android:id="@+id/name_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_8"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="@{weatherWeekData.nameOfDay}"
+                tools:text="Sun" />
 
-        <ImageView
-            android:id="@+id/state_image_day"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_8"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/state_text_day"
-            app:layout_constraintHorizontal_bias="1"
-            app:layout_constraintStart_toEndOf="@+id/name_day"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/weather_icon"
+            <ImageView
+                android:id="@+id/state_image_day"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:layout_constraintBottom_toBottomOf="parent"
 
-            />
 
-        <TextView
-            android:id="@+id/state_text_day"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_8"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/state_number_day"
-            app:layout_constraintStart_toEndOf="@+id/state_image_day"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias=".3"
+                app:layout_constraintStart_toStartOf="@+id/name_day"
+                app:layout_constraintTop_toTopOf="parent"
+                app:setImageUrl="@{weatherWeekData.weatherIcon}"
+                tools:src="@drawable/weather_icon" />
 
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Clear Sky" />
+            <TextView
+                android:id="@+id/state_text_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_8"
+                app:layout_constraintBottom_toBottomOf="parent"
 
-        <TextView
-            android:id="@+id/state_number_day"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_8"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias=".6"
+                app:layout_constraintStart_toStartOf="parent"
 
-            tools:text="23/13°C" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:text="@{weatherWeekData.description}"
+                tools:text="Clear Sky" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/state_number_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_8"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="@{String.valueOf( weatherWeekData.temperature + ` °C`)}"
+                tools:text="23/13°C" />
 
-</androidx.cardview.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>
