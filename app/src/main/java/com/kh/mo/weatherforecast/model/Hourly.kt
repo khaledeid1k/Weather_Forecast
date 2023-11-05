@@ -1,18 +1,18 @@
 package com.kh.mo.weatherforecast.model
 
 data class Hourly(
-    val clouds: Int?,
+    val clouds: Double?,
     val dew_point: Double?,
-    val dt: Int?,
+    val dt: Long?,
     val feels_like: Double?,
-    val humidity: Int?,
-    val pop: Int?,
-    val pressure: Int?,
+    val humidity: Double?,
+    val pop: Double?,
+    val pressure: Double?,
     val temp: Double?,
     val uvi: Double?,
-    val visibility: Int?,
+    val visibility: Double?,
     val weather: List<WeatherX>?,
-    val wind_deg: Int?,
+    val wind_deg: Double?,
     val wind_gust: Double?,
     val wind_speed: Double?
 )
