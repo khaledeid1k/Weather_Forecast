@@ -11,4 +11,6 @@
     <string name="favourite">Favourite</string>
     <string name="alert">Alert</string>
     <string name="settings">settings</string>
+    <string name="day_forecast">Day ForeCast</string>
+    <string name="_7_days_forecast">7-Days ForeCast</string>
 </resources>
