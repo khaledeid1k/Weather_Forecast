@@ -9,6 +9,7 @@ class ApiKeyInterceptor : Interceptor {
         val originalRequest = chain.request()
         val newUrl = originalRequest.url.newBuilder()
             .addQueryParameter("appid", BuildConfig.apiKey)
+            .addQueryParameter("units", "metric")
             .build()
 
         val newRequest = originalRequest.newBuilder()
