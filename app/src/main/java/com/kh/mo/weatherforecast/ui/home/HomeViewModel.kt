@@ -16,15 +16,30 @@ class HomeViewModel(private val repo:Repo) : ViewModel() {
     private var _weather = MutableLiveData<Weather>()
     val weather: LiveData<Weather> = _weather
 
+    private var _currentDate = MutableLiveData<String>()
+    val currentDate: LiveData<String> = _currentDate
+
     val locationDataChange = MutableLiveData<LocationData>()
 
-    fun getLocationData() {
+    val address: LiveData<LocationData> = locationDataChange
+
+
+    fun getWeatherState() {
         viewModelScope.launch(Dispatchers.IO) {
             locationDataChange.value?.apply {
                 _weather.postValue(repo.getCurrentTemperature(lat, lon))
             }
         }
     }
+
+    private fun currentDate() {
+        _currentDate.postValue(repo.getCurrentDate())
+    }
+
+    init {
+        currentDate()
+    }
+
 }
 
 

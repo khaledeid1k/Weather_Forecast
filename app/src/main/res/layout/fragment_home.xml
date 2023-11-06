@@ -14,10 +14,12 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/margin_8">
 
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/motion_character"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
 
             <TextView
                 android:id="@+id/tile_of_home"
@@ -37,6 +39,7 @@
                 android:layout_marginVertical="@dimen/margin_16"
                 android:textSize="@dimen/font_size_28"
                 android:textStyle="bold"
+                android:text="@{viewModel.address.address}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tile_of_home"
@@ -47,6 +50,7 @@
             <TextView
                 android:id="@+id/date_home"
                 style="@style/sub_title"
+                android:text="@{viewModel.currentDate}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/margin_16"
@@ -251,6 +255,7 @@
                         android:text="@{String.valueOf( viewModel.weather.current.wind_speed  + ` m/s`)}"
                         android:textSize="@dimen/font_size_18"
                         android:textStyle="bold"
+
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/wind_image"

@@ -13,7 +13,6 @@ import com.kh.mo.weatherforecast.local.LocalDataImp
 import com.kh.mo.weatherforecast.model.ui.LocationData
 import com.kh.mo.weatherforecast.remot.RemoteDataImp
 import com.kh.mo.weatherforecast.repo.RepoIm
-import com.kh.mo.weatherforecast.ui.home.adapter.WeatherHourAdapter
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -59,28 +58,23 @@ class HomeFragment : Fragment() {
         binding.apply {
             lifecycleOwner = this@HomeFragment
             viewModel = homeViewModel
-            dateHome.text = getCurrentDate()
         }
     }
 
 
-    private fun getCurrentDate() = SimpleDateFormat("dd MMM, yyyy", Locale.ENGLISH).format(Date())
 
     private fun getLocationData() {
         LocationPermission(requireContext(), requireActivity()) { lat, lon, address ->
-            setDataLocation(address)
-            sendLatAndLonToViewModel(lat, lon)
+            sendLatAndLonToViewModel(lat, lon,address)
         }.getLocation()
     }
 
-    private fun setDataLocation(address: String) {
-        binding.locationHome.text = address
-    }
 
-    private fun sendLatAndLonToViewModel(lat: Double, lon: Double) {
+
+    private fun sendLatAndLonToViewModel(lat: Double, lon: Double,address:String) {
         homeViewModel.apply {
-            locationDataChange.postValue(LocationData(lat, lon))
-            getLocationData()
+            locationDataChange.postValue(LocationData(lat, lon,address))
+            getWeatherState()
         }
 
     }
@@ -88,7 +82,6 @@ class HomeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         getLocationData()
-
     }
 
 }
