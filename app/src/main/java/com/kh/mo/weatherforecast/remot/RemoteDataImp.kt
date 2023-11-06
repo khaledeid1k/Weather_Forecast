@@ -8,8 +8,12 @@ import com.kh.mo.weatherforecast.remot.service.Network
 
 object RemoteDataImp : RemoteData {
   private val netWork= Network.retrofitService
-    override suspend fun getCurrentTemperature(): Weather? {
-       return netWork.getWeatherData(32.32,32.32,"metric").body()
+
+
+
+    override suspend fun getCurrentTemperature( latitude: Double,
+                                                longitude: Double): Weather? {
+       return netWork.getWeatherData(latitude,longitude).body()
 
     }
 
