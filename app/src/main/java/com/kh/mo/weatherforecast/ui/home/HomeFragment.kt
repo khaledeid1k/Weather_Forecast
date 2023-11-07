@@ -36,7 +36,9 @@ class HomeFragment : Fragment() {
         intiViewModel()
         setUp()
         receiveLocationDta()
+        changeValueOfFirstTimeOpenApp()
     }
+
     private fun intiViewModel() {
         val showProductsViewModelFactory =
             HomeViewModelFactory(
@@ -59,28 +61,26 @@ class HomeFragment : Fragment() {
             viewModel = homeViewModel
         }
     }
+
     private fun receiveLocationDta() {
-        val locationData = HomeFragmentArgs.fromBundle(requireArguments()).locationData
-        sendLocationDataToViewModel(locationData)
-    }
-
-
-
-    private fun sendLocationDataToViewModel(locationData:LocationData) {
-        homeViewModel.sendLocationData(locationData)
+        if(homeViewModel.checkIsFirstTimeOpenApp()){
+            val locationData = HomeFragmentArgs.fromBundle(requireArguments()).locationData
+            sendLocationDataToViewModel(locationData)
         }
 
     }
 
 
-//    private fun getLocationData() {
-//        LocationPermission(requireContext(), requireActivity()) { lat, lon, address ->
-//            sendLatAndLonToViewModel(lat, lon,address)
-//        }.getLocation()
-//    }
+    private fun sendLocationDataToViewModel(locationData: LocationData) {
+        homeViewModel.sendLocationData(locationData)
+    }
+    private fun changeValueOfFirstTimeOpenApp() {
+        homeViewModel.changeValueOfFirstTimeOpenApp(false)
+    }
 
-//    override fun onResume() {
-//        super.onResume()
-//        getLocationData()
-//    }
+}
+
+
+
+
 
