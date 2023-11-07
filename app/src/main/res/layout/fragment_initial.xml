@@ -61,14 +61,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/location_text">
             <RadioButton
-                android:id="@+id/map"
+                android:id="@+id/gps"
                 style="@style/small_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
                 android:text="@string/gps" />
             <RadioButton
-                android:id="@+id/gps"
+                android:id="@+id/map"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/small_title"

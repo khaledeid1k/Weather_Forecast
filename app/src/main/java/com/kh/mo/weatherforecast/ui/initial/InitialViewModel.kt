@@ -19,6 +19,12 @@ class InitialViewModel(private val repo:Repo) : ViewModel() {
         repo.changeNotificationValue(isNotification)
     }
 
+    fun getAddressLocation(lat: Double, lon: Double,
+                           getLocationData:(nameOfCity:String,
+                                            nameOfCountry:String)->Unit){
+        repo.getAddressLocation(lat, lon, getLocationData)
+    }
+
 
 
 
