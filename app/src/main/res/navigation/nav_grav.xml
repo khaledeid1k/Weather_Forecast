@@ -3,13 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_grav"
-    app:startDestination="@id/home">
+    app:startDestination="@id/initialFragment">
 
     <fragment
         android:id="@+id/home"
         android:name="com.kh.mo.weatherforecast.ui.home.HomeFragment"
         android:label="@string/home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <argument
+            android:name="locationData"
+            app:argType="com.kh.mo.weatherforecast.model.ui.LocationData" />
+    </fragment>
     <fragment
         android:id="@+id/alert"
         android:name="com.kh.mo.weatherforecast.ui.alert.AlertFragment"
@@ -26,4 +30,27 @@
         android:name="com.kh.mo.weatherforecast.ui.setting.SettingsFragment"
         android:label="@string/settings"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/initialFragment"
+        android:name="com.kh.mo.weatherforecast.ui.initial.InitialFragment"
+        android:label="InitialFragment" >
+        <action
+            android:id="@+id/action_initialFragment_to_home"
+            app:destination="@id/home" />
+        <action
+            android:id="@+id/action_initialFragment_to_mapFragment"
+            app:destination="@id/mapFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.kh.mo.weatherforecast.ui.map.MapFragment"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" >
+        <action
+            android:id="@+id/action_mapFragment_to_home"
+            app:destination="@id/home"
+            app:popUpTo="@id/initialFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

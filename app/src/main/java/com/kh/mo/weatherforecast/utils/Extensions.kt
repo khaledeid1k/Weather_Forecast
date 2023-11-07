@@ -1,6 +1,7 @@
 package com.kh.mo.weatherforecast.utils
 
 import android.content.Context
+import android.location.Geocoder
 import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
@@ -17,6 +18,26 @@ fun createDialog(context: Context, view: Int) {
     MaterialAlertDialogBuilder(context)
         .setView(view)
         .show()
+}
+
+fun getAddressLocation(lat: Double, lon: Double,context: Context,
+                       getLocationData:(lat:Double,lon:Double,nameOfCity:String,
+                                        nameOfCountry:String)->Unit
+                       ) {
+    val geocoder = Geocoder(context, Locale.getDefault())
+    val addresses = geocoder.getFromLocation(
+        lat, lon, 1
+    )
+
+    if (addresses?.isNotEmpty() == true) {
+        val address = addresses[0]
+        val fullAddress = address.getAddressLine(0)
+        val addressData = fullAddress.split(",")
+        val nameOfCity = addressData[1]
+        val nameOfCountry = addressData[addressData.size-1]
+        getLocationData(lat, lon, nameOfCity,nameOfCountry)
+
+    }
 }
 
 
