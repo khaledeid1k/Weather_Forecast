@@ -13,8 +13,6 @@ import com.kh.mo.weatherforecast.local.LocalDataImp
 import com.kh.mo.weatherforecast.model.ui.LocationData
 import com.kh.mo.weatherforecast.remot.RemoteDataImp
 import com.kh.mo.weatherforecast.repo.RepoIm
-import java.text.SimpleDateFormat
-import java.util.*
 
 class HomeFragment : Fragment() {
 
@@ -37,6 +35,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         intiViewModel()
         setUp()
+        receiveLocationDta()
     }
     private fun intiViewModel() {
         val showProductsViewModelFactory =
@@ -60,28 +59,28 @@ class HomeFragment : Fragment() {
             viewModel = homeViewModel
         }
     }
-
-
-
-    private fun getLocationData() {
-        LocationPermission(requireContext(), requireActivity()) { lat, lon, address ->
-            sendLatAndLonToViewModel(lat, lon,address)
-        }.getLocation()
+    private fun receiveLocationDta() {
+        val locationData = HomeFragmentArgs.fromBundle(requireArguments()).locationData
+        sendLocationDataToViewModel(locationData)
     }
 
 
 
-    private fun sendLatAndLonToViewModel(lat: Double, lon: Double,address:String) {
-        homeViewModel.apply {
-            locationDataChange.postValue(LocationData(lat, lon,address))
-            getWeatherState()
+    private fun sendLocationDataToViewModel(locationData:LocationData) {
+        homeViewModel.sendLocationData(locationData)
         }
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        getLocationData()
-    }
 
-}
+//    private fun getLocationData() {
+//        LocationPermission(requireContext(), requireActivity()) { lat, lon, address ->
+//            sendLatAndLonToViewModel(lat, lon,address)
+//        }.getLocation()
+//    }
+
+//    override fun onResume() {
+//        super.onResume()
+//        getLocationData()
+//    }
+
