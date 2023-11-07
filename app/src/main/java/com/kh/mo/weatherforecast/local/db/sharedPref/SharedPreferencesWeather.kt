@@ -1,4 +1,4 @@
-package com.kh.mo.weatherforecast.local.db
+package com.kh.mo.weatherforecast.local.db.sharedPref
 
 import android.content.Context
 import android.content.SharedPreferences
