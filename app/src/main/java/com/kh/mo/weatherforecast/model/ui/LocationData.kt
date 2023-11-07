@@ -10,8 +10,8 @@ data class LocationData(val lat: Double, val lon: Double,val address:String?)
         parcel.readDouble(),
         parcel.readDouble(),
         parcel.readString()
-    ) {
-    }
+    )
+
 
     override fun describeContents(): Int {
         return 0
