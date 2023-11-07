@@ -1,10 +1,11 @@
 package com.kh.mo.weatherforecast.repo
 
 import com.kh.mo.weatherforecast.local.LocalData
-import com.kh.mo.weatherforecast.model.Weather
+import com.kh.mo.weatherforecast.model.ui.WeatherState
 import com.kh.mo.weatherforecast.remot.RemoteData
-import java.text.SimpleDateFormat
-import java.util.*
+import com.kh.mo.weatherforecast.repo.mapper.convertToWeatherWeekData
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class RepoIm private constructor(
     private val localData: LocalData,
@@ -25,11 +26,43 @@ class RepoIm private constructor(
     }
 
 
-    override suspend fun getCurrentTemperature(
+    override suspend fun getCurrentWeatherState(
         latitude: Double,
         longitude: Double
-    ): Weather? {
-        return remoteData.getCurrentTemperature(latitude, longitude)
+    ): WeatherState {
+        val currentTemperature = remoteData.getCurrentWeatherState(latitude, longitude)
+
+        if (currentTemperature.isSuccessful) {
+            var nameOfCity=""
+            getAddressLocation(latitude, longitude) { nameCity, _ ->
+                nameOfCity=nameCity
+            }
+
+           val weatherState= currentTemperature.body()?.convertToWeatherWeekData(
+               nameOfCity, getCurrentDate(), "metric"
+           )
+            localData.saveWeatherState(weatherState!!)
+
+            return weatherState
+        }
+
+        return localData.getWeatherState(latitude, longitude)
+    }
+
+    override suspend fun getWeatherState(latitude: Double, longitude: Double): WeatherState {
+        return localData.getWeatherState(latitude, longitude)
+    }
+
+    override suspend fun saveWeatherState(weatherState: WeatherState) {
+        localData.saveWeatherState(weatherState)
+    }
+
+    override suspend fun updateWeatherState(weatherState: WeatherState) {
+        localData.updateWeatherState(weatherState)
+    }
+
+    override suspend fun deleteWeatherState(weatherState: WeatherState) {
+        localData.deleteWeatherState(weatherState)
     }
 
     override fun checkIsNotificationAvailable(): Boolean {
@@ -60,7 +93,17 @@ class RepoIm private constructor(
         localData.clearSharedPreferences()
     }
 
-    override  fun getCurrentDate(): String {
-     return   localData.getCurrentDate()
+    override fun getCurrentDate(): String {
+        return localData.getCurrentDate()
+    }
+
+    override fun getAddressLocation(
+        lat: Double, lon: Double,
+        getLocationData: (
+            nameOfCity: String,
+            nameOfCountry: String
+        ) -> Unit
+    ) {
+        localData.getAddressLocation(lat, lon, getLocationData)
     }
 }
