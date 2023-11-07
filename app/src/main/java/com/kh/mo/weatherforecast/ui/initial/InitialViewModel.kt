@@ -19,9 +19,7 @@ class InitialViewModel(private val repo:Repo) : ViewModel() {
         repo.changeNotificationValue(isNotification)
     }
 
-    fun changeValueOfFirstTimeOpenApp(isFirstTime: Boolean){
-        repo.changeValueOfFirstTimeOpenApp(isFirstTime)
-    }
+
 
 
 
