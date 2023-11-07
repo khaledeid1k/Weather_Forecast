@@ -5,15 +5,16 @@ import android.content.Context
 import com.kh.mo.weatherforecast.local.LocalDataImp
 import com.kh.mo.weatherforecast.model.Weather
 import com.kh.mo.weatherforecast.remot.service.Network
+import retrofit2.Response
 
 object RemoteDataImp : RemoteData {
   private val netWork= Network.retrofitService
 
 
 
-    override suspend fun getCurrentTemperature( latitude: Double,
-                                                longitude: Double): Weather? {
-       return netWork.getWeatherData(latitude,longitude).body()
+    override suspend fun getCurrentWeatherState( latitude: Double,
+                                                longitude: Double): Response<Weather> {
+       return netWork.getCurrentWeatherState(latitude,longitude)
 
     }
 
