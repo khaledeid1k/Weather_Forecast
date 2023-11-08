@@ -12,9 +12,9 @@ object RemoteDataImp : RemoteData {
 
 
 
-    override suspend fun getCurrentWeatherState( latitude: Double,
-                                                longitude: Double): Response<Weather> {
-       return netWork.getCurrentWeatherState(latitude,longitude)
+    override suspend fun getCurrentUpdatedWeatherState(latitude: Double,
+                                                       longitude: Double): Response<Weather> {
+       return netWork.getCurrentUpdatedWeatherState(latitude,longitude)
 
     }
 

@@ -57,27 +57,27 @@ class HomeFragment : Fragment() {
 
     private fun setUp() {
         binding.apply {
-            lifecycleOwner = this@HomeFragment
             viewModel = homeViewModel
+            lifecycleOwner = this@HomeFragment
         }
     }
 
     private fun receiveLocationDta() {
-        if(homeViewModel.checkIsFirstTimeOpenApp()){
-            val locationData = HomeFragmentArgs.fromBundle(requireArguments()).locationData
-            sendLocationDataToViewModel(locationData)
-        }
-
+        sendLocationDataToViewModel(receiveLocationData() ?: getSavedLanAndLon())
     }
+
+    private fun receiveLocationData() = HomeFragmentArgs.fromBundle(requireArguments()).locationData
 
 
     private fun sendLocationDataToViewModel(locationData: LocationData) {
-        homeViewModel.sendLocationData(locationData)
+        homeViewModel.getCurrentUpdatedWeatherState(locationData)
     }
+
     private fun changeValueOfFirstTimeOpenApp() {
         homeViewModel.changeValueOfFirstTimeOpenApp(false)
     }
 
+    private fun getSavedLanAndLon() = homeViewModel.let { LocationData(it.getLat(), it.getLon()) }
 }
 
 

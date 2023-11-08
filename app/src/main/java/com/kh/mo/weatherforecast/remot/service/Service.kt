@@ -8,7 +8,7 @@ import retrofit2.http.Query
 interface Service {
 
     @GET("data/2.5/onecall")
-    suspend fun getCurrentWeatherState(
+    suspend fun getCurrentUpdatedWeatherState(
         @Query("lat") latitude: Double,
         @Query("lon") longitude: Double
     ):Response<Weather>

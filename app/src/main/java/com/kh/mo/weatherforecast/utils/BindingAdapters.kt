@@ -6,16 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kh.mo.weatherforecast.model.Daily
 import com.kh.mo.weatherforecast.model.Hourly
-import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
-import com.kh.mo.weatherforecast.model.ui.Favorite
-import com.kh.mo.weatherforecast.repo.mapper.convertToFavoriteEntity
-import com.kh.mo.weatherforecast.repo.mapper.convertToFavorites
-import com.kh.mo.weatherforecast.repo.mapper.convertToWeatherHoursData
-import com.kh.mo.weatherforecast.repo.mapper.convertToWeatherWeekData
-import com.kh.mo.weatherforecast.ui.favorites.FavouriteAdapter
+import com.kh.mo.weatherforecast.repo.mapper.convertListOfHourlyToWeatherHoursData
+import com.kh.mo.weatherforecast.repo.mapper.convertWeatherToWeatherWeekData
 import com.kh.mo.weatherforecast.ui.home.adapter.WeatherHourAdapter
 import com.kh.mo.weatherforecast.ui.home.adapter.WeatherWeekAdapter
-import java.util.Objects
 
 @BindingAdapter("setImageUrl")
 fun ImageView.setImageUrl(iconId: String?) {
@@ -29,7 +23,7 @@ fun RecyclerView.setItemsWeatherHourData(weatherHourData:List<Hourly>?) {
     val weatherHourAdapter = WeatherHourAdapter()
     this.adapter = weatherHourAdapter
     weatherHourData?.let {
-        it.convertToWeatherHoursData()
+        it.convertListOfHourlyToWeatherHoursData()
             .let { it1 -> weatherHourAdapter.setItems(it1) }
     }
 }
@@ -39,7 +33,7 @@ fun RecyclerView.setItemsWeatherWeekData(weatherWeekData:List<Daily>?) {
     val weatherWeekAdapter = WeatherWeekAdapter()
     this.adapter = weatherWeekAdapter
     weatherWeekData?.let {
-        it.convertToWeatherWeekData()
+        it.convertWeatherToWeatherWeekData()
             .let { it1 -> weatherWeekAdapter.setItems(it1) }
     }
 }
