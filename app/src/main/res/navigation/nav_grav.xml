@@ -12,7 +12,9 @@
         tools:layout="@layout/fragment_home" >
         <argument
             android:name="locationData"
-            app:argType="com.kh.mo.weatherforecast.model.ui.LocationData" />
+            app:argType="com.kh.mo.weatherforecast.model.ui.LocationData"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/alert"
