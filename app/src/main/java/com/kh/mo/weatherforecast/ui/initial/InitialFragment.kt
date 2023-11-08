@@ -18,6 +18,7 @@ import com.kh.mo.weatherforecast.model.ui.LocationData
 import com.kh.mo.weatherforecast.remot.RemoteDataImp
 import com.kh.mo.weatherforecast.repo.RepoIm
 import com.kh.mo.weatherforecast.utils.Constants.GPS
+import com.kh.mo.weatherforecast.utils.Constants.INITIAL_FRAGMENT
 import com.kh.mo.weatherforecast.utils.Constants.MAP
 
 
@@ -110,7 +111,7 @@ class InitialFragment : Fragment() {
     }
 
     private fun moveToMapScreen() {
-        findNavController().navigate(InitialFragmentDirections.actionInitialFragmentToMapFragment())
+        findNavController().navigate(InitialFragmentDirections.actionInitialFragmentToMapFragment(INITIAL_FRAGMENT))
     }
 
 
