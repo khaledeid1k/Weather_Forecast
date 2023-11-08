@@ -11,7 +11,7 @@ import com.kh.mo.weatherforecast.model.ui.WeatherState
 import com.kh.mo.weatherforecast.model.ui.WeatherWeekData
 import com.kh.mo.weatherforecast.utils.convertUnixTimestampToDateTime
 
-fun List<Hourly>.convertToWeatherHoursData(): List<WeatherHourData> {
+fun List<Hourly>.convertListOfHourlyToWeatherHoursData(): List<WeatherHourData> {
     return this.map {
         WeatherHourData(
             it.dt.convertUnixTimestampToDateTime(),
@@ -21,7 +21,7 @@ fun List<Hourly>.convertToWeatherHoursData(): List<WeatherHourData> {
     }
 }
 
-fun List<Daily>.convertToWeatherWeekData(): List<WeatherWeekData> {
+fun List<Daily>.convertWeatherToWeatherWeekData(): List<WeatherWeekData> {
     val dayNames = listOf( "Sat","Sun", "Mon", "Tue", "Wed", "Thu", "Fri")
     return this.drop(1).mapIndexed { index, daily ->
         WeatherWeekData(
@@ -33,8 +33,8 @@ fun List<Daily>.convertToWeatherWeekData(): List<WeatherWeekData> {
     }
 }
 
-fun Weather.convertToWeatherWeekData(nameOfCountry:String,currentTime:String,
-unit :String): WeatherState {
+fun Weather.convertWeatherToWeatherWeekData(nameOfCountry:String, currentTime:String,
+                                            unit :String): WeatherState {
     return this.let {
         WeatherState(
             it.lat,
@@ -57,7 +57,7 @@ unit :String): WeatherState {
     }
 }
 
-fun WeatherEntity.convertToFavoriteEntity(): WeatherState {
+fun WeatherEntity.convertWeatherToFavoriteEntity(): WeatherState {
     return WeatherState(
         lan,
         lon,
@@ -77,7 +77,7 @@ fun WeatherEntity.convertToFavoriteEntity(): WeatherState {
 
 }
 
-fun List<FavoriteEntity>.convertToFavorites():List<Favorite>{
+fun List<FavoriteEntity>.convertListOfFavoriteEntityToFavorites():List<Favorite>{
     return this.map {
         Favorite(
            it.nameOfCity
@@ -85,21 +85,24 @@ fun List<FavoriteEntity>.convertToFavorites():List<Favorite>{
     }
 }
 
-fun WeatherState.convertToFavoriteEntity():FavoriteEntity{
-    return FavoriteEntity(
-        lan,
-        lon,
-        nameOfCity,
-        currentTime,
-        temp,
-        unit,
-        tempDescription,
-        icon,
-        humidity,
-        clouds,
-        wind_speed,
-        pressure,
-        hourly,
-        daily
-    )
+fun Weather.convertWeatherToFavoriteEntity(nameOfCountry:String, currentTime:String,
+                                           unit :String):FavoriteEntity{
+    return this.let {
+        FavoriteEntity(
+            it.lat,
+            it.lon,
+            nameOfCountry,
+            currentTime,
+            it.current.temp,
+            unit,
+            it.current.weather[0].description,
+            it.current.weather[0].icon,
+            it.current.humidity,
+            it.current.clouds,
+            it.current.wind_speed,
+            it.current.pressure,
+            hourly,
+            daily
+        )
+    }
 }
