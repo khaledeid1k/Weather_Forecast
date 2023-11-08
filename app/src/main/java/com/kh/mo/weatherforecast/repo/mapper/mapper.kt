@@ -3,6 +3,9 @@ package com.kh.mo.weatherforecast.repo.mapper
 import com.kh.mo.weatherforecast.model.Daily
 import com.kh.mo.weatherforecast.model.Hourly
 import com.kh.mo.weatherforecast.model.Weather
+import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
+import com.kh.mo.weatherforecast.model.entity.WeatherEntity
+import com.kh.mo.weatherforecast.model.ui.Favorite
 import com.kh.mo.weatherforecast.model.ui.WeatherHourData
 import com.kh.mo.weatherforecast.model.ui.WeatherState
 import com.kh.mo.weatherforecast.model.ui.WeatherWeekData
@@ -54,5 +57,49 @@ unit :String): WeatherState {
     }
 }
 
+fun WeatherEntity.convertToFavoriteEntity(): WeatherState {
+    return WeatherState(
+        lan,
+        lon,
+        nameOfCity,
+        currentTime,
+        temp,
+        unit,
+        tempDescription,
+        icon,
+        humidity,
+        clouds,
+        wind_speed,
+        pressure,
+        hourly,
+        daily
+    )
 
+}
 
+fun List<FavoriteEntity>.convertToFavorites():List<Favorite>{
+    return this.map {
+        Favorite(
+           it.nameOfCity
+        )
+    }
+}
+
+fun WeatherState.convertToFavoriteEntity():FavoriteEntity{
+    return FavoriteEntity(
+        lan,
+        lon,
+        nameOfCity,
+        currentTime,
+        temp,
+        unit,
+        tempDescription,
+        icon,
+        humidity,
+        clouds,
+        wind_speed,
+        pressure,
+        hourly,
+        daily
+    )
+}

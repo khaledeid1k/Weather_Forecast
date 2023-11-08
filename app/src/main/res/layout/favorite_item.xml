@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <data>
+
+        <variable
+            name="favorite"
+            type="com.kh.mo.weatherforecast.model.ui.Favorite" />
+
+        <variable
+            name="listener"
+            type="com.kh.mo.weatherforecast.ui.favorites.FavouriteAdapter.FavouriteListener" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginHorizontal="@dimen/margin_8"
+        android:layout_marginVertical="@dimen/margin_8"
+        app:cardCornerRadius="@dimen/radius_8"
+
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                style="@style/TextAppearance.Material3.TitleLarge"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/padding_16"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:padding="@dimen/padding_8"
+                android:onClick="@{() -> listener.onClickFavourite(favorite)}"
+
+                android:paddingEnd="@dimen/margin_8"
+                android:text="@{favorite.nameOfCity}"
+                app:drawableStartCompat="@drawable/location"
+                app:layout_constraintEnd_toStartOf="@+id/delete_favorite"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Cairo" />
+
+            <ImageView
+                android:id="@+id/delete_favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:src="@drawable/delete"
+                android:onClick="@{() -> listener.deleteFavourite(favorite)}"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>
