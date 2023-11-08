@@ -9,6 +9,8 @@ object Constants {
     const val PREFERENCE_NAME = "PREFERENCE_NAME"
     const val MAP = "MAP"
     const val GPS = "GPS"
+    const val INITIAL_FRAGMENT = "INITIAL_FRAGMENT"
+    const val FAVORITE_FRAGMENT = "FAVORITE_FRAGMENT"
 
 
 

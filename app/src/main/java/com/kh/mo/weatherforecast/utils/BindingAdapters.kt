@@ -6,8 +6,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kh.mo.weatherforecast.model.Daily
 import com.kh.mo.weatherforecast.model.Hourly
+import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
+import com.kh.mo.weatherforecast.model.ui.Favorite
+import com.kh.mo.weatherforecast.repo.mapper.convertToFavoriteEntity
+import com.kh.mo.weatherforecast.repo.mapper.convertToFavorites
 import com.kh.mo.weatherforecast.repo.mapper.convertToWeatherHoursData
 import com.kh.mo.weatherforecast.repo.mapper.convertToWeatherWeekData
+import com.kh.mo.weatherforecast.ui.favorites.FavouriteAdapter
 import com.kh.mo.weatherforecast.ui.home.adapter.WeatherHourAdapter
 import com.kh.mo.weatherforecast.ui.home.adapter.WeatherWeekAdapter
 import java.util.Objects
@@ -25,7 +30,7 @@ fun RecyclerView.setItemsWeatherHourData(weatherHourData:List<Hourly>?) {
     this.adapter = weatherHourAdapter
     weatherHourData?.let {
         it.convertToWeatherHoursData()
-            ?.let { it1 -> weatherHourAdapter.setItems(it1) }
+            .let { it1 -> weatherHourAdapter.setItems(it1) }
     }
 }
 
@@ -35,7 +40,11 @@ fun RecyclerView.setItemsWeatherWeekData(weatherWeekData:List<Daily>?) {
     this.adapter = weatherWeekAdapter
     weatherWeekData?.let {
         it.convertToWeatherWeekData()
-            ?.let { it1 -> weatherWeekAdapter.setItems(it1) }
+            .let { it1 -> weatherWeekAdapter.setItems(it1) }
     }
 }
+
+
+
+
 
