@@ -1,68 +1,92 @@
 package com.kh.mo.weatherforecast.repo
 
 import com.kh.mo.weatherforecast.local.LocalData
+import com.kh.mo.weatherforecast.model.Weather
+import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
+import com.kh.mo.weatherforecast.model.entity.WeatherEntity
 import com.kh.mo.weatherforecast.model.ui.WeatherState
 import com.kh.mo.weatherforecast.remot.RemoteData
-import com.kh.mo.weatherforecast.repo.mapper.convertToWeatherWeekData
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import com.kh.mo.weatherforecast.repo.mapper.convertWeatherToFavoriteEntity
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 
 class RepoIm private constructor(
     private val localData: LocalData,
     private val remoteData: RemoteData
 ) : Repo {
 
-    companion object {
-        @Volatile
-        private var instance: RepoIm? = null
-        fun getRepoImInstance(localData: LocalData, remoteData: RemoteData): RepoIm {
-            return instance ?: synchronized(this) {
-                val instanceHolder = RepoIm(localData, remoteData)
-                instance = instanceHolder
-                instanceHolder
 
-            }
-        }
-    }
-
-
-    override suspend fun getCurrentWeatherState(
+    override suspend fun getCurrentUpdatedWeatherState(
         latitude: Double,
         longitude: Double
-    ): WeatherState {
-        val currentTemperature = remoteData.getCurrentWeatherState(latitude, longitude)
+    ): Flow<Weather> {
+//        val currentTemperature = remoteData.getCurrentWeatherState(latitude, longitude)
+//
+//        if (currentTemperature.isSuccessful) {
+//            var nameOfCity=""
+//            getAddressLocation(latitude, longitude) { nameCity, _ ->
+//                nameOfCity=nameCity
+//            }
+//
+//           val weatherState= currentTemperature.body()?.convertToWeatherWeekData(
+//               nameOfCity, getCurrentDate(), "metric"
+//           )
+//            localData.saveWeatherState(weatherState!!)
+//
+//            return weatherState
+//        }
+//
+//        return localData.getWeatherState(latitude, longitude)
 
-        if (currentTemperature.isSuccessful) {
-            var nameOfCity=""
-            getAddressLocation(latitude, longitude) { nameCity, _ ->
-                nameOfCity=nameCity
+
+
+        return flow {
+            remoteData.
+            getCurrentUpdatedWeatherState(latitude, longitude)
+                .body()?.let {
+                emit(
+                    it
+                )
             }
 
-           val weatherState= currentTemperature.body()?.convertToWeatherWeekData(
-               nameOfCity, getCurrentDate(), "metric"
-           )
-            localData.saveWeatherState(weatherState!!)
-
-            return weatherState
         }
-
-        return localData.getWeatherState(latitude, longitude)
     }
 
-    override suspend fun getWeatherState(latitude: Double, longitude: Double): WeatherState {
-        return localData.getWeatherState(latitude, longitude)
+    override suspend fun getWeatherState(latitude: Double, longitude: Double):
+            Flow<WeatherState> {
+        return localData.getWeatherState(latitude, longitude).map {
+            it.convertWeatherToFavoriteEntity()
+        }
     }
 
-    override suspend fun saveWeatherState(weatherState: WeatherState) {
-        localData.saveWeatherState(weatherState)
+    override suspend fun saveWeatherState(weatherEntity: WeatherEntity) {
+        localData.saveWeatherState(weatherEntity)
     }
 
-    override suspend fun updateWeatherState(weatherState: WeatherState) {
-        localData.updateWeatherState(weatherState)
+    override suspend fun updateWeatherState(weatherEntity: WeatherEntity) {
+        localData.updateWeatherState(weatherEntity)
     }
 
-    override suspend fun deleteWeatherState(weatherState: WeatherState) {
-        localData.deleteWeatherState(weatherState)
+    override suspend fun deleteWeatherState(weatherEntity: WeatherEntity) {
+        localData.deleteWeatherState(weatherEntity)
+    }
+
+    override fun setLat(lat: Float) {
+        localData.setLat(lat)
+
+    }
+
+    override fun setLon(lon: Float) {
+        localData.setLon(lon)
+    }
+
+    override fun getLat(): Double {
+        return localData.getLat().toDouble()
+    }
+
+    override fun getLon(): Double {
+        return localData.getLon().toDouble()
     }
 
     override fun checkIsNotificationAvailable(): Boolean {
@@ -93,6 +117,14 @@ class RepoIm private constructor(
         localData.clearSharedPreferences()
     }
 
+    override fun setUnit(unit: String) {
+        localData.setUnit(unit)
+    }
+
+    override fun getUnit(): String {
+     return   localData.getUnit()
+    }
+
     override fun getCurrentDate(): String {
         return localData.getCurrentDate()
     }
@@ -105,5 +137,34 @@ class RepoIm private constructor(
         ) -> Unit
     ) {
         localData.getAddressLocation(lat, lon, getLocationData)
+    }
+
+    override suspend fun getFavorites(): Flow<List<FavoriteEntity>> = localData.getFavorites()
+
+
+    override suspend fun saveFavorite(favorite: FavoriteEntity) {
+        localData.saveFavorite(favorite)
+    }
+
+    override suspend fun deleteFavorite(favoriteName: String) {
+        localData.deleteFavorite(favoriteName)
+    }
+
+    override suspend fun getFavorite(favoriteName: String): Flow<FavoriteEntity?> {
+        return localData.getFavorite(favoriteName)
+    }
+
+
+    companion object {
+        @Volatile
+        private var instance: RepoIm? = null
+        fun getRepoImInstance(localData: LocalData, remoteData: RemoteData): RepoIm {
+            return instance ?: synchronized(this) {
+                val instanceHolder = RepoIm(localData, remoteData)
+                instance = instanceHolder
+                instanceHolder
+
+            }
+        }
     }
 }
