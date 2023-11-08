@@ -19,6 +19,9 @@ import com.kh.mo.weatherforecast.local.LocalDataImp
 import com.kh.mo.weatherforecast.model.ui.LocationData
 import com.kh.mo.weatherforecast.remot.RemoteDataImp
 import com.kh.mo.weatherforecast.repo.RepoIm
+import com.kh.mo.weatherforecast.utils.Constants
+import com.kh.mo.weatherforecast.utils.Constants.FAVORITE_FRAGMENT
+import com.kh.mo.weatherforecast.utils.Constants.INITIAL_FRAGMENT
 
 class MapFragment : Fragment(), OnMapReadyCallback {
 
@@ -42,6 +45,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         intiViewModel()
         setUp()
     }
+
+    private fun receiveNameOfCaller() = MapFragmentArgs.fromBundle(requireArguments()).nameOfCaller
+
 
     private fun intiMapView(savedInstanceState: Bundle?) {
         binding.mapView.onCreate(savedInstanceState)
@@ -82,7 +88,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 dialog.dismiss()
             }
             .setPositiveButton("Done") { dialog, _ ->
-                moveToHomeScreen()
+                moveToNextScreen()
                 dialog.dismiss()
             }
             .show()
@@ -90,24 +96,32 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
 
     private fun showDialog(latLng: LatLng) {
-        mapViewModel.getAddressLocation(latLng.latitude,latLng.longitude){
-            nameOfCity, nameOfCountry ->
-            intiLocationData(latLng,nameOfCity)
+        mapViewModel.getAddressLocation(
+            latLng.latitude,
+            latLng.longitude
+        ) { nameOfCity, nameOfCountry ->
+            intiLocationData(latLng, nameOfCity)
             createDialog("$nameOfCountry , $nameOfCity")
         }
 
     }
 
-    private fun intiLocationData(latLng: LatLng, nameOfCity: String){
+    private fun intiLocationData(latLng: LatLng, nameOfCity: String) {
         locationData = LocationData(latLng.latitude, latLng.longitude, nameOfCity)
     }
 
-    private fun moveToHomeScreen() {
-        findNavController().navigate(
-            MapFragmentDirections.actionMapFragmentToHome(
-                locationData
+    private fun moveToNextScreen() {
+        if (receiveNameOfCaller() == INITIAL_FRAGMENT) {
+            findNavController().navigate(
+                MapFragmentDirections.actionMapFragmentToHome(
+                    locationData
+                )
             )
-        )
+        } else {
+            findNavController().navigate(
+                MapFragmentDirections.actionMapFragmentToFavourite(locationData)
+            )
+        }
 
 
     }
