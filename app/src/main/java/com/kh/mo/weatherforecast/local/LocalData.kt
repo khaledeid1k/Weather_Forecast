@@ -24,6 +24,9 @@ interface LocalData {
 
     fun clearSharedPreferences()
 
+    fun setUnit(unit:String)
+    fun getUnit():String
+
     fun getCurrentDate(): String
 
     fun getAddressLocation(lat: Double, lon: Double,

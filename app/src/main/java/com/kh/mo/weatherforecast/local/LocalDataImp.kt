@@ -9,6 +9,7 @@ import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.is
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.isNotificationAvailable
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.wayForSelectLocation
 import com.kh.mo.weatherforecast.local.db.WeatherDataBase
+import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.unit
 import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
 import com.kh.mo.weatherforecast.model.entity.WeatherEntity
 import kotlinx.coroutines.flow.Flow
@@ -66,6 +67,14 @@ class LocalDataImp private constructor(val context: Context) : LocalData {
 
     override fun clearSharedPreferences() {
         sharedPreferencesWeather.clearValues()
+    }
+
+    override fun setUnit(unit: String) {
+        sharedPreferencesWeather.unit=unit
+    }
+
+    override fun getUnit(): String {
+        return sharedPreferencesWeather.unit.toString()
     }
 
     override fun getCurrentDate(): String {

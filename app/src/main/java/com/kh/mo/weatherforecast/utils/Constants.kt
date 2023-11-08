@@ -11,6 +11,7 @@ object Constants {
     const val GPS = "GPS"
     const val INITIAL_FRAGMENT = "INITIAL_FRAGMENT"
     const val FAVORITE_FRAGMENT = "FAVORITE_FRAGMENT"
+    const val UNIT = "UNIT"
 
 
 

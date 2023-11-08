@@ -7,6 +7,7 @@ import com.kh.mo.weatherforecast.utils.Constants.FIRST_TIME
 import com.kh.mo.weatherforecast.utils.Constants.GPS
 import com.kh.mo.weatherforecast.utils.Constants.NOTIFICATION
 import com.kh.mo.weatherforecast.utils.Constants.PREFERENCE_NAME
+import com.kh.mo.weatherforecast.utils.Constants.UNIT
 import com.kh.mo.weatherforecast.utils.Constants.WAY_LOCATION
 
 object SharedPreferencesWeather {
@@ -45,6 +46,15 @@ object SharedPreferencesWeather {
             editMe {
 
                 it.putBoolean(FIRST_TIME, value)
+            }
+        }
+
+
+    var SharedPreferences.unit
+        get() = getString(UNIT, "metric")
+        set(value) {
+            editMe {
+                it.putString(UNIT, value)
             }
         }
 }
