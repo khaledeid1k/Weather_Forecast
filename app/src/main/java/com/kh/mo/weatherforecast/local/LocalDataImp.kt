@@ -9,37 +9,41 @@ import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.is
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.isNotificationAvailable
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.wayForSelectLocation
 import com.kh.mo.weatherforecast.local.db.WeatherDataBase
-import com.kh.mo.weatherforecast.model.ui.WeatherState
+import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
+import com.kh.mo.weatherforecast.model.entity.WeatherEntity
+import kotlinx.coroutines.flow.Flow
 import java.text.SimpleDateFormat
 import java.util.*
 
-class LocalDataImp private constructor(val context: Context) :LocalData {
-    private val dataBase= WeatherDataBase.getWeatherDataBaseInstance(context).weatherDao()
-    private val sharedPreferencesWeather= SharedPreferencesWeather.customPreference(context,)
-    override suspend fun getWeatherState(  latitude: Double,
-                                           longitude: Double): WeatherState {
-       return dataBase.getWeatherState(latitude,longitude)
+class LocalDataImp private constructor(val context: Context) : LocalData {
+    private val dataBase = WeatherDataBase.getWeatherDataBaseInstance(context).weatherDao()
+    private val sharedPreferencesWeather = SharedPreferencesWeather.customPreference(context)
+    override suspend fun getWeatherState(
+        latitude: Double,
+        longitude: Double
+    ): Flow<WeatherEntity> {
+        return dataBase.getWeatherState(latitude, longitude)
     }
 
-    override suspend fun saveWeatherState(weatherState: WeatherState) {
-         dataBase.saveWeatherState(weatherState)
+    override suspend fun saveWeatherState(weatherState: WeatherEntity) {
+        dataBase.saveWeatherState(weatherState)
     }
 
-    override suspend fun updateWeatherState(weatherState: WeatherState) {
-         dataBase.updateWeatherState(weatherState)
+    override suspend fun updateWeatherState(weatherState: WeatherEntity) {
+        dataBase.updateWeatherState(weatherState)
     }
 
-    override suspend fun deleteWeatherState(weatherState: WeatherState) {
+    override suspend fun deleteWeatherState(weatherState: WeatherEntity) {
         dataBase.deleteWeatherState(weatherState)
     }
 
 
     override fun checkIsNotificationAvailable(): Boolean {
-       return sharedPreferencesWeather.isNotificationAvailable
+        return sharedPreferencesWeather.isNotificationAvailable
     }
 
     override fun changeNotificationValue(isNotification: Boolean) {
-        sharedPreferencesWeather.isNotificationAvailable=isNotification
+        sharedPreferencesWeather.isNotificationAvailable = isNotification
 
     }
 
@@ -48,7 +52,7 @@ class LocalDataImp private constructor(val context: Context) :LocalData {
     }
 
     override fun changeWayOfSelectLocationValue(wayOfSelectLocation: String) {
-        sharedPreferencesWeather.wayForSelectLocation=wayOfSelectLocation
+        sharedPreferencesWeather.wayForSelectLocation = wayOfSelectLocation
 
     }
 
@@ -57,7 +61,7 @@ class LocalDataImp private constructor(val context: Context) :LocalData {
     }
 
     override fun changeValueOfFirstTimeOpenApp(isFirstTime: Boolean) {
-        sharedPreferencesWeather.isFirstTimeOpenApp=isFirstTime
+        sharedPreferencesWeather.isFirstTimeOpenApp = isFirstTime
     }
 
     override fun clearSharedPreferences() {
@@ -82,21 +86,40 @@ class LocalDataImp private constructor(val context: Context) :LocalData {
             val address = addresses[0]
             val fullAddress = address.getAddressLine(0)
             val addressData = fullAddress.split(",")
-            val nameOfCity = addressData[1]
-            val nameOfCountry = addressData[addressData.size-1]
-            getLocationData(nameOfCity,nameOfCountry)
+            var nameOfCity = addressData[0]
+            if (addresses.size > 1) {
+                nameOfCity = addressData[1]
+            }
+            val nameOfCountry = addressData[addressData.size - 1]
+            getLocationData(nameOfCity, nameOfCountry)
 
         }
     }
 
-    companion object{
+    override suspend fun getFavorites(): Flow<List<FavoriteEntity> >{
+        return dataBase.getFavorites()
+    }
+
+    override suspend fun saveFavorite(favorite: FavoriteEntity) {
+        dataBase.saveFavorite(favorite)
+    }
+
+    override suspend fun deleteFavorite(favoriteName: String) {
+        dataBase.deleteFavorite(favoriteName)
+    }
+
+    override suspend fun getFavorite(favoriteName: String):Flow < FavoriteEntity?> {
+      return  dataBase.getFavorite(favoriteName)
+    }
+
+    companion object {
         @SuppressLint("StaticFieldLeak")
         @Volatile
-        private  var instance: LocalDataImp?=null
-        fun getLocalDataImpInstance( context: Context): LocalDataImp {
-            return instance ?: synchronized(this){
-                val instanceHolder=LocalDataImp(context)
-                instance =instanceHolder
+        private var instance: LocalDataImp? = null
+        fun getLocalDataImpInstance(context: Context): LocalDataImp {
+            return instance ?: synchronized(this) {
+                val instanceHolder = LocalDataImp(context)
+                instance = instanceHolder
                 instanceHolder
 
             }

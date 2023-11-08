@@ -1,18 +1,17 @@
 package com.kh.mo.weatherforecast.local
 
 import android.content.Context
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import androidx.room.Update
-import com.kh.mo.weatherforecast.model.ui.WeatherState
+import androidx.room.*
+import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
+import com.kh.mo.weatherforecast.model.entity.WeatherEntity
+import kotlinx.coroutines.flow.Flow
 
 interface LocalData {
     suspend fun getWeatherState(  latitude: Double,
-                                  longitude: Double): WeatherState
-    suspend fun saveWeatherState(weatherState: WeatherState)
-    suspend fun updateWeatherState(weatherState: WeatherState)
-    suspend fun deleteWeatherState(weatherState: WeatherState)
+                                  longitude: Double): Flow<WeatherEntity>
+    suspend fun saveWeatherState(weatherState: WeatherEntity)
+    suspend fun updateWeatherState(weatherState: WeatherEntity)
+    suspend fun deleteWeatherState(weatherState: WeatherEntity)
 
     fun checkIsNotificationAvailable(): Boolean
     fun changeNotificationValue(isNotification: Boolean)
@@ -31,4 +30,13 @@ interface LocalData {
                            getLocationData:(nameOfCity:String,
                                             nameOfCountry:String)->Unit
     )
+
+
+
+    suspend fun getFavorites(): Flow<List<FavoriteEntity>>
+    suspend fun saveFavorite(favorite: FavoriteEntity)
+
+    suspend fun deleteFavorite(favoriteName: String)
+
+    suspend fun getFavorite(favoriteName: String): Flow < FavoriteEntity?>
 }
