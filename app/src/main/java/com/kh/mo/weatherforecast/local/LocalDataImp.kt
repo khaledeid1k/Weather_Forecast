@@ -9,6 +9,8 @@ import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.is
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.isNotificationAvailable
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.wayForSelectLocation
 import com.kh.mo.weatherforecast.local.db.WeatherDataBase
+import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.lat
+import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.lon
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.unit
 import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
 import com.kh.mo.weatherforecast.model.entity.WeatherEntity
@@ -75,6 +77,22 @@ class LocalDataImp private constructor(val context: Context) : LocalData {
 
     override fun getUnit(): String {
         return sharedPreferencesWeather.unit.toString()
+    }
+
+    override fun setLat(lat: Float) {
+        sharedPreferencesWeather.lat=lat
+    }
+
+    override fun setLon(lon: Float) {
+        sharedPreferencesWeather.lon=lon
+    }
+
+    override fun getLat(): Float {
+      return  sharedPreferencesWeather.lat
+    }
+
+    override fun getLon(): Float {
+        return  sharedPreferencesWeather.lon
     }
 
     override fun getCurrentDate(): String {

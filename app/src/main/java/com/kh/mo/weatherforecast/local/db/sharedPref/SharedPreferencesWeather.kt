@@ -5,6 +5,8 @@ import android.content.SharedPreferences
 import android.util.Log
 import com.kh.mo.weatherforecast.utils.Constants.FIRST_TIME
 import com.kh.mo.weatherforecast.utils.Constants.GPS
+import com.kh.mo.weatherforecast.utils.Constants.LAT
+import com.kh.mo.weatherforecast.utils.Constants.LON
 import com.kh.mo.weatherforecast.utils.Constants.NOTIFICATION
 import com.kh.mo.weatherforecast.utils.Constants.PREFERENCE_NAME
 import com.kh.mo.weatherforecast.utils.Constants.UNIT
@@ -55,6 +57,22 @@ object SharedPreferencesWeather {
         set(value) {
             editMe {
                 it.putString(UNIT, value)
+            }
+        }
+
+    var SharedPreferences.lat
+        get() = getFloat (LAT,0f)
+        set(value) {
+            editMe {
+                it.putFloat(LAT, value)
+            }
+        }
+
+    var SharedPreferences.lon
+        get() = getFloat(LON, 0f)
+        set(value) {
+            editMe {
+                it.putFloat(LON, value)
             }
         }
 }

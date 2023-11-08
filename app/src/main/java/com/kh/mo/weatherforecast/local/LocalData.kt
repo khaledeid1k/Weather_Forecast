@@ -27,6 +27,11 @@ interface LocalData {
     fun setUnit(unit:String)
     fun getUnit():String
 
+    fun setLat(lat:Float)
+    fun setLon(lon:Float)
+    fun getLat():Float
+    fun getLon():Float
+
     fun getCurrentDate(): String
 
     fun getAddressLocation(lat: Double, lon: Double,
