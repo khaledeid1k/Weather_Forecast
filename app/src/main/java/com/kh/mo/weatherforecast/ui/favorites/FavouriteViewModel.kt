@@ -1,23 +1,28 @@
 package com.kh.mo.weatherforecast.ui.favorites
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
 import com.kh.mo.weatherforecast.model.ui.Favorite
 import com.kh.mo.weatherforecast.model.ui.LocationData
 import com.kh.mo.weatherforecast.repo.Repo
-import com.kh.mo.weatherforecast.repo.mapper.convertWeatherToWeatherWeekData
 import com.kh.mo.weatherforecast.repo.mapper.convertListOfFavoriteEntityToFavorites
 import com.kh.mo.weatherforecast.repo.mapper.convertWeatherToFavoriteEntity
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 
 class FavouriteViewModel(private val repo: Repo) : ViewModel(), FavouriteAdapter.FavouriteListener {
     private val _favorites = MutableStateFlow<List<Favorite>>(emptyList())
     val favorites: StateFlow<List<Favorite>> = _favorites
+
+    private val _favoritesEvent = MutableLiveData<Favorite>()
+    val favoritesEvent: LiveData<Favorite> = _favoritesEvent
+
+
 
     fun getWeatherStateOfLocation(locationData: LocationData) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -73,6 +78,7 @@ class FavouriteViewModel(private val repo: Repo) : ViewModel(), FavouriteAdapter
     }
 
     override fun onClickFavourite(favorite: Favorite) {
+        _favoritesEvent.postValue(favorite)
 
     }
 

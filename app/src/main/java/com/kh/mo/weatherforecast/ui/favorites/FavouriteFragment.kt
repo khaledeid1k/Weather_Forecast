@@ -39,7 +39,7 @@ class FavouriteFragment : Fragment() {
         intiViewModel()
         setUp()
         addAdapter()
-
+        clickFavorite()
     }
 
     private fun setUp(){
@@ -103,6 +103,12 @@ class FavouriteFragment : Fragment() {
         getFavorites()
         addFavoriteLocation()
         receiveLocationData()
+    }
 
+   private fun clickFavorite(){
+        favouriteViewModel.favoritesEvent.observe(viewLifecycleOwner){
+            findNavController().navigate(FavouriteFragmentDirections.actionFavouriteToHomeToFavorite (LocationData(it.lan,it.lon)))
+
+        }
     }
 }
