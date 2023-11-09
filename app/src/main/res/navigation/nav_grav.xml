@@ -17,6 +17,20 @@
             android:defaultValue="@null" />
     </fragment>
     <fragment
+        android:id="@+id/show_favorite_data"
+        android:name="com.kh.mo.weatherforecast.ui.home.HomeFragment"
+        android:label="@string/home"
+        tools:layout="@layout/fragment_home" >
+        <argument
+            android:name="locationData"
+            app:argType="com.kh.mo.weatherforecast.model.ui.LocationData"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_show_weather_data_to_favourite"
+            app:destination="@id/favourite" />
+    </fragment>
+    <fragment
         android:id="@+id/alert"
         android:name="com.kh.mo.weatherforecast.ui.alert.AlertFragment"
         android:label="@string/alert"
@@ -35,6 +49,12 @@
             app:argType="com.kh.mo.weatherforecast.model.ui.LocationData"
             app:nullable="true"
             android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_favourite_to_home"
+            app:destination="@id/home" />
+        <action
+            android:id="@+id/action_favourite_to_show_weather_data"
+            app:destination="@id/show_favorite_data" />
     </fragment>
     <fragment
         android:id="@+id/settings"

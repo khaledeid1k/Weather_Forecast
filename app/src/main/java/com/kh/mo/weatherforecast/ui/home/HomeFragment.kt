@@ -7,12 +7,17 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.kh.mo.weatherforecast.R
 import com.kh.mo.weatherforecast.databinding.FragmentHomeBinding
 import com.kh.mo.weatherforecast.local.LocalDataImp
 import com.kh.mo.weatherforecast.model.ui.LocationData
 import com.kh.mo.weatherforecast.remot.RemoteDataImp
 import com.kh.mo.weatherforecast.repo.RepoIm
+import com.kh.mo.weatherforecast.utils.Constants.FAVORITE_FRAGMENT
+import com.kh.mo.weatherforecast.utils.closeFragment
+import com.kh.mo.weatherforecast.utils.makeGone
+import com.kh.mo.weatherforecast.utils.makeVisible
 
 class HomeFragment : Fragment() {
 
@@ -35,8 +40,9 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         intiViewModel()
         setUp()
-        receiveLocationDta()
+        checkFromNavBarOrFragment()
         changeValueOfFirstTimeOpenApp()
+        backToFavorite()
     }
 
     private fun intiViewModel() {
@@ -62,8 +68,16 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun receiveLocationDta() {
-        sendLocationDataToViewModel(receiveLocationData() ?: getSavedLanAndLon())
+    private fun checkFromNavBarOrFragment() {
+        val locationData = receiveLocationData() ?: getSavedLanAndLon()
+        binding.apply {
+            if (locationData.type == FAVORITE_FRAGMENT) {
+                backTofavorite.makeVisible()
+                tileOfHome.text = requireContext().getString(R.string.favourite)
+            }
+        }
+
+        sendLocationDataToViewModel(locationData)
     }
 
     private fun receiveLocationData() = HomeFragmentArgs.fromBundle(requireArguments()).locationData
@@ -78,6 +92,15 @@ class HomeFragment : Fragment() {
     }
 
     private fun getSavedLanAndLon() = homeViewModel.let { LocationData(it.getLat(), it.getLon()) }
+
+    private fun backToFavorite() {
+        binding.backTofavorite.setOnClickListener {
+            findNavController().navigate(
+                HomeFragmentDirections.actionShowWeatherDataToFavourite()
+            )
+        }
+    }
+
 }
 
 

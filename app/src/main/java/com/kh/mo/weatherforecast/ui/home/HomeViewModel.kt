@@ -6,9 +6,9 @@ import com.kh.mo.weatherforecast.model.ui.LocationData
 import com.kh.mo.weatherforecast.model.ui.WeatherState
 import com.kh.mo.weatherforecast.repo.Repo
 import com.kh.mo.weatherforecast.repo.mapper.convertWeatherToWeatherWeekData
+import com.kh.mo.weatherforecast.utils.Constants.INITIAL_FRAGMENT
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class HomeViewModel(private val repo: Repo) : ViewModel() {
@@ -17,11 +17,11 @@ class HomeViewModel(private val repo: Repo) : ViewModel() {
 
 
     fun getCurrentUpdatedWeatherState(locationData: LocationData) {
-        saveLat(locationData.lat.toFloat())
-        saveLon(locationData.lon.toFloat())
+
         viewModelScope.launch(Dispatchers.IO) {
             repo.getCurrentUpdatedWeatherState(locationData.lat, locationData.lon)
                 .collect {
+                    checkOpenFromInitialFragment(locationData)
                     val nameOfCity = getNameOfCity(it.lat, it.lon)
                     val currentTime = getCurrentTime()
                     val unit = getUnit()
@@ -31,15 +31,19 @@ class HomeViewModel(private val repo: Repo) : ViewModel() {
         }
     }
 
+     private fun checkOpenFromInitialFragment(locationData: LocationData){
+        if(locationData.type==INITIAL_FRAGMENT){
+        saveLat(locationData.lat.toFloat())
+        saveLon(locationData.lon.toFloat())
+        }
+    }
+
 
 
     fun changeValueOfFirstTimeOpenApp(isFirstTime: Boolean) {
         repo.changeValueOfFirstTimeOpenApp(isFirstTime)
     }
 
-    fun checkIsFirstTimeOpenApp(): Boolean {
-        return repo.checkIsFirstTimeOpenApp()
-    }
 
 
     private fun getNameOfCity(lat: Double, lon: Double): String {

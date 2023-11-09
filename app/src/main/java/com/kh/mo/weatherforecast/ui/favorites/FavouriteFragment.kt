@@ -107,7 +107,7 @@ class FavouriteFragment : Fragment() {
 
    private fun clickFavorite(){
         favouriteViewModel.favoritesEvent.observe(viewLifecycleOwner){
-            findNavController().navigate(FavouriteFragmentDirections.actionFavouriteToHomeToFavorite (LocationData(it.lan,it.lon)))
+            findNavController().navigate(FavouriteFragmentDirections.actionFavouriteToShowWeatherData (LocationData(it.lan,it.lon, type = FAVORITE_FRAGMENT)))
 
         }
     }

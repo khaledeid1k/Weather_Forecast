@@ -20,16 +20,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <ImageView
+                android:id="@+id/backTofavorite"
+                android:layout_width="wrap_content"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_8"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tile_of_home"
+              app:layout_constraintBottom_toBottomOf="@+id/tile_of_home"
 
+                app:srcCompat="@drawable/back_button" />
             <TextView
                 android:id="@+id/tile_of_home"
                 style="@style/TextAppearance.Material3.HeadlineLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/margin_16"
-                android:layout_marginStart="@dimen/margin_16"
+                android:layout_marginStart="@dimen/margin_8"
                 android:text="@string/home"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/backTofavorite"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
