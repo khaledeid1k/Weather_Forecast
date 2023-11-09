@@ -66,7 +66,6 @@ class InitialFragment : Fragment() {
     private fun setUp() {
         binding.apply {
             lifecycleOwner = this@InitialFragment
-            viewModel = initialViewModel
         }
     }
 
