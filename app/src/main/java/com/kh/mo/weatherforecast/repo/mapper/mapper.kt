@@ -80,18 +80,20 @@ fun WeatherEntity.convertWeatherToFavoriteEntity(): WeatherState {
 fun List<FavoriteEntity>.convertListOfFavoriteEntityToFavorites():List<Favorite>{
     return this.map {
         Favorite(
-           it.nameOfCity
+           it.nameOfCity,
+            it.lan,
+            it.lon
         )
     }
 }
 
-fun Weather.convertWeatherToFavoriteEntity(nameOfCountry:String, currentTime:String,
+fun Weather.convertWeatherToFavoriteEntity(nameOfCity:String, currentTime:String,
                                            unit :String):FavoriteEntity{
     return this.let {
         FavoriteEntity(
             it.lat,
             it.lon,
-            nameOfCountry,
+            nameOfCity,
             currentTime,
             it.current.temp,
             unit,

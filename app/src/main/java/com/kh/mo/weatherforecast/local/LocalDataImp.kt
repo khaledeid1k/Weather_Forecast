@@ -14,7 +14,9 @@ import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.lo
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.unit
 import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
 import com.kh.mo.weatherforecast.model.entity.WeatherEntity
+import com.kh.mo.weatherforecast.model.ui.LocationData
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -72,7 +74,7 @@ class LocalDataImp private constructor(val context: Context) : LocalData {
     }
 
     override fun setUnit(unit: String) {
-        sharedPreferencesWeather.unit=unit
+        sharedPreferencesWeather.unit = unit
     }
 
     override fun getUnit(): String {
@@ -80,19 +82,19 @@ class LocalDataImp private constructor(val context: Context) : LocalData {
     }
 
     override fun setLat(lat: Float) {
-        sharedPreferencesWeather.lat=lat
+        sharedPreferencesWeather.lat = lat
     }
 
     override fun setLon(lon: Float) {
-        sharedPreferencesWeather.lon=lon
+        sharedPreferencesWeather.lon = lon
     }
 
     override fun getLat(): Float {
-      return  sharedPreferencesWeather.lat
+        return sharedPreferencesWeather.lat
     }
 
     override fun getLon(): Float {
-        return  sharedPreferencesWeather.lon
+        return sharedPreferencesWeather.lon
     }
 
     override fun getCurrentDate(): String {
@@ -123,7 +125,7 @@ class LocalDataImp private constructor(val context: Context) : LocalData {
         }
     }
 
-    override suspend fun getFavorites(): Flow<List<FavoriteEntity> >{
+    override suspend fun getFavorites(): Flow<List<FavoriteEntity>> {
         return dataBase.getFavorites()
     }
 
@@ -135,8 +137,8 @@ class LocalDataImp private constructor(val context: Context) : LocalData {
         dataBase.deleteFavorite(favoriteName)
     }
 
-    override suspend fun getFavorite(favoriteName: String):Flow < FavoriteEntity?> {
-      return  dataBase.getFavorite(favoriteName)
+    override suspend fun getFavorite(favoriteName: String): Flow<FavoriteEntity?> {
+        return dataBase.getFavorite(favoriteName)
     }
 
     companion object {
