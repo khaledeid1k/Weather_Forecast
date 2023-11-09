@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import com.kh.mo.weatherforecast.model.Daily
 import com.kh.mo.weatherforecast.model.Hourly
 
-@Entity(tableName = "Favorite_Table", primaryKeys = ["lan", "lon"])
+@Entity(tableName = "Favorite_Table", primaryKeys = ["nameOfCity"])
 data class FavoriteEntity(
     val lan: Double,
     val lon: Double,
