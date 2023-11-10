@@ -3,26 +3,34 @@ package com.kh.mo.weatherforecast.local
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Geocoder
+import android.util.Log
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.clearValues
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.isFirstTimeOpenApp
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.isNotificationAvailable
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.wayForSelectLocation
 import com.kh.mo.weatherforecast.local.db.WeatherDataBase
+import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.language
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.lat
+import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.location
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.lon
-import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.unit
+import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.tempUnit
+import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.windSpeed
 import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
 import com.kh.mo.weatherforecast.model.entity.WeatherEntity
-import com.kh.mo.weatherforecast.model.ui.LocationData
+import com.kh.mo.weatherforecast.ui.setting.Language
+import com.kh.mo.weatherforecast.model.ui.Location
+import com.kh.mo.weatherforecast.ui.setting.Units
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import java.text.SimpleDateFormat
 import java.util.*
 
 class LocalDataImp private constructor(val context: Context) : LocalData {
     private val dataBase = WeatherDataBase.getWeatherDataBaseInstance(context).weatherDao()
     private val sharedPreferencesWeather = SharedPreferencesWeather.customPreference(context)
+
+
+    //region room
     override suspend fun getWeatherState(
         latitude: Double,
         longitude: Double
@@ -42,7 +50,24 @@ class LocalDataImp private constructor(val context: Context) : LocalData {
         dataBase.deleteWeatherState(weatherState)
     }
 
+    override suspend fun getFavorites(): Flow<List<FavoriteEntity>> {
+        return dataBase.getFavorites()
+    }
 
+    override suspend fun saveFavorite(favorite: FavoriteEntity) {
+        dataBase.saveFavorite(favorite)
+    }
+
+    override suspend fun deleteFavorite(favoriteName: String) {
+        dataBase.deleteFavorite(favoriteName)
+    }
+
+    override suspend fun getFavorite(favoriteName: String): Flow<FavoriteEntity?> {
+        return dataBase.getFavorite(favoriteName)
+    }
+    //endregion
+
+    //region shared Preferences
     override fun checkIsNotificationAvailable(): Boolean {
         return sharedPreferencesWeather.isNotificationAvailable
     }
@@ -73,12 +98,13 @@ class LocalDataImp private constructor(val context: Context) : LocalData {
         sharedPreferencesWeather.clearValues()
     }
 
-    override fun setUnit(unit: String) {
-        sharedPreferencesWeather.unit = unit
+    override fun setTempUnit(unit: Units) {
+        sharedPreferencesWeather.tempUnit = unit.nameOfUnit
     }
 
-    override fun getUnit(): String {
-        return sharedPreferencesWeather.unit.toString()
+    override fun getTempUnit(): String {
+
+        return sharedPreferencesWeather.tempUnit.toString()
     }
 
     override fun setLat(lat: Float) {
@@ -97,6 +123,27 @@ class LocalDataImp private constructor(val context: Context) : LocalData {
         return sharedPreferencesWeather.lon
     }
 
+    override fun setLanguage(language: Language) {
+        sharedPreferencesWeather.language = language.name
+    }
+
+    override fun getLanguage(): String = sharedPreferencesWeather.language.toString()
+
+    override fun setWindSpeed(windSpeed: Units) {
+        sharedPreferencesWeather.windSpeed=windSpeed.windSpeed
+    }
+
+    override fun getWindSpeed(): String = sharedPreferencesWeather.windSpeed.toString()
+
+    override fun setLocation(location: Location) {
+        sharedPreferencesWeather.location=location.name
+    }
+
+    override fun getLocation(): String =sharedPreferencesWeather.location.toString()
+
+    //endregion
+
+    // region util
     override fun getCurrentDate(): String {
         return SimpleDateFormat("dd MMM, yyyy", Locale.ENGLISH).format(Date())
     }
@@ -107,9 +154,12 @@ class LocalDataImp private constructor(val context: Context) : LocalData {
         getLocationData: (nameOfCity: String, nameOfCountry: String) -> Unit
     ) {
         val geocoder = Geocoder(context, Locale.getDefault())
+        try {
+
+
         val addresses = geocoder.getFromLocation(
             lat, lon, 1
-        )
+        ,)
 
         if (addresses?.isNotEmpty() == true) {
             val address = addresses[0]
@@ -123,23 +173,10 @@ class LocalDataImp private constructor(val context: Context) : LocalData {
             getLocationData(nameOfCity, nameOfCountry)
 
         }
+    }catch (e:Exception){}
     }
 
-    override suspend fun getFavorites(): Flow<List<FavoriteEntity>> {
-        return dataBase.getFavorites()
-    }
-
-    override suspend fun saveFavorite(favorite: FavoriteEntity) {
-        dataBase.saveFavorite(favorite)
-    }
-
-    override suspend fun deleteFavorite(favoriteName: String) {
-        dataBase.deleteFavorite(favoriteName)
-    }
-
-    override suspend fun getFavorite(favoriteName: String): Flow<FavoriteEntity?> {
-        return dataBase.getFavorite(favoriteName)
-    }
+    //endregion
 
     companion object {
         @SuppressLint("StaticFieldLeak")

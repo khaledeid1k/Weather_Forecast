@@ -7,6 +7,9 @@ import com.kh.mo.weatherforecast.model.entity.WeatherEntity
 import com.kh.mo.weatherforecast.model.ui.WeatherState
 import com.kh.mo.weatherforecast.remot.RemoteData
 import com.kh.mo.weatherforecast.repo.mapper.convertWeatherToFavoriteEntity
+import com.kh.mo.weatherforecast.ui.setting.Language
+import com.kh.mo.weatherforecast.model.ui.Location
+import com.kh.mo.weatherforecast.ui.setting.Units
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -89,6 +92,30 @@ class RepoIm private constructor(
         return localData.getLon().toDouble()
     }
 
+    override fun setLanguage(language: Language) {
+        localData.setLanguage(language)
+    }
+
+    override fun getLanguage(): String {
+       return localData.getLanguage()
+    }
+
+    override fun setWindSpeed(windSpeed: Units) {
+        localData.setWindSpeed(windSpeed)
+    }
+
+    override fun getWindSpeed(): String {
+        return localData.getWindSpeed()
+    }
+
+    override fun setLocation(location: Location) {
+        localData.setLocation(location)
+    }
+
+    override fun getLocation(): String {
+     return   localData.getLocation()
+    }
+
     override fun checkIsNotificationAvailable(): Boolean {
         return localData.checkIsNotificationAvailable()
     }
@@ -117,12 +144,12 @@ class RepoIm private constructor(
         localData.clearSharedPreferences()
     }
 
-    override fun setUnit(unit: String) {
-        localData.setUnit(unit)
+    override fun setTempUnit(unit: Units) {
+        localData.setTempUnit(unit)
     }
 
-    override fun getUnit(): String {
-     return   localData.getUnit()
+    override fun getTempUnit(): String {
+     return   localData.getTempUnit()
     }
 
     override fun getCurrentDate(): String {
