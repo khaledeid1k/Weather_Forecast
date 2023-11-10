@@ -60,7 +60,16 @@
         android:id="@+id/settings"
         android:name="com.kh.mo.weatherforecast.ui.setting.SettingsFragment"
         android:label="@string/settings"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settings_to_mapFragment"
+            app:destination="@id/mapFragment" />
+        <argument
+            android:name="locationData"
+            app:argType="com.kh.mo.weatherforecast.model.ui.LocationData"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
     <fragment
         android:id="@+id/initialFragment"
         android:name="com.kh.mo.weatherforecast.ui.initial.InitialFragment"
@@ -87,11 +96,16 @@
             app:popUpTo="@id/initialFragment"
             app:popUpToInclusive="true" />
         <argument
-            android:name="nameOfCaller"
-            app:argType="string" />
+            android:name="sourceOpenMap"
+            app:argType="com.kh.mo.weatherforecast.ui.map.SourceOpenMap" />
         <action
             android:id="@+id/action_mapFragment_to_favourite"
             app:destination="@id/favourite"
+            app:popUpTo="@id/mapFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_mapFragment_to_settings"
+            app:destination="@id/settings"
             app:popUpTo="@id/mapFragment"
             app:popUpToInclusive="true" />
     </fragment>
