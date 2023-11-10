@@ -1,24 +1,21 @@
 package com.kh.mo.weatherforecast.ui.initial
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.kh.mo.weatherforecast.R
 import com.kh.mo.weatherforecast.databinding.FragmentInitialBinding
 import com.kh.mo.weatherforecast.local.LocalDataImp
+import com.kh.mo.weatherforecast.ui.map.SourceOpenMap
 import com.kh.mo.weatherforecast.model.ui.LocationData
 import com.kh.mo.weatherforecast.remot.RemoteDataImp
 import com.kh.mo.weatherforecast.repo.RepoIm
 import com.kh.mo.weatherforecast.utils.Constants.GPS
-import com.kh.mo.weatherforecast.utils.Constants.INITIAL_FRAGMENT
 import com.kh.mo.weatherforecast.utils.Constants.MAP
 
 
@@ -54,7 +51,7 @@ class InitialFragment : Fragment() {
                 RepoIm.getRepoImInstance
                     (
                     LocalDataImp.getLocalDataImpInstance(requireContext()),
-                    RemoteDataImp
+                    RemoteDataImp.getRemoteDataImpInstance(requireContext())
                 )
             )
         initialViewModel = ViewModelProvider(
@@ -110,7 +107,8 @@ class InitialFragment : Fragment() {
     }
 
     private fun moveToMapScreen() {
-        findNavController().navigate(InitialFragmentDirections.actionInitialFragmentToMapFragment(INITIAL_FRAGMENT))
+        findNavController().navigate(InitialFragmentDirections.actionInitialFragmentToMapFragment(
+            SourceOpenMap.INITIAL_FRAGMENT))
     }
 
 

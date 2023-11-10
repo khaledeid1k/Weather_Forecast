@@ -19,9 +19,6 @@ import com.kh.mo.weatherforecast.local.LocalDataImp
 import com.kh.mo.weatherforecast.model.ui.LocationData
 import com.kh.mo.weatherforecast.remot.RemoteDataImp
 import com.kh.mo.weatherforecast.repo.RepoIm
-import com.kh.mo.weatherforecast.utils.Constants
-import com.kh.mo.weatherforecast.utils.Constants.FAVORITE_FRAGMENT
-import com.kh.mo.weatherforecast.utils.Constants.INITIAL_FRAGMENT
 
 class MapFragment : Fragment(), OnMapReadyCallback {
 
@@ -44,9 +41,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         intiMapView(savedInstanceState)
         intiViewModel()
         setUp()
+
     }
 
-    private fun receiveNameOfCaller() = MapFragmentArgs.fromBundle(requireArguments()).nameOfCaller
+  private fun receiveNameOfCaller() = MapFragmentArgs.fromBundle(requireArguments()).sourceOpenMap
 
 
     private fun intiMapView(savedInstanceState: Bundle?) {
@@ -65,7 +63,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 RepoIm.getRepoImInstance
                     (
                     LocalDataImp.getLocalDataImpInstance(requireContext()),
-                    RemoteDataImp
+                    RemoteDataImp.getRemoteDataImpInstance(requireContext())
                 )
             )
         mapViewModel = ViewModelProvider(
@@ -88,7 +86,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 dialog.dismiss()
             }
             .setPositiveButton("Done") { dialog, _ ->
-                moveToNextScreen()
+              moveToNextScreen()
                 dialog.dismiss()
             }
             .show()
@@ -111,18 +109,25 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun moveToNextScreen() {
-        if (receiveNameOfCaller() == INITIAL_FRAGMENT) {
-            findNavController().navigate(
-                MapFragmentDirections.actionMapFragmentToHome(
-                    locationData
+        when(receiveNameOfCaller()){
+           SourceOpenMap.SETTING_FRAGMENT ->{
+                findNavController().navigate(
+                    MapFragmentDirections.actionMapFragmentToSettings(
+                        locationData
+                    )
                 )
-            )
-        } else {
-            findNavController().navigate(
-                MapFragmentDirections.actionMapFragmentToFavourite(locationData)
-            )
+            }
+            SourceOpenMap.FAVORITE_FRAGMENT ->{ findNavController().navigate(
+            MapFragmentDirections.actionMapFragmentToFavourite(locationData)
+        )}
+            SourceOpenMap.INITIAL_FRAGMENT->{
+                findNavController().navigate(
+                    MapFragmentDirections.actionMapFragmentToHome(
+                        locationData
+                    )
+                )
+            }
         }
-
 
     }
 }

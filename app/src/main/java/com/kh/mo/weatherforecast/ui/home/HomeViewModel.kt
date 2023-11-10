@@ -6,7 +6,6 @@ import com.kh.mo.weatherforecast.model.ui.LocationData
 import com.kh.mo.weatherforecast.model.ui.WeatherState
 import com.kh.mo.weatherforecast.repo.Repo
 import com.kh.mo.weatherforecast.repo.mapper.convertWeatherToWeatherWeekData
-import com.kh.mo.weatherforecast.utils.Constants.INITIAL_FRAGMENT
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -22,17 +21,18 @@ class HomeViewModel(private val repo: Repo) : ViewModel() {
             repo.getCurrentUpdatedWeatherState(locationData.lat, locationData.lon)
                 .collect {
                     checkOpenFromInitialFragment(locationData)
-                    val nameOfCity = getNameOfCity(it.lat, it.lon)
+                    val nameOfCity = getNameOfCity(it.lat, it.lon).first
+                    val nameOfCountry = getNameOfCity(it.lat, it.lon).second
                     val currentTime = getCurrentTime()
                     val unit = getUnit()
                     _weather.value =
-                        it.convertWeatherToWeatherWeekData(nameOfCity, currentTime, unit)
+                        it.convertWeatherToWeatherWeekData(nameOfCity,nameOfCountry, currentTime, unit)
                 }
         }
     }
 
      private fun checkOpenFromInitialFragment(locationData: LocationData){
-        if(locationData.type==INITIAL_FRAGMENT){
+        if(locationData.type== SourceOpenHome.INITIAL_FRAGMENT){
         saveLat(locationData.lat.toFloat())
         saveLon(locationData.lon.toFloat())
         }
@@ -46,16 +46,18 @@ class HomeViewModel(private val repo: Repo) : ViewModel() {
 
 
 
-    private fun getNameOfCity(lat: Double, lon: Double): String {
+    private fun getNameOfCity(lat: Double, lon: Double): Pair<String,String> {
         var nameOfCity = ""
-        repo.getAddressLocation(lat, lon) { city, _ ->
+        var nameOfCountry = ""
+        repo.getAddressLocation(lat, lon) { city, country ->
             nameOfCity = city
+            nameOfCountry = country
         }
-        return nameOfCity
+        return Pair(nameOfCity,nameOfCountry)
     }
 
     private fun getCurrentTime(): String = repo.getCurrentDate()
-    private fun getUnit(): String = repo.getUnit()
+    private fun getUnit(): String = repo.getTempUnit()
 
     private fun saveLat(lat: Float){repo.setLat(lat)}
     private fun saveLon(lon: Float){repo.setLon(lon)}

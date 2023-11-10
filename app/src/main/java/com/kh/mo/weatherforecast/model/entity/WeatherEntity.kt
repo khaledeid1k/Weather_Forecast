@@ -9,6 +9,7 @@ data class WeatherEntity(
     val lan: Double,
     val lon: Double,
     val nameOfCity :String,
+    val nameOfCountry :String,
     val currentTime :String,
     val temp :Double,
     val unit :String,

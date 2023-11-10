@@ -1,6 +1,5 @@
 package com.kh.mo.weatherforecast.model.ui
 
-import androidx.room.Entity
 import com.kh.mo.weatherforecast.model.Daily
 import com.kh.mo.weatherforecast.model.Hourly
 
@@ -8,6 +7,7 @@ data class WeatherState(
     val lan: Double=0.0,
     val lon: Double=0.0,
     val nameOfCity :String="",
+    val nameOfCountry :String="",
     val currentTime :String="",
     val temp :Double=0.0,
     val unit :String="",

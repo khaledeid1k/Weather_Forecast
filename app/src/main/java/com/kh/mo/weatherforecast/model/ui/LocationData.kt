@@ -2,14 +2,14 @@ package com.kh.mo.weatherforecast.model.ui
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.kh.mo.weatherforecast.utils.Constants.INITIAL_FRAGMENT
+import com.kh.mo.weatherforecast.ui.home.SourceOpenHome
 
 
 data class LocationData(
     val lat: Double=0.0, val lon: Double=0.0,
     val nameOfCity: String? ="",
     val nameOfCountry:String?="",
-    val type:String?=INITIAL_FRAGMENT,
+    val type: SourceOpenHome?= SourceOpenHome.INITIAL_FRAGMENT,
 )
     :Parcelable {
     constructor(parcel: Parcel) : this(
@@ -17,16 +17,13 @@ data class LocationData(
         parcel.readDouble(),
         parcel.readString(),
         parcel.readString(),
-        parcel.readString()
+
     )
-
-
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeDouble(lat)
         parcel.writeDouble(lon)
         parcel.writeString(nameOfCity)
         parcel.writeString(nameOfCountry)
-        parcel.writeString(type)
     }
 
     override fun describeContents(): Int {
@@ -42,5 +39,4 @@ data class LocationData(
             return arrayOfNulls(size)
         }
     }
-
 }

@@ -13,9 +13,10 @@ import com.kh.mo.weatherforecast.R
 import com.kh.mo.weatherforecast.databinding.FragmentFavouriteBinding
 import com.kh.mo.weatherforecast.local.LocalDataImp
 import com.kh.mo.weatherforecast.model.ui.LocationData
+import com.kh.mo.weatherforecast.ui.home.SourceOpenHome
+import com.kh.mo.weatherforecast.ui.map.SourceOpenMap
 import com.kh.mo.weatherforecast.remot.RemoteDataImp
 import com.kh.mo.weatherforecast.repo.RepoIm
-import com.kh.mo.weatherforecast.utils.Constants.FAVORITE_FRAGMENT
 import kotlinx.coroutines.launch
 
 
@@ -70,7 +71,7 @@ class FavouriteFragment : Fragment() {
                 RepoIm.getRepoImInstance
                     (
                     LocalDataImp.getLocalDataImpInstance(requireContext()),
-                    RemoteDataImp
+                    RemoteDataImp.getRemoteDataImpInstance(requireContext())
                 )
             )
         favouriteViewModel = ViewModelProvider(
@@ -94,7 +95,8 @@ class FavouriteFragment : Fragment() {
 
     private fun addFavoriteLocation(){
         binding.floatingActionButton.setOnClickListener {
-            findNavController().navigate(FavouriteFragmentDirections.actionFavouriteToMapFragment(FAVORITE_FRAGMENT))
+            findNavController().navigate(FavouriteFragmentDirections.actionFavouriteToMapFragment(
+                SourceOpenMap.FAVORITE_FRAGMENT))
         }
     }
 
@@ -107,7 +109,7 @@ class FavouriteFragment : Fragment() {
 
    private fun clickFavorite(){
         favouriteViewModel.favoritesEvent.observe(viewLifecycleOwner){
-            findNavController().navigate(FavouriteFragmentDirections.actionFavouriteToShowWeatherData (LocationData(it.lan,it.lon, type = FAVORITE_FRAGMENT)))
+            findNavController().navigate(FavouriteFragmentDirections.actionFavouriteToShowWeatherData (LocationData(it.lan,it.lon, type = SourceOpenHome.FAVORITE_FRAGMENT)))
 
         }
     }

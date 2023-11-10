@@ -33,12 +33,13 @@ fun List<Daily>.convertWeatherToWeatherWeekData(): List<WeatherWeekData> {
     }
 }
 
-fun Weather.convertWeatherToWeatherWeekData(nameOfCountry:String, currentTime:String,
+fun Weather.convertWeatherToWeatherWeekData(nameOfCity : String, nameOfCountry:String, currentTime:String,
                                             unit :String): WeatherState {
     return this.let {
         WeatherState(
             it.lat,
             it.lon,
+            nameOfCity,
             nameOfCountry,
             currentTime,
             it.current.temp,
@@ -62,6 +63,7 @@ fun WeatherEntity.convertWeatherToFavoriteEntity(): WeatherState {
         lan,
         lon,
         nameOfCity,
+        nameOfCountry = "",
         currentTime,
         temp,
         unit,

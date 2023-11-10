@@ -45,7 +45,7 @@ class FavouriteViewModel(private val repo: Repo) : ViewModel(), FavouriteAdapter
     }
 
     private fun getCurrentTime(): String = repo.getCurrentDate()
-    private fun getUnit(): String = repo.getUnit()
+    private fun getUnit(): String = repo.getTempUnit()
 
 
     private fun getFavorites() {

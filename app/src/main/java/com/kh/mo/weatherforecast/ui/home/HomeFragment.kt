@@ -14,9 +14,6 @@ import com.kh.mo.weatherforecast.local.LocalDataImp
 import com.kh.mo.weatherforecast.model.ui.LocationData
 import com.kh.mo.weatherforecast.remot.RemoteDataImp
 import com.kh.mo.weatherforecast.repo.RepoIm
-import com.kh.mo.weatherforecast.utils.Constants.FAVORITE_FRAGMENT
-import com.kh.mo.weatherforecast.utils.closeFragment
-import com.kh.mo.weatherforecast.utils.makeGone
 import com.kh.mo.weatherforecast.utils.makeVisible
 
 class HomeFragment : Fragment() {
@@ -51,7 +48,7 @@ class HomeFragment : Fragment() {
                 RepoIm.getRepoImInstance
                     (
                     LocalDataImp.getLocalDataImpInstance(requireContext()),
-                    RemoteDataImp
+                    RemoteDataImp.getRemoteDataImpInstance(requireContext())
                 )
             )
         homeViewModel = ViewModelProvider(
@@ -71,7 +68,7 @@ class HomeFragment : Fragment() {
     private fun checkFromNavBarOrFragment() {
         val locationData = receiveLocationData() ?: getSavedLanAndLon()
         binding.apply {
-            if (locationData.type == FAVORITE_FRAGMENT) {
+            if (locationData.type == SourceOpenHome.FAVORITE_FRAGMENT) {
                 backTofavorite.makeVisible()
                 tileOfHome.text = requireContext().getString(R.string.favourite)
             }
@@ -100,6 +97,8 @@ class HomeFragment : Fragment() {
             )
         }
     }
+
+
 
 }
 

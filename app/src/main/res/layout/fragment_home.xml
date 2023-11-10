@@ -44,16 +44,20 @@
 
             <TextView
                 android:id="@+id/location_home"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/margin_16"
                 android:textSize="@dimen/font_size_28"
                 android:textStyle="bold"
-                android:text="@{viewModel.weather.nameOfCity}"
+                android:textAlignment="center"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_marginHorizontal="@dimen/margin_8"
+                android:text="@{viewModel.weather.nameOfCountry + `,` + viewModel.weather.nameOfCity }"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tile_of_home"
-                tools:text="Domiate"
+                tools:text="Egypt, Domiate"
 
                 />
 
