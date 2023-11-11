@@ -75,7 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/margin_16"
-            android:layout_marginStart="@dimen/margin_8"
+            app:layout_constraintEnd_toEndOf="parent"
             android:text="@string/home"
             app:layout_constraintStart_toEndOf="@+id/backTofavorite"
             app:layout_constraintTop_toTopOf="parent" />
@@ -104,7 +104,7 @@
                     android:layout_marginVertical="@dimen/margin_16"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="@{viewModel.weather.toData().nameOfCountry + `,` + viewModel.weather.toData().nameOfCity }"
+                    android:text="@{viewModel.weather.toData().nameOfCountry + ` , ` + viewModel.weather.toData().nameOfCity }"
                     android:textAlignment="center"
                     android:textSize="@dimen/font_size_28"
                     android:textStyle="bold"
