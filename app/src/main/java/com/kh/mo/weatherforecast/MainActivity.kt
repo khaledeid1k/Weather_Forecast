@@ -64,8 +64,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun skipInitFragment() {
         if (!checkIsFirstTimeOpenApp()) {
-            controller.popBackStack(R.id.initialFragment,true)
-            controller.navigate(R.id.home)
+            deleteInitialFragmentFromStack()
+            getLastFragmentOrGoToHome()
         }
     }
+
+    fun deleteInitialFragmentFromStack(){controller.popBackStack(R.id.initialFragment,true) }
+    fun getLastFragmentOrGoToHome(){ controller.navigate(controller.currentDestination?.id ?: R.id.home) }
 }
