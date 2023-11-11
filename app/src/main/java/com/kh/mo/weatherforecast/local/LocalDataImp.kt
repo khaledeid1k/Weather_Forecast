@@ -3,7 +3,6 @@ package com.kh.mo.weatherforecast.local
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Geocoder
-import android.util.Log
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.clearValues
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.isFirstTimeOpenApp
@@ -14,12 +13,14 @@ import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.la
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.lat
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.location
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.lon
+import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.nameOfCity
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.tempUnit
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.windSpeed
+import com.kh.mo.weatherforecast.model.entity.CurrentWeather
 import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
-import com.kh.mo.weatherforecast.model.entity.WeatherEntity
 import com.kh.mo.weatherforecast.ui.setting.Language
 import com.kh.mo.weatherforecast.model.ui.Location
+import com.kh.mo.weatherforecast.model.ui.LocationData
 import com.kh.mo.weatherforecast.ui.setting.Units
 import kotlinx.coroutines.flow.Flow
 import java.text.SimpleDateFormat
@@ -31,22 +32,20 @@ class LocalDataImp private constructor(val context: Context) : LocalData {
 
 
     //region room
-    override suspend fun getWeatherState(
-        latitude: Double,
-        longitude: Double
-    ): Flow<WeatherEntity> {
-        return dataBase.getWeatherState(latitude, longitude)
+    override suspend fun getSavedWeatherState(type:String,nameOfCity:String
+    ): CurrentWeather{
+        return dataBase.getSavedWeatherState(type,nameOfCity)
     }
 
-    override suspend fun saveWeatherState(weatherState: WeatherEntity) {
+    override suspend fun saveWeatherState(weatherState: CurrentWeather) {
         dataBase.saveWeatherState(weatherState)
     }
 
-    override suspend fun updateWeatherState(weatherState: WeatherEntity) {
+    override suspend fun updateWeatherState(weatherState: CurrentWeather) {
         dataBase.updateWeatherState(weatherState)
     }
 
-    override suspend fun deleteWeatherState(weatherState: WeatherEntity) {
+    override suspend fun deleteWeatherState(weatherState: CurrentWeather) {
         dataBase.deleteWeatherState(weatherState)
     }
 
@@ -58,13 +57,11 @@ class LocalDataImp private constructor(val context: Context) : LocalData {
         dataBase.saveFavorite(favorite)
     }
 
-    override suspend fun deleteFavorite(favoriteName: String) {
-        dataBase.deleteFavorite(favoriteName)
+    override suspend fun deleteFavorite(nameOfCity: String) {
+        dataBase.deleteFavorite(nameOfCity)
     }
 
-    override suspend fun getFavorite(favoriteName: String): Flow<FavoriteEntity?> {
-        return dataBase.getFavorite(favoriteName)
-    }
+
     //endregion
 
     //region shared Preferences
@@ -121,6 +118,14 @@ class LocalDataImp private constructor(val context: Context) : LocalData {
 
     override fun getLon(): Float {
         return sharedPreferencesWeather.lon
+    }
+
+    override fun getCityName(): String {
+        return sharedPreferencesWeather.nameOfCity.toString()
+    }
+
+    override fun setCityName(nameOfCity: String) {
+        sharedPreferencesWeather.nameOfCity = nameOfCity
     }
 
     override fun setLanguage(language: Language) {

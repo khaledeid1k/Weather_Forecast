@@ -1,11 +1,12 @@
 package com.kh.mo.weatherforecast.repo
 
 import com.kh.mo.weatherforecast.model.Weather
+import com.kh.mo.weatherforecast.model.entity.CurrentWeather
 import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
-import com.kh.mo.weatherforecast.model.entity.WeatherEntity
-import com.kh.mo.weatherforecast.model.ui.WeatherState
 import com.kh.mo.weatherforecast.ui.setting.Language
 import com.kh.mo.weatherforecast.model.ui.Location
+import com.kh.mo.weatherforecast.model.ui.LocationData
+import com.kh.mo.weatherforecast.remot.ApiSate
 import com.kh.mo.weatherforecast.ui.setting.Units
 import kotlinx.coroutines.flow.Flow
 
@@ -15,7 +16,7 @@ interface Repo {
     suspend fun getCurrentUpdatedWeatherState(
         latitude: Double,
         longitude: Double
-    ):Flow<Weather>
+    ):Flow<ApiSate<Weather>>
 
 
 
@@ -24,11 +25,7 @@ interface Repo {
 
 
 
-    suspend fun getWeatherState(   latitude: Double,
-                                   longitude: Double): Flow<WeatherState>
-    suspend fun saveWeatherState(weatherEntity: WeatherEntity)
-    suspend fun updateWeatherState(weatherEntity: WeatherEntity)
-    suspend fun deleteWeatherState(weatherEntity: WeatherEntity)
+
 
 
 
@@ -57,10 +54,15 @@ interface Repo {
     )
 
 
+
+    suspend fun getSavedWeatherState(type:String,nameOfCity:String): Flow<ApiSate<CurrentWeather>>
+    suspend fun saveWeatherState(weatherState: CurrentWeather)
+    suspend fun updateWeatherState(weatherState: CurrentWeather)
+    suspend fun deleteWeatherState(weatherState: CurrentWeather)
     suspend fun getFavorites(): Flow<List<FavoriteEntity>>
     suspend fun saveFavorite(favorite: FavoriteEntity)
-    suspend fun deleteFavorite(favoriteName: String)
-    suspend fun getFavorite(favoriteName: String): Flow < FavoriteEntity?>
+    suspend fun deleteFavorite(nameOfCity: String)
+
 
 
 
@@ -72,6 +74,10 @@ interface Repo {
 
     fun getLat():Double
     fun getLon():Double
+
+
+    fun getCityName(): String
+    fun setCityName(nameOfCity:String)
 
     fun setLanguage(language: Language)
     fun getLanguage(): String

@@ -14,6 +14,7 @@ import com.kh.mo.weatherforecast.local.LocalDataImp
 import com.kh.mo.weatherforecast.model.ui.LocationData
 import com.kh.mo.weatherforecast.remot.RemoteDataImp
 import com.kh.mo.weatherforecast.repo.RepoIm
+import com.kh.mo.weatherforecast.utils.Constants
 import com.kh.mo.weatherforecast.utils.makeVisible
 
 class HomeFragment : Fragment() {
@@ -67,15 +68,18 @@ class HomeFragment : Fragment() {
 
     private fun checkFromNavBarOrFragment() {
         val locationData = receiveLocationData() ?: getSavedLanAndLon()
+        checkSourceIsFavorite(locationData)
+       sendLocationDataToViewModel(locationData)
+    }
+    private fun checkSourceIsFavorite(locationData:LocationData){
+        if (locationData.type == SourceOpenHome.FAVORITE_FRAGMENT) {
         binding.apply {
-            if (locationData.type == SourceOpenHome.FAVORITE_FRAGMENT) {
                 backTofavorite.makeVisible()
                 tileOfHome.text = requireContext().getString(R.string.favourite)
             }
         }
-
-        sendLocationDataToViewModel(locationData)
     }
+
 
     private fun receiveLocationData() = HomeFragmentArgs.fromBundle(requireArguments()).locationData
 
@@ -88,7 +92,7 @@ class HomeFragment : Fragment() {
         homeViewModel.changeValueOfFirstTimeOpenApp(false)
     }
 
-    private fun getSavedLanAndLon() = homeViewModel.let { LocationData(it.getLat(), it.getLon()) }
+    private fun getSavedLanAndLon() = homeViewModel.let { LocationData(it.getLat(), it.getLon(),it.getCityName()) }
 
     private fun backToFavorite() {
         binding.backTofavorite.setOnClickListener {

@@ -27,4 +27,5 @@
     <string name="celsius">Celsius</string>
     <string name="fahrenheit">Fahrenheit</string>
     <string name="apply_changed">Apply Changes</string>
+    <string name="retry">Retry</string>
 </resources>

@@ -17,6 +17,7 @@ object Constants {
     const val WIND_SPEED = "WIND_SPEED"
     const val LOCATION = "LOCATION"
     const val TEMP_UNIT = "UNIT"
+    const val NAME_OF_CITY = "NAME_OF_CITY"
 
 
 

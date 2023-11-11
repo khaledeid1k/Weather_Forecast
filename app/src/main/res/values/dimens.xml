@@ -49,6 +49,7 @@
     <dimen name="margin_208">208dp</dimen>
     <dimen name="radius_20">20dp</dimen>
     <dimen name="padding_4">4dp</dimen>
+    <dimen name="font_size_30">30sp</dimen>
 
 
 </resources>

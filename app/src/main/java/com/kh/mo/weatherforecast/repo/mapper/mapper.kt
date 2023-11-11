@@ -3,11 +3,10 @@ package com.kh.mo.weatherforecast.repo.mapper
 import com.kh.mo.weatherforecast.model.Daily
 import com.kh.mo.weatherforecast.model.Hourly
 import com.kh.mo.weatherforecast.model.Weather
+import com.kh.mo.weatherforecast.model.entity.CurrentWeather
 import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
-import com.kh.mo.weatherforecast.model.entity.WeatherEntity
-import com.kh.mo.weatherforecast.model.ui.Favorite
+import com.kh.mo.weatherforecast.model.ui.LocationData
 import com.kh.mo.weatherforecast.model.ui.WeatherHourData
-import com.kh.mo.weatherforecast.model.ui.WeatherState
 import com.kh.mo.weatherforecast.model.ui.WeatherWeekData
 import com.kh.mo.weatherforecast.utils.convertUnixTimestampToDateTime
 
@@ -22,10 +21,10 @@ fun List<Hourly>.convertListOfHourlyToWeatherHoursData(): List<WeatherHourData> 
 }
 
 fun List<Daily>.convertWeatherToWeatherWeekData(): List<WeatherWeekData> {
-    val dayNames = listOf( "Sat","Sun", "Mon", "Tue", "Wed", "Thu", "Fri")
+    val dayNames = listOf("Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri")
     return this.drop(1).mapIndexed { index, daily ->
         WeatherWeekData(
-            index.takeIf { index<this.size }.let { dayNames[it!!] },
+            index.takeIf { index < this.size }.let { dayNames[it!!] },
             daily.weather[0].icon,
             daily.weather[0].description,
             daily.temp.day
@@ -33,10 +32,12 @@ fun List<Daily>.convertWeatherToWeatherWeekData(): List<WeatherWeekData> {
     }
 }
 
-fun Weather.convertWeatherToWeatherWeekData(nameOfCity : String, nameOfCountry:String, currentTime:String,
-                                            unit :String): WeatherState {
+fun Weather.convertWeatherToCurrentWeather(
+    nameOfCity: String, nameOfCountry: String, currentTime: String,
+    unit: String, type: String
+): CurrentWeather {
     return this.let {
-        WeatherState(
+        CurrentWeather(
             it.lat,
             it.lon,
             nameOfCity,
@@ -51,62 +52,23 @@ fun Weather.convertWeatherToWeatherWeekData(nameOfCity : String, nameOfCountry:S
             it.current.wind_speed,
             it.current.pressure,
             hourly,
-            daily
+            daily,
+            type
+
         )
 
 
     }
 }
 
-fun WeatherEntity.convertWeatherToFavoriteEntity(): WeatherState {
-    return WeatherState(
-        lan,
-        lon,
-        nameOfCity,
-        nameOfCountry = "",
-        currentTime,
-        temp,
-        unit,
-        tempDescription,
-        icon,
-        humidity,
-        clouds,
-        wind_speed,
-        pressure,
-        hourly,
-        daily
+fun LocationData.convertListOfFavoriteEntityToFavorites(): FavoriteEntity {
+    return FavoriteEntity(
+        lat,lon,nameOfCity!!, nameOfCountry!!,type
+
     )
 
 }
 
-fun List<FavoriteEntity>.convertListOfFavoriteEntityToFavorites():List<Favorite>{
-    return this.map {
-        Favorite(
-           it.nameOfCity,
-            it.lan,
-            it.lon
-        )
-    }
-}
 
-fun Weather.convertWeatherToFavoriteEntity(nameOfCity:String, currentTime:String,
-                                           unit :String):FavoriteEntity{
-    return this.let {
-        FavoriteEntity(
-            it.lat,
-            it.lon,
-            nameOfCity,
-            currentTime,
-            it.current.temp,
-            unit,
-            it.current.weather[0].description,
-            it.current.weather[0].icon,
-            it.current.humidity,
-            it.current.clouds,
-            it.current.wind_speed,
-            it.current.pressure,
-            hourly,
-            daily
-        )
-    }
-}
+
+

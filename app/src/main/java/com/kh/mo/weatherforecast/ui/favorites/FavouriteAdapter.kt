@@ -7,12 +7,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.kh.mo.weatherforecast.R
 import com.kh.mo.weatherforecast.databinding.FavoriteItemBinding
-import com.kh.mo.weatherforecast.model.ui.Favorite
+import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
 
 class FavouriteAdapter(private val favouriteListener: FavouriteListener)
     : RecyclerView.Adapter<FavouriteAdapter.FavoriteViewHolder>() {
 
-    private var favorites: List<Favorite> = emptyList()
+    private var favorites: List<FavoriteEntity> = emptyList()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteViewHolder {
@@ -34,14 +34,14 @@ class FavouriteAdapter(private val favouriteListener: FavouriteListener)
 
     class FavoriteViewHolder (private val binding: FavoriteItemBinding):
         RecyclerView.ViewHolder(binding.root){
-        fun bind(favorite: Favorite,favouriteListener: FavouriteListener) {
+        fun bind(favorite: FavoriteEntity,favouriteListener: FavouriteListener) {
 
             binding.favorite = favorite
             binding.listener=favouriteListener
         }
     }
 
-    fun setItems(newItems: List<Favorite>) {
+    fun setItems(newItems: List<FavoriteEntity>) {
         val diffResult = DiffUtil.calculateDiff(FavoriteDataDiffUtil(favorites, newItems))
         favorites = newItems
         diffResult.dispatchUpdatesTo(this)
@@ -49,7 +49,7 @@ class FavouriteAdapter(private val favouriteListener: FavouriteListener)
 
 
     class FavoriteDataDiffUtil(
-        private val oldList: List<Favorite>, private val newList: List<Favorite>
+        private val oldList: List<FavoriteEntity>, private val newList: List<FavoriteEntity>
     ) : DiffUtil.Callback(){
 
 
@@ -74,7 +74,7 @@ class FavouriteAdapter(private val favouriteListener: FavouriteListener)
 
 
     interface FavouriteListener {
-        fun onClickFavourite(favorite: Favorite)
-        fun deleteFavourite(favorite: Favorite)
+        fun onClickFavourite(favorite: FavoriteEntity)
+        fun deleteFavourite(favorite: FavoriteEntity)
     }
 }

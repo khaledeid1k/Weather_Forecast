@@ -2,17 +2,16 @@ package com.kh.mo.weatherforecast.repo
 
 import com.kh.mo.weatherforecast.local.LocalData
 import com.kh.mo.weatherforecast.model.Weather
+import com.kh.mo.weatherforecast.model.entity.CurrentWeather
 import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
-import com.kh.mo.weatherforecast.model.entity.WeatherEntity
-import com.kh.mo.weatherforecast.model.ui.WeatherState
 import com.kh.mo.weatherforecast.remot.RemoteData
-import com.kh.mo.weatherforecast.repo.mapper.convertWeatherToFavoriteEntity
 import com.kh.mo.weatherforecast.ui.setting.Language
 import com.kh.mo.weatherforecast.model.ui.Location
+import com.kh.mo.weatherforecast.model.ui.LocationData
+import com.kh.mo.weatherforecast.remot.ApiSate
 import com.kh.mo.weatherforecast.ui.setting.Units
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 
 class RepoIm private constructor(
     private val localData: LocalData,
@@ -23,56 +22,49 @@ class RepoIm private constructor(
     override suspend fun getCurrentUpdatedWeatherState(
         latitude: Double,
         longitude: Double
-    ): Flow<Weather> {
-//        val currentTemperature = remoteData.getCurrentWeatherState(latitude, longitude)
-//
-//        if (currentTemperature.isSuccessful) {
-//            var nameOfCity=""
-//            getAddressLocation(latitude, longitude) { nameCity, _ ->
-//                nameOfCity=nameCity
-//            }
-//
-//           val weatherState= currentTemperature.body()?.convertToWeatherWeekData(
-//               nameOfCity, getCurrentDate(), "metric"
-//           )
-//            localData.saveWeatherState(weatherState!!)
-//
-//            return weatherState
-//        }
-//
-//        return localData.getWeatherState(latitude, longitude)
-
-
+    ): Flow<ApiSate<Weather>> {
 
         return flow {
-            remoteData.
-            getCurrentUpdatedWeatherState(latitude, longitude)
-                .body()?.let {
-                emit(
-                    it
-                )
+            try {
+
+                emit(ApiSate.Loading)
+                val currentUpdatedWeatherState =
+                    remoteData.getCurrentUpdatedWeatherState(latitude, longitude)
+                if (currentUpdatedWeatherState.isSuccessful) {
+                       remoteData.getCurrentUpdatedWeatherState(latitude, longitude).body()?.let { emit(ApiSate.Success(it)) }
+
+                } else {
+                     emit(ApiSate.Failure(currentUpdatedWeatherState .message()))
+
+                }
+
+            }catch (e:Exception){
+                emit(ApiSate.Failure(e.message!!))
+
+
             }
-
         }
     }
 
-    override suspend fun getWeatherState(latitude: Double, longitude: Double):
-            Flow<WeatherState> {
-        return localData.getWeatherState(latitude, longitude).map {
-            it.convertWeatherToFavoriteEntity()
+    override suspend fun getSavedWeatherState(type:String,nameOfCity:String):
+            Flow<ApiSate<CurrentWeather>> {
+        return   flow {
+            emit(ApiSate.Success(localData.getSavedWeatherState(type,nameOfCity)))
+
         }
+
     }
 
-    override suspend fun saveWeatherState(weatherEntity: WeatherEntity) {
-        localData.saveWeatherState(weatherEntity)
+    override suspend fun saveWeatherState(currentWeather: CurrentWeather) {
+        localData.saveWeatherState(currentWeather)
     }
 
-    override suspend fun updateWeatherState(weatherEntity: WeatherEntity) {
-        localData.updateWeatherState(weatherEntity)
+    override suspend fun updateWeatherState(currentWeather: CurrentWeather) {
+        localData.updateWeatherState(currentWeather)
     }
 
-    override suspend fun deleteWeatherState(weatherEntity: WeatherEntity) {
-        localData.deleteWeatherState(weatherEntity)
+    override suspend fun deleteWeatherState(currentWeather: CurrentWeather) {
+        localData.deleteWeatherState(currentWeather)
     }
 
     override fun setLat(lat: Float) {
@@ -92,12 +84,20 @@ class RepoIm private constructor(
         return localData.getLon().toDouble()
     }
 
+    override fun getCityName(): String {
+        return  localData.getCityName()
+    }
+
+    override fun setCityName(nameOfCity:String) {
+        localData.setCityName(nameOfCity)
+    }
+
     override fun setLanguage(language: Language) {
         localData.setLanguage(language)
     }
 
     override fun getLanguage(): String {
-       return localData.getLanguage()
+        return localData.getLanguage()
     }
 
     override fun setWindSpeed(windSpeed: Units) {
@@ -113,7 +113,7 @@ class RepoIm private constructor(
     }
 
     override fun getLocation(): String {
-     return   localData.getLocation()
+        return localData.getLocation()
     }
 
     override fun checkIsNotificationAvailable(): Boolean {
@@ -149,7 +149,7 @@ class RepoIm private constructor(
     }
 
     override fun getTempUnit(): String {
-     return   localData.getTempUnit()
+        return localData.getTempUnit()
     }
 
     override fun getCurrentDate(): String {
@@ -173,13 +173,11 @@ class RepoIm private constructor(
         localData.saveFavorite(favorite)
     }
 
-    override suspend fun deleteFavorite(favoriteName: String) {
-        localData.deleteFavorite(favoriteName)
+    override suspend fun deleteFavorite(nameOfCity: String) {
+        localData.deleteFavorite(nameOfCity)
     }
 
-    override suspend fun getFavorite(favoriteName: String): Flow<FavoriteEntity?> {
-        return localData.getFavorite(favoriteName)
-    }
+
 
 
     companion object {

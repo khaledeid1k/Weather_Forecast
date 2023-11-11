@@ -13,10 +13,13 @@ import com.kh.mo.weatherforecast.R
 import com.kh.mo.weatherforecast.databinding.FragmentFavouriteBinding
 import com.kh.mo.weatherforecast.local.LocalDataImp
 import com.kh.mo.weatherforecast.model.ui.LocationData
+import com.kh.mo.weatherforecast.remot.ApiSate
 import com.kh.mo.weatherforecast.ui.home.SourceOpenHome
 import com.kh.mo.weatherforecast.ui.map.SourceOpenMap
 import com.kh.mo.weatherforecast.remot.RemoteDataImp
 import com.kh.mo.weatherforecast.repo.RepoIm
+import com.kh.mo.weatherforecast.utils.makeGone
+import com.kh.mo.weatherforecast.utils.makeVisible
 import kotlinx.coroutines.launch
 
 
@@ -40,7 +43,7 @@ class FavouriteFragment : Fragment() {
         intiViewModel()
         setUp()
         addAdapter()
-        clickFavorite()
+        navigateToHome()
     }
 
     private fun setUp(){
@@ -58,11 +61,16 @@ class FavouriteFragment : Fragment() {
     private fun getFavorites() {
         lifecycleScope.launch {
             favouriteViewModel.favorites.collect{
+                showLottieNoFavorites(it.size)
                 adapter.setItems(it)
             }
         }
     }
-
+    private fun showLottieNoFavorites(size:Int){
+        binding.lottieAnimationNoFavorites.apply {
+            if (size==0) makeVisible() else makeGone()
+        }
+    }
 
 
     private fun intiViewModel() {
@@ -90,7 +98,7 @@ class FavouriteFragment : Fragment() {
     }
 
     private fun getWeatherStateOfLocation(locationData : LocationData){
-        favouriteViewModel.getWeatherStateOfLocation(locationData)
+        favouriteViewModel.saveFavorite(locationData)
     }
 
     private fun addFavoriteLocation(){
@@ -107,9 +115,9 @@ class FavouriteFragment : Fragment() {
         receiveLocationData()
     }
 
-   private fun clickFavorite(){
+   private fun navigateToHome(){
         favouriteViewModel.favoritesEvent.observe(viewLifecycleOwner){
-            findNavController().navigate(FavouriteFragmentDirections.actionFavouriteToShowWeatherData (LocationData(it.lan,it.lon, type = SourceOpenHome.FAVORITE_FRAGMENT)))
+            findNavController().navigate(FavouriteFragmentDirections.actionFavouriteToShowWeatherData (LocationData(it.lat,it.lon, it.nameOfCity,type = SourceOpenHome.FAVORITE_FRAGMENT)))
 
         }
     }

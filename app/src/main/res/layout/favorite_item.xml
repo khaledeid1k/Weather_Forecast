@@ -8,7 +8,7 @@
 
         <variable
             name="favorite"
-            type="com.kh.mo.weatherforecast.model.ui.Favorite" />
+            type="com.kh.mo.weatherforecast.model.entity.FavoriteEntity" />
 
         <variable
             name="listener"
