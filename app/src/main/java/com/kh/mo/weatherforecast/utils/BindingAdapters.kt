@@ -1,11 +1,13 @@
 package com.kh.mo.weatherforecast.utils
 
+import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kh.mo.weatherforecast.model.Daily
 import com.kh.mo.weatherforecast.model.Hourly
+import com.kh.mo.weatherforecast.remot.ApiSate
 import com.kh.mo.weatherforecast.repo.mapper.convertListOfHourlyToWeatherHoursData
 import com.kh.mo.weatherforecast.repo.mapper.convertWeatherToWeatherWeekData
 import com.kh.mo.weatherforecast.ui.home.adapter.WeatherHourAdapter
@@ -37,6 +39,25 @@ fun RecyclerView.setItemsWeatherWeekData(weatherWeekData:List<Daily>?) {
             .let { it1 -> weatherWeekAdapter.setItems(it1) }
     }
 }
+
+
+@BindingAdapter("app:showWhenLoading")
+fun <T> View.showWhenLoading(apiSate: ApiSate<T>) {
+    if (apiSate is ApiSate.Loading) makeVisible() else makeGone()
+}
+
+@BindingAdapter("app:showWhenError")
+fun <T> View.showWhenError(apiSate: ApiSate<T>) {
+    if (apiSate is ApiSate.Failure) makeVisible() else makeGone()
+
+}
+
+@BindingAdapter("app:showWhenSuccess")
+fun <T> View.showWhenSuccess(apiSate: ApiSate<T>) {
+    if (apiSate is ApiSate.Success) makeVisible() else makeGone()
+
+}
+
 
 
 
