@@ -202,13 +202,16 @@ class SettingsFragment : Fragment() {
 
     }
     private fun saveTempUnit() {
-        when (binding.radioGroupUnits.findViewById<RadioButton>(
-            binding.radioGroupUnits.checkedRadioButtonId
-        ).text){
+        val checkedRadioButtonId = binding.radioGroupUnits.checkedRadioButtonId
+        if (checkedRadioButtonId != -1) {
+            when (binding.radioGroupUnits.findViewById<RadioButton>(checkedRadioButtonId).text){
                 Units.Metric.tempUnit -> settingViewModel.setTempUnit(Units.Metric)
                 Units.Imperial.tempUnit -> settingViewModel.setTempUnit(Units.Imperial)
                 Units.Standard.tempUnit -> settingViewModel.setTempUnit(Units.Standard)
             }
+
+        }
+
 
 
 
@@ -218,6 +221,11 @@ class SettingsFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
+
+    }
+
+    override fun onStop() {
+        super.onStop()
         saveTempUnit()
         saveWindSpeed()
         saveLocationByMap()
@@ -226,7 +234,6 @@ class SettingsFragment : Fragment() {
         saveLanguage()
         saveNotification()
     }
-
 
 
 
