@@ -146,26 +146,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="@dimen/margin_16"
-                            android:text="@{String.valueOf(viewModel.weather.toData().temp)}"
                             android:textSize="@dimen/font_size_50"
                             android:textStyle="bold"
+                            android:text="@{String.valueOf(viewModel.weather.toData().temp + viewModel.weather.toData().unit)}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             tools:text="50" />
-
-                        <TextView
-                            android:id="@+id/weather_state_unit_home"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginVertical="@dimen/margin_16"
-                            android:layout_marginStart="@dimen/margin_6"
-                            android:textSize="@dimen/font_size_28"
-                            android:layoutDirection="ltr"
-
-                            app:addUnit="@{viewModel.weather.toData().unit}"
-                            app:layout_constraintBottom_toBottomOf="@+id/weather_state_number_home"
-                            app:layout_constraintStart_toEndOf="@+id/weather_state_number_home" />
 
                         <TextView
                             android:id="@+id/weather_state_text_home"

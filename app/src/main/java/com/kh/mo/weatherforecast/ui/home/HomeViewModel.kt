@@ -7,6 +7,7 @@ import com.kh.mo.weatherforecast.model.entity.CurrentWeather
 import com.kh.mo.weatherforecast.model.ui.LocationData
 import com.kh.mo.weatherforecast.remot.ApiSate
 import com.kh.mo.weatherforecast.repo.Repo
+import com.kh.mo.weatherforecast.repo.mapper.convertUnitToTempUnit
 import com.kh.mo.weatherforecast.repo.mapper.convertWeatherToCurrentWeather
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,9 +26,7 @@ class HomeViewModel(private val repo: Repo) : ViewModel() {
                 .collect {
                     when (it) {
                         is ApiSate.Failure -> {
-
                             locationData.nameOfCity?.let { it1 ->
-                                Log.d("TAG", "$it1 getCurrentUpdatedWeatherState: ")
                                 locationData.type?.name?.let { it2 ->
                                     getSavedWeatherState(
                                         it2,
@@ -52,7 +51,7 @@ class HomeViewModel(private val repo: Repo) : ViewModel() {
                                     nameOfCity,
                                     nameOfCountry,
                                     currentTime,
-                                    unit,
+                                    unit.convertUnitToTempUnit(),
                                     locationData.type!!.name,dayNames
                                 )
                             saveCurrentWeather(currentWeather)

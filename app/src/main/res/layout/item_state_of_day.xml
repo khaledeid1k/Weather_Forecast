@@ -55,11 +55,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_8"
                 style="@style/small_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:text="@{String.valueOf( weatherHourData.temperature + weatherHourData.unit)}"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/container_of_weather"
                 app:layout_constraintStart_toStartOf="@+id/container_of_weather"
-                android:text="@{String.valueOf( weatherHourData.temperature + ` °C`)}"
-                tools:text="13°C" />
+                tools:text="13" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
