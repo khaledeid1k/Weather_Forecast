@@ -3,6 +3,7 @@ package com.kh.mo.weatherforecast.local
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Geocoder
+import com.kh.mo.weatherforecast.R
 import com.kh.mo.weatherforecast.local.db.WeatherDataBase
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.clearValues
@@ -143,7 +144,8 @@ class LocalDataImp private constructor(val context: Context) : LocalData {
     override fun getCurrentDate(timestamp:Long): String {
         val date = Date(timestamp * 1000)
 
-        return SimpleDateFormat("dd MMM, yyyy", Locale.getDefault()).format(date)
+
+        return SimpleDateFormat("dd MMM, yyyy", Locale(getLanguage())).format(date)
 
     }
 
@@ -152,7 +154,7 @@ class LocalDataImp private constructor(val context: Context) : LocalData {
         lon: Double,
         getLocationData: (nameOfCity: String, nameOfCountry: String) -> Unit
     ) {
-        val geocoder = Geocoder(context, Locale.getDefault())
+        val geocoder = Geocoder(context, Locale(getLanguage()))
         try {
 
 
@@ -175,6 +177,15 @@ class LocalDataImp private constructor(val context: Context) : LocalData {
     }catch (e:Exception){}
     }
 
+    override fun changeLanguageApp(language: String) {
+        val  myLocal = Locale(language)
+        val resources = context.resources
+        val displayMetrics = resources.displayMetrics
+        val configuration = resources.configuration
+        configuration.locale = myLocal
+        resources.updateConfiguration(configuration, displayMetrics)
+    }
+
     //endregion
 
     companion object {
@@ -190,5 +201,10 @@ class LocalDataImp private constructor(val context: Context) : LocalData {
             }
         }
     }
-
+override  fun daysName():List<String>{
+    return listOf(context.getString(R.string.sat),
+        context.getString(R.string.sun), context.getString(R.string.mon),
+        context.getString(R.string.tue), context.getString(R.string.wen),
+        context.getString(R.string.thu), context.getString(R.string.fri))
+}
 }

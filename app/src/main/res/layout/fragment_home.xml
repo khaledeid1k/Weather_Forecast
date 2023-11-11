@@ -131,7 +131,7 @@
                     android:id="@+id/weather_state_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin_32"
+                    android:layout_margin="@dimen/margin_16"
                     app:cardCornerRadius="@dimen/radius_16"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -160,8 +160,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="@dimen/margin_16"
                             android:layout_marginStart="@dimen/margin_6"
-                            app:addUnit="@{viewModel.weather.toData().unit}"
                             android:textSize="@dimen/font_size_28"
+                            android:layoutDirection="ltr"
+
+                            app:addUnit="@{viewModel.weather.toData().unit}"
                             app:layout_constraintBottom_toBottomOf="@+id/weather_state_number_home"
                             app:layout_constraintStart_toEndOf="@+id/weather_state_number_home" />
 

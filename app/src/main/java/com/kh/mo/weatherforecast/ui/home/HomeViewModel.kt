@@ -46,12 +46,14 @@ class HomeViewModel(private val repo: Repo) : ViewModel() {
                             val nameOfCountry = getNameOfCity(data.lat, data.lon).second
                             val currentTime = getCurrentTime(data.current.dt)
                             val unit = getUnit()
+                            val dayNames=getDaysWeek()
                             val currentWeather =
                                 data.convertWeatherToCurrentWeather(
                                     nameOfCity,
                                     nameOfCountry,
                                     currentTime,
-                                    unit, locationData.type!!.name
+                                    unit,
+                                    locationData.type!!.name,dayNames
                                 )
                             saveCurrentWeather(currentWeather)
                             _weather.value = ApiSate.Success(currentWeather)
@@ -140,6 +142,9 @@ class HomeViewModel(private val repo: Repo) : ViewModel() {
             }
         }
     }
+
+    private fun getDaysWeek() = repo.daysName()
+
 }
 
 

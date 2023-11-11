@@ -1,26 +1,24 @@
 <resources>
     <string name="app_name">النشرة الجوية</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">مرحبا جزء فارغ</string>
-    <string name="initial_setup">الإعداد الأولي</string>
+    <string name="initial_setup">الإعدادت الأولية</string>
     <string name="location">موقع</string>
-    <string name="gps">نظام تحديد المواقع</string>
+    <string name="gps"> تحديد المواقع</string>
     <string name="map">خريطة</string>
-    <string name="notification">إشعار</string>
+    <string name="notification">اﻹشعارات</string>
     <string name="home">بيت</string>
-    <string name="favourite">مفضل</string>
-    <string name="alert">يُحذًِر</string>
+    <string name="favourite">مفضلة</string>
+    <string name="alert">منبة</string>
     <string name="settings">إعدادات</string>
     <string name="day_forecast">توقعات اليوم</string>
     <string name="_7_days_forecast">توقعات 7 أيام</string>
-    <string name="submit">يُقدِّم</string>
-    <string name="enable">يُمكَِن</string>
-    <string name="disable">إبطال</string>
-    <string name="language">لغة</string>
+    <string name="submit">تأكيد</string>
+    <string name="enable">تمكين</string>
+    <string name="disable">تعطيل</string>
+    <string name="language">اللغات</string>
     <string name="english">إنجليزي</string>
     <string name="arabic">عربي</string>
     <string name="wind_speed">سرعة الرياح</string>
-    <string name="meter_sec">متر / ثانية</string>
+    <string name="metre_sec">متر/ثانية</string>
     <string name="miles_hour">ميل/ساعة</string>
     <string name="units">الوحدات</string>
     <string name="kelvin">كلفن</string>
@@ -28,4 +26,15 @@
     <string name="fahrenheit">فهرنهايت</string>
     <string name="apply_changed">تطبيق التغييرات</string>
     <string name="retry">أعد المحاولة</string>
+    <string name="are_you_sure">هل أنت متأكد ؟</string>
+    <string name="cancel">إلغاء</string>
+    <string name="done">نعم</string>
+    <string name="your_chosen_location">\"الموقع الذي اخترته\"</string>
+    <string name="sat">السبت</string>
+    <string name="sun">الأحد</string>
+    <string name="mon">الأثنين</string>
+    <string name="tue">الثلاثاء</string>
+    <string name="wen">الأربع</string>
+    <string name="thu">"الخميس "</string>
+    <string name="fri">الجمعة</string>
 </resources>

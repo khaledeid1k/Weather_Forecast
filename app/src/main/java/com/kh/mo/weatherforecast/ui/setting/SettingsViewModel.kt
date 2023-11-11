@@ -55,5 +55,7 @@ class SettingsViewModel(private val repo: Repo) : ViewModel() {
         repo.getAddressLocation(lat, lon, getLocationData)
     }
 
-
+    fun changeLanguageApp(language: String) {
+        repo.changeLanguageApp(language)
+    }
 }

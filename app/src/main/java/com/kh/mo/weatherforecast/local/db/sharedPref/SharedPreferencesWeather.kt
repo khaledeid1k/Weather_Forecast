@@ -76,7 +76,7 @@ object SharedPreferencesWeather {
 
 
     var SharedPreferences.language
-        get() = getString(LANGUAGE, Language.English.name)
+        get() = getString(LANGUAGE, Language.en.name)
         set(value) {
             editMe {
                 it.putString(LANGUAGE, value)

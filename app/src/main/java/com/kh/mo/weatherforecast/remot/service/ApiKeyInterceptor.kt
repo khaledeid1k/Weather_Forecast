@@ -11,11 +11,14 @@ import okhttp3.Response
 
 class ApiKeyInterceptor(val context: Context) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        val tempUnit = SharedPreferencesWeather.customPreference(context).tempUnit.toString()
+        val customPreference = SharedPreferencesWeather.customPreference(context)
+        val tempUnit =customPreference.tempUnit.toString()
+        val language =customPreference.language
         val originalRequest = chain.request()
         val newUrl = originalRequest.url.newBuilder()
             .addQueryParameter("appid", BuildConfig.apiKey)
             .addQueryParameter("units", tempUnit)
+            .addQueryParameter("lang", language)
             .build()
 
         val newRequest = originalRequest.newBuilder()

@@ -4,6 +4,8 @@ import androidx.annotation.NonNull
 import androidx.room.Entity
 import com.kh.mo.weatherforecast.model.Daily
 import com.kh.mo.weatherforecast.model.Hourly
+import com.kh.mo.weatherforecast.model.ui.WeatherHourData
+import com.kh.mo.weatherforecast.model.ui.WeatherWeekData
 
 @Entity(tableName = "WeatherState_Table", primaryKeys = ["nameOfCity","type"])
 data class CurrentWeather(
@@ -21,8 +23,8 @@ data class CurrentWeather(
     val clouds: Int,
     val wind_speed: Double,
     val pressure: Int,
-    val hourly: List<Hourly>,
-    val daily: List<Daily>,
+    val hourly: List<WeatherHourData>,
+    val daily: List<WeatherWeekData>,
     @NonNull
     val type:String
 

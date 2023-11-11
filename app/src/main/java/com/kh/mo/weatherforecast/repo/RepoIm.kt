@@ -115,6 +115,10 @@ class RepoIm private constructor(
         return localData.getLocation()
     }
 
+    override fun changeLanguageApp(language: String) {
+        localData.changeLanguageApp(language)
+    }
+
     override fun checkIsNotificationAvailable(): Boolean {
         return localData.checkIsNotificationAvailable()
     }
@@ -173,6 +177,9 @@ class RepoIm private constructor(
     }
 
 
+    override  fun daysName():List<String>{
+        return localData.daysName()
+    }
 
 
     companion object {

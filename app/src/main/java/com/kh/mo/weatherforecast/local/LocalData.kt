@@ -67,4 +67,8 @@ interface LocalData {
         ) -> Unit
     )
 
+    fun changeLanguageApp(language: String)
+
+    fun daysName():List<String>
+
 }

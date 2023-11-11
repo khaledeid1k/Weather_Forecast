@@ -85,4 +85,7 @@ interface Repo {
 
     fun setLocation(location: Location)
     fun getLocation(): String
+    fun daysName():List<String>
+
+    fun changeLanguageApp(language: String)
 }

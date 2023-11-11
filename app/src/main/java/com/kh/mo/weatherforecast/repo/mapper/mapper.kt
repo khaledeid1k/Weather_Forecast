@@ -20,8 +20,7 @@ fun List<Hourly>.convertListOfHourlyToWeatherHoursData(): List<WeatherHourData> 
     }
 }
 
-fun List<Daily>.convertWeatherToWeatherWeekData(): List<WeatherWeekData> {
-    val dayNames = listOf("Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri")
+fun List<Daily>.convertWeatherToWeatherWeekData(dayNames:List<String>): List<WeatherWeekData> {
     return this.drop(1).mapIndexed { index, daily ->
         WeatherWeekData(
             index.takeIf { index < this.size }.let { dayNames[it!!] },
@@ -34,7 +33,7 @@ fun List<Daily>.convertWeatherToWeatherWeekData(): List<WeatherWeekData> {
 
 fun Weather.convertWeatherToCurrentWeather(
     nameOfCity: String, nameOfCountry: String, currentTime: String,
-    unit: String, type: String
+    unit: String, type: String,dayNames:List<String>
 ): CurrentWeather {
     return this.let {
         CurrentWeather(
@@ -51,8 +50,8 @@ fun Weather.convertWeatherToCurrentWeather(
             it.current.clouds,
             it.current.wind_speed,
             it.current.pressure,
-            hourly,
-            daily,
+            hourly.convertListOfHourlyToWeatherHoursData(),
+            daily.convertWeatherToWeatherWeekData(dayNames),
             type
 
         )
