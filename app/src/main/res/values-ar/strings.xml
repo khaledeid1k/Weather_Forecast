@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">النشرة الجوية</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">مرحبا جزء فارغ</string>
+    <string name="initial_setup">الإعداد الأولي</string>
+    <string name="location">موقع</string>
+    <string name="gps">نظام تحديد المواقع</string>
+    <string name="map">خريطة</string>
+    <string name="notification">إشعار</string>
+    <string name="home">بيت</string>
+    <string name="favourite">مفضل</string>
+    <string name="alert">يُحذًِر</string>
+    <string name="settings">إعدادات</string>
+    <string name="day_forecast">توقعات اليوم</string>
+    <string name="_7_days_forecast">توقعات 7 أيام</string>
+    <string name="submit">يُقدِّم</string>
+    <string name="enable">يُمكَِن</string>
+    <string name="disable">إبطال</string>
+    <string name="language">لغة</string>
+    <string name="english">إنجليزي</string>
+    <string name="arabic">عربي</string>
+    <string name="wind_speed">سرعة الرياح</string>
+    <string name="meter_sec">متر / ثانية</string>
+    <string name="miles_hour">ميل/ساعة</string>
+    <string name="units">الوحدات</string>
+    <string name="kelvin">كلفن</string>
+    <string name="celsius">درجة مئوية</string>
+    <string name="fahrenheit">فهرنهايت</string>
+    <string name="apply_changed">تطبيق التغييرات</string>
+    <string name="retry">أعد المحاولة</string>
+</resources>
