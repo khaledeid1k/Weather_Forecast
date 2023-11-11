@@ -11,6 +11,7 @@ import com.kh.mo.weatherforecast.utils.Constants.LANGUAGE
 import com.kh.mo.weatherforecast.utils.Constants.LAT
 import com.kh.mo.weatherforecast.utils.Constants.LOCATION
 import com.kh.mo.weatherforecast.utils.Constants.LON
+import com.kh.mo.weatherforecast.utils.Constants.NAME_OF_CITY
 import com.kh.mo.weatherforecast.utils.Constants.NOTIFICATION
 import com.kh.mo.weatherforecast.utils.Constants.PREFERENCE_NAME
 import com.kh.mo.weatherforecast.utils.Constants.TEMP_UNIT
@@ -91,7 +92,7 @@ object SharedPreferencesWeather {
         }
 
     var SharedPreferences.windSpeed
-        get() = getString(WIND_SPEED, Units.Standard.windSpeed)
+        get() = getString(WIND_SPEED, Units.Metric.windSpeed)
         set(value) {
 
             editMe {
@@ -99,11 +100,23 @@ object SharedPreferencesWeather {
             }
         }
 
+
+
     var SharedPreferences.location
         get() = getString(LOCATION, Location.GPS.name)
         set(value) {
             editMe {
                 it.putString(LOCATION, value)
+            }
+        }
+
+
+    var SharedPreferences.nameOfCity
+        get() = getString(NAME_OF_CITY, "")
+        set(value) {
+
+            editMe {
+                it.putString(NAME_OF_CITY, value)
             }
         }
 
