@@ -140,8 +140,11 @@ class LocalDataImp private constructor(val context: Context) : LocalData {
     //endregion
 
     // region util
-    override fun getCurrentDate(): String {
-        return SimpleDateFormat("dd MMM, yyyy", Locale.ENGLISH).format(Date())
+    override fun getCurrentDate(timestamp:Long): String {
+        val date = Date(timestamp * 1000)
+
+        return SimpleDateFormat("dd MMM, yyyy", Locale.getDefault()).format(date)
+
     }
 
     override fun getAddressLocation(

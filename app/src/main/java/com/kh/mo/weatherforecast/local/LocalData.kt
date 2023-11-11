@@ -57,7 +57,7 @@ interface LocalData {
     fun clearSharedPreferences()
 
 
-    fun getCurrentDate(): String
+    fun getCurrentDate(timestamp:Long): String
 
     fun getAddressLocation(
         lat: Double, lon: Double,

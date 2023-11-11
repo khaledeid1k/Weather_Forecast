@@ -147,8 +147,8 @@ class RepoIm private constructor(
         return localData.getTempUnit()
     }
 
-    override fun getCurrentDate(): String {
-        return localData.getCurrentDate()
+    override fun getCurrentDate(timestamp:Long): String {
+        return localData.getCurrentDate(timestamp)
     }
 
     override fun getAddressLocation(

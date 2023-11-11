@@ -44,7 +44,7 @@ class HomeViewModel(private val repo: Repo) : ViewModel() {
                             saveDataIfFirstTimeOpenApp(locationData)
                             val nameOfCity = getNameOfCity(data.lat, data.lon).first
                             val nameOfCountry = getNameOfCity(data.lat, data.lon).second
-                            val currentTime = getCurrentTime()
+                            val currentTime = getCurrentTime(data.current.dt)
                             val unit = getUnit()
                             val currentWeather =
                                 data.convertWeatherToCurrentWeather(
@@ -89,7 +89,7 @@ class HomeViewModel(private val repo: Repo) : ViewModel() {
         return Pair(nameOfCity, nameOfCountry)
     }
 
-    private fun getCurrentTime(): String = repo.getCurrentDate()
+    private fun getCurrentTime(timestamp:Long): String = repo.getCurrentDate(timestamp)
     private fun getUnit(): String = repo.getTempUnit()
 
     private fun saveLat(lat: Double) {
