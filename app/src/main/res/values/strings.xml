@@ -28,4 +28,8 @@
     <string name="fahrenheit">Fahrenheit</string>
     <string name="apply_changed">Apply Changes</string>
     <string name="retry">Retry</string>
+    <string name="are_you_sure">Are You Sure ?</string>
+    <string name="cancel">Cancel</string>
+    <string name="done">Done</string>
+    <string name="your_chosen_location">"Your Chosen Location "</string>
 </resources>

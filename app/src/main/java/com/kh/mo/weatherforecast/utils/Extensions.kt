@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.kh.mo.weatherforecast.R
 import java.util.Date
 import java.util.TimeZone
 import java.util.Locale
@@ -38,4 +39,25 @@ fun View.makeGone() {
 
 fun View.makeInVisible() {
     this.visibility = View.INVISIBLE
+}
+
+private var isDialogShowing = false
+
+fun createDialog(title:String,message:String="",context: Context,sure:()->Unit,cancel:()->Unit){
+    if (!isDialogShowing) {
+        MaterialAlertDialogBuilder(context)
+            .setTitle(title)
+            .setMessage(message)
+            .setNegativeButton(context.getString(R.string.cancel)) { dialog, _ ->
+                cancel()
+                dialog.dismiss()
+
+            }
+            .setPositiveButton(context.getString(R.string.done)) { dialog, _ ->
+                sure()
+                dialog.dismiss()
+
+            }
+            .show()
+    }
 }

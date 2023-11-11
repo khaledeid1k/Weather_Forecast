@@ -21,6 +21,10 @@ class FavouriteViewModel(private val repo: Repo) : ViewModel(), FavouriteAdapter
     private val _favoritesEvent = MutableLiveData<FavoriteEntity>()
     val favoritesEvent: LiveData<FavoriteEntity> = _favoritesEvent
 
+
+    private val _deleteFavorite = MutableLiveData<String>()
+    val deleteFavorite: LiveData<String> = _deleteFavorite
+
     init {
         getFavorites()
     }
@@ -44,7 +48,7 @@ class FavouriteViewModel(private val repo: Repo) : ViewModel(), FavouriteAdapter
     }
 
 
-    private fun deleteFavorite(favoriteName: String) {
+     fun deleteFavorite(favoriteName: String) {
         viewModelScope.launch(Dispatchers.IO) {
             repo.deleteFavorite(favoriteName)
         }
@@ -58,7 +62,6 @@ class FavouriteViewModel(private val repo: Repo) : ViewModel(), FavouriteAdapter
     }
 
     override fun deleteFavourite(favorite: FavoriteEntity) {
-        deleteFavorite(favorite.nameOfCity)
-
+        _deleteFavorite.postValue(favorite.nameOfCity)
     }
 }

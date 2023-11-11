@@ -81,23 +81,16 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private fun createDialog(message: String) {
         if (!isDialogShowing) {
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle("You are Select")
-                .setMessage(message)
-                .setNegativeButton("Cancel") { dialog, _ ->
-                    isDialogShowing = false
-                    dialog.dismiss()
-
-                }
-                .setPositiveButton("Done") { dialog, _ ->
-                    isDialogShowing = false
+            com.kh.mo.weatherforecast.utils.createDialog(
+                title = getString(R.string.your_chosen_location),
+                message = message,
+                context = requireContext(),
+                cancel = { isDialogShowing = false },
+                sure = { isDialogShowing = false
                     moveToNextScreen()
-                    dialog.dismiss()
                 }
-                .setCancelable(false)
-                .show()
+            )
             isDialogShowing = true
-
 
 
         }

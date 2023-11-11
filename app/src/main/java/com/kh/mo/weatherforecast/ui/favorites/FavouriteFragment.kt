@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kh.mo.weatherforecast.R
 import com.kh.mo.weatherforecast.databinding.FragmentFavouriteBinding
 import com.kh.mo.weatherforecast.local.LocalDataImp
@@ -18,6 +19,7 @@ import com.kh.mo.weatherforecast.ui.home.SourceOpenHome
 import com.kh.mo.weatherforecast.ui.map.SourceOpenMap
 import com.kh.mo.weatherforecast.remot.RemoteDataImp
 import com.kh.mo.weatherforecast.repo.RepoIm
+import com.kh.mo.weatherforecast.utils.createDialog
 import com.kh.mo.weatherforecast.utils.makeGone
 import com.kh.mo.weatherforecast.utils.makeVisible
 import kotlinx.coroutines.launch
@@ -44,31 +46,33 @@ class FavouriteFragment : Fragment() {
         setUp()
         addAdapter()
         navigateToHome()
+        deleteFavorite()
     }
 
-    private fun setUp(){
+    private fun setUp() {
         binding.apply {
-            lifecycleOwner=this@FavouriteFragment
+            lifecycleOwner = this@FavouriteFragment
         }
 
     }
 
     private fun addAdapter() {
-         adapter = FavouriteAdapter(favouriteViewModel)
+        adapter = FavouriteAdapter(favouriteViewModel)
         binding.recycleFavorites.adapter = adapter
     }
 
     private fun getFavorites() {
         lifecycleScope.launch {
-            favouriteViewModel.favorites.collect{
+            favouriteViewModel.favorites.collect {
                 showLottieNoFavorites(it.size)
                 adapter.setItems(it)
             }
         }
     }
-    private fun showLottieNoFavorites(size:Int){
+
+    private fun showLottieNoFavorites(size: Int) {
         binding.lottieAnimationNoFavorites.apply {
-            if (size==0) makeVisible() else makeGone()
+            if (size == 0) makeVisible() else makeGone()
         }
     }
 
@@ -89,7 +93,7 @@ class FavouriteFragment : Fragment() {
     }
 
     private fun receiveLocationData() {
-         FavouriteFragmentArgs.fromBundle(requireArguments()).locationData
+        FavouriteFragmentArgs.fromBundle(requireArguments()).locationData
             ?.let {
                 getWeatherStateOfLocation(it)
             }
@@ -97,14 +101,17 @@ class FavouriteFragment : Fragment() {
 
     }
 
-    private fun getWeatherStateOfLocation(locationData : LocationData){
+    private fun getWeatherStateOfLocation(locationData: LocationData) {
         favouriteViewModel.saveFavorite(locationData)
     }
 
-    private fun addFavoriteLocation(){
+    private fun addFavoriteLocation() {
         binding.floatingActionButton.setOnClickListener {
-            findNavController().navigate(FavouriteFragmentDirections.actionFavouriteToMapFragment(
-                SourceOpenMap.FAVORITE_FRAGMENT))
+            findNavController().navigate(
+                FavouriteFragmentDirections.actionFavouriteToMapFragment(
+                    SourceOpenMap.FAVORITE_FRAGMENT
+                )
+            )
         }
     }
 
@@ -115,9 +122,30 @@ class FavouriteFragment : Fragment() {
         receiveLocationData()
     }
 
-   private fun navigateToHome(){
-        favouriteViewModel.favoritesEvent.observe(viewLifecycleOwner){
-            findNavController().navigate(FavouriteFragmentDirections.actionFavouriteToShowWeatherData (LocationData(it.lat,it.lon, it.nameOfCity,type = SourceOpenHome.FAVORITE_FRAGMENT)))
+    private fun navigateToHome() {
+        favouriteViewModel.favoritesEvent.observe(viewLifecycleOwner) {
+            findNavController().navigate(
+                FavouriteFragmentDirections.actionFavouriteToShowWeatherData(
+                    LocationData(
+                        it.lat,
+                        it.lon,
+                        it.nameOfCity,
+                        type = SourceOpenHome.FAVORITE_FRAGMENT
+                    )
+                )
+            )
+
+        }
+    }
+
+
+    private fun deleteFavorite() {
+        favouriteViewModel.deleteFavorite.observe(viewLifecycleOwner) {
+            createDialog(
+                title = getString(R.string.are_you_sure),
+                context = requireContext(),
+                cancel = {},
+                sure = { favouriteViewModel.deleteFavorite(it) })
 
         }
     }
