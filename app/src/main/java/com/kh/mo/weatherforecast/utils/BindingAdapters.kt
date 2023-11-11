@@ -2,6 +2,7 @@ package com.kh.mo.weatherforecast.utils
 
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -12,6 +13,7 @@ import com.kh.mo.weatherforecast.repo.mapper.convertListOfHourlyToWeatherHoursDa
 import com.kh.mo.weatherforecast.repo.mapper.convertWeatherToWeatherWeekData
 import com.kh.mo.weatherforecast.ui.home.adapter.WeatherHourAdapter
 import com.kh.mo.weatherforecast.ui.home.adapter.WeatherWeekAdapter
+import com.kh.mo.weatherforecast.ui.setting.Units
 
 @BindingAdapter("setImageUrl")
 fun ImageView.setImageUrl(iconId: String?) {
@@ -58,6 +60,16 @@ fun <T> View.showWhenSuccess(apiSate: ApiSate<T>) {
 
 }
 
+@BindingAdapter("app:addUnit")
+fun  TextView.addUnit(unit:String?) {
+    text=when(unit){
+        Units.Standard.nameOfUnit->"°K"
+        Units.Imperial.nameOfUnit->"°F"
+        Units.Metric.nameOfUnit->"°C"
+        else -> ""
+    }
+
+}
 
 
 

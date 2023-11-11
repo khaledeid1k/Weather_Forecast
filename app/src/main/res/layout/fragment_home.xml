@@ -160,7 +160,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="@dimen/margin_16"
                             android:layout_marginStart="@dimen/margin_6"
-                            android:text="°C"
+                            app:addUnit="@{viewModel.weather.toData().unit}"
                             android:textSize="@dimen/font_size_28"
                             app:layout_constraintBottom_toBottomOf="@+id/weather_state_number_home"
                             app:layout_constraintStart_toEndOf="@+id/weather_state_number_home" />
