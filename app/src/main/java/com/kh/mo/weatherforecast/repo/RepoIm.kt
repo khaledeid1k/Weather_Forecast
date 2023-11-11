@@ -54,16 +54,16 @@ class RepoIm private constructor(
 
     }
 
-    override suspend fun saveWeatherState(currentWeather: CurrentWeather) {
-        localData.saveWeatherState(currentWeather)
+    override suspend fun saveWeatherState(weatherState: CurrentWeather) {
+        localData.saveWeatherState(weatherState)
     }
 
-    override suspend fun updateWeatherState(currentWeather: CurrentWeather) {
-        localData.updateWeatherState(currentWeather)
+    override suspend fun updateWeatherState(weatherState: CurrentWeather) {
+        localData.updateWeatherState(weatherState)
     }
 
-    override suspend fun deleteWeatherState(currentWeather: CurrentWeather) {
-        localData.deleteWeatherState(currentWeather)
+    override suspend fun deleteWeatherState(weatherState: CurrentWeather) {
+        localData.deleteWeatherState(weatherState)
     }
 
     override fun setLat(lat: Double) {
