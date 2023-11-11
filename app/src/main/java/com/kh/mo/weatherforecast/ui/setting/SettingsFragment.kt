@@ -44,8 +44,11 @@ class SettingsFragment : Fragment() {
         getValueOFWindSpeed()
         getValueOFLanguage()
         getValueOFNotification()
-        correspondWindSpeedAndUnitTemp()
 
+
+        saveTempUnit()
+        saveWindSpeed()
+        saveLanguage()
 
     }
 
@@ -98,14 +101,10 @@ class SettingsFragment : Fragment() {
 
     private fun getValueOFWindSpeed() {
         val windSpeed = settingViewModel.getWindSpeed()
-        Log.d(TAG, "getValueOFWindSpeed: $windSpeed")
-        if (settingViewModel.getWindSpeed() == Units.Metric.windSpeed || settingViewModel.getWindSpeed() == Units.Standard.windSpeed) binding.windSpeedMeter.isChecked =
-            true else binding.windSpeedMiles.isChecked = true
+        if ( windSpeed== Units.Metric.windSpeed || windSpeed == Units.Standard.windSpeed) binding.windSpeedMetre.isChecked = true else binding.windSpeedMiles.isChecked = true
     }
 
     private fun getValueOFTempUnit() {
-        val tempUnit = settingViewModel.getTempUnit()
-        Log.d(TAG, "getValueOFTempUnit: $tempUnit")
         when (settingViewModel.getTempUnit()) {
             Units.Standard.nameOfUnit -> binding.unitsKelvin.isChecked = true
             Units.Metric.nameOfUnit -> binding.unitsCelsius.isChecked = true
@@ -116,19 +115,7 @@ class SettingsFragment : Fragment() {
     }
 
 
-    private fun saveLanguage() {
-        if (binding.radioGroupLanguage.findViewById<RadioButton>(
-                binding.radioGroupLanguage.checkedRadioButtonId
-            ).text
-            ==
-            Language.Arabic.name
-        ) {
-            settingViewModel.setLanguage(Language.Arabic)
-        } else {
-            settingViewModel.setLanguage(Language.English)
-        }
 
-    }
     private fun saveNotification() {
         settingViewModel.setNotification(binding.notificationEnable.isChecked)
     }
@@ -184,63 +171,40 @@ class SettingsFragment : Fragment() {
         }
     }
 
-    private fun correspondWindSpeedAndUnitTemp() {
-        binding.radioGroupWindSpeed.setOnCheckedChangeListener { _, checkedId ->
-            when (checkedId) {
-                R.id.wind_speed_miles -> {
-                    binding.unitsFahrenheit.isChecked = true
-                }
-                R.id.wind_speed_meter -> {
-                    binding.unitsKelvin.isChecked = true
-
-                }
-            }
-        }
-        binding.radioGroupUnits.setOnCheckedChangeListener { _, checkedId ->
-            when (checkedId) {
-                R.id.units_celsius,
-                R.id.units_kelvin -> {
-                    binding.windSpeedMeter.isChecked = true
-                }
-                R.id.units_fahrenheit -> {
-                    binding.windSpeedMiles.isChecked = true
-
-                }
-            }
-        }
-    }
 
     private fun saveWindSpeed() {
-        when (binding.radioGroupWindSpeed.findViewById<RadioButton>(
-            binding.radioGroupWindSpeed.checkedRadioButtonId
-        ).text) {
-            Units.Metric.windSpeed,
-            Units.Standard.windSpeed -> settingViewModel.setWindSpeed(Units.Metric)
-            Units.Imperial.windSpeed -> settingViewModel.setWindSpeed(Units.Imperial)
-        }
+        binding.windSpeedMiles.setOnClickListener {
+            binding.unitsFahrenheit.isChecked=true
 
+            settingViewModel.setWindSpeed(Units.Imperial)
+         }
+        binding.windSpeedMetre.setOnClickListener {
+            binding.unitsKelvin.isChecked=true
+            settingViewModel.setWindSpeed(Units.Metric)   }
     }
-
     private fun saveTempUnit() {
-        val checkedRadioButtonId = binding.radioGroupUnits.checkedRadioButtonId
-        if (checkedRadioButtonId != -1) {
-            when (binding.radioGroupUnits.findViewById<RadioButton>(checkedRadioButtonId).text) {
-                Units.Metric.tempUnit -> settingViewModel.setTempUnit(Units.Metric)
-                Units.Imperial.tempUnit -> settingViewModel.setTempUnit(Units.Imperial)
-                Units.Standard.tempUnit -> settingViewModel.setTempUnit(Units.Standard)
-            }
+            binding.unitsKelvin.setOnClickListener {
+                binding.windSpeedMetre.isChecked = true
+                settingViewModel.setTempUnit(Units.Standard)}
+            binding.unitsCelsius.setOnClickListener {
+                binding.windSpeedMetre.isChecked = true
+                settingViewModel.setTempUnit(Units.Metric) }
+            binding.unitsFahrenheit.setOnClickListener {
+                binding.windSpeedMiles .isChecked = true
+                settingViewModel.setTempUnit(Units.Imperial) }
 
         }
 
 
-    }
 
+    private fun saveLanguage() {
+        binding.languageArabic.setOnClickListener {    settingViewModel.setLanguage(Language.Arabic)}
+        binding.languageEnglish.setOnClickListener { settingViewModel.setLanguage(Language.English) }
+    }
 
     override fun onStop() {
         super.onStop()
-        saveTempUnit()
-        saveWindSpeed()
-        saveLanguage()
+
         saveNotification()
     }
 

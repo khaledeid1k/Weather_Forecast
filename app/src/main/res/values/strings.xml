@@ -20,7 +20,7 @@
     <string name="english">English</string>
     <string name="arabic">Arabic</string>
     <string name="wind_speed">Wind Speed</string>
-    <string name="meter_sec">meter/sec</string>
+    <string name="metre_sec">metre/sec</string>
     <string name="miles_hour">miles/hour</string>
     <string name="units">Units</string>
     <string name="kelvin">Kelvin</string>
