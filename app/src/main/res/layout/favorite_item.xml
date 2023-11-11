@@ -39,9 +39,8 @@
                 android:ellipsize="end"
                 android:padding="@dimen/padding_8"
                 android:onClick="@{() -> listener.onClickFavourite(favorite)}"
-
                 android:paddingEnd="@dimen/margin_8"
-                android:text="@{favorite.nameOfCity}"
+                android:text="@{favorite.nameOfCity + ` , ` + favorite.nameOfCity }"
                 app:drawableStartCompat="@drawable/location"
                 app:layout_constraintEnd_toStartOf="@+id/delete_favorite"
                 app:layout_constraintStart_toStartOf="parent"
