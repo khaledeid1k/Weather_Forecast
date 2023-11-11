@@ -66,8 +66,8 @@ class HomeViewModel(private val repo: Repo) : ViewModel() {
 
     private fun saveDataIfFirstTimeOpenApp(locationData: LocationData) {
         if (locationData.type == SourceOpenHome.INITIAL_FRAGMENT) {
-            saveLat(locationData.lat.toFloat())
-            saveLon(locationData.lon.toFloat())
+            saveLat(locationData.lat)
+            saveLon(locationData.lon)
             Log.d("TAG", "saveDataIfFirstTimeOpenApp: ${locationData.nameOfCity}")
             setCityName(locationData.nameOfCity.toString())
         }
@@ -92,11 +92,11 @@ class HomeViewModel(private val repo: Repo) : ViewModel() {
     private fun getCurrentTime(): String = repo.getCurrentDate()
     private fun getUnit(): String = repo.getTempUnit()
 
-    private fun saveLat(lat: Float) {
+    private fun saveLat(lat: Double) {
         repo.setLat(lat)
     }
 
-    private fun saveLon(lon: Float) {
+    private fun saveLon(lon: Double) {
         repo.setLon(lon)
     }
 

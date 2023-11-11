@@ -3,12 +3,11 @@ package com.kh.mo.weatherforecast.local
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Geocoder
+import com.kh.mo.weatherforecast.local.db.WeatherDataBase
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.clearValues
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.isFirstTimeOpenApp
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.isNotificationAvailable
-import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.wayForSelectLocation
-import com.kh.mo.weatherforecast.local.db.WeatherDataBase
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.language
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.lat
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.location
@@ -18,9 +17,8 @@ import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.te
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.windSpeed
 import com.kh.mo.weatherforecast.model.entity.CurrentWeather
 import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
-import com.kh.mo.weatherforecast.ui.setting.Language
 import com.kh.mo.weatherforecast.model.ui.Location
-import com.kh.mo.weatherforecast.model.ui.LocationData
+import com.kh.mo.weatherforecast.ui.setting.Language
 import com.kh.mo.weatherforecast.ui.setting.Units
 import kotlinx.coroutines.flow.Flow
 import java.text.SimpleDateFormat
@@ -74,14 +72,7 @@ class LocalDataImp private constructor(val context: Context) : LocalData {
 
     }
 
-    override fun checkTypeOfSelectLocation(): String {
-        return sharedPreferencesWeather.wayForSelectLocation.toString()
-    }
 
-    override fun changeWayOfSelectLocationValue(wayOfSelectLocation: String) {
-        sharedPreferencesWeather.wayForSelectLocation = wayOfSelectLocation
-
-    }
 
     override fun checkIsFirstTimeOpenApp(): Boolean {
         return sharedPreferencesWeather.isFirstTimeOpenApp
@@ -104,20 +95,20 @@ class LocalDataImp private constructor(val context: Context) : LocalData {
         return sharedPreferencesWeather.tempUnit.toString()
     }
 
-    override fun setLat(lat: Float) {
-        sharedPreferencesWeather.lat = lat
+    override fun setLat(lat: Double) {
+        sharedPreferencesWeather.lat = lat.toString()
     }
 
-    override fun setLon(lon: Float) {
-        sharedPreferencesWeather.lon = lon
+    override fun setLon(lon: Double) {
+        sharedPreferencesWeather.lon = lon.toString()
     }
 
-    override fun getLat(): Float {
-        return sharedPreferencesWeather.lat
+    override fun getLat(): Double {
+        return sharedPreferencesWeather.lat!!.toDouble()
     }
 
-    override fun getLon(): Float {
-        return sharedPreferencesWeather.lon
+    override fun getLon(): Double {
+        return sharedPreferencesWeather.lon!!.toDouble()
     }
 
     override fun getCityName(): String {

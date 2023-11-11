@@ -4,11 +4,10 @@ import com.kh.mo.weatherforecast.local.LocalData
 import com.kh.mo.weatherforecast.model.Weather
 import com.kh.mo.weatherforecast.model.entity.CurrentWeather
 import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
+import com.kh.mo.weatherforecast.model.ui.Location
+import com.kh.mo.weatherforecast.remot.ApiSate
 import com.kh.mo.weatherforecast.remot.RemoteData
 import com.kh.mo.weatherforecast.ui.setting.Language
-import com.kh.mo.weatherforecast.model.ui.Location
-import com.kh.mo.weatherforecast.model.ui.LocationData
-import com.kh.mo.weatherforecast.remot.ApiSate
 import com.kh.mo.weatherforecast.ui.setting.Units
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -67,21 +66,21 @@ class RepoIm private constructor(
         localData.deleteWeatherState(currentWeather)
     }
 
-    override fun setLat(lat: Float) {
+    override fun setLat(lat: Double) {
         localData.setLat(lat)
 
     }
 
-    override fun setLon(lon: Float) {
+    override fun setLon(lon: Double) {
         localData.setLon(lon)
     }
 
     override fun getLat(): Double {
-        return localData.getLat().toDouble()
+        return localData.getLat()
     }
 
     override fun getLon(): Double {
-        return localData.getLon().toDouble()
+        return localData.getLon()
     }
 
     override fun getCityName(): String {
@@ -124,13 +123,9 @@ class RepoIm private constructor(
         localData.changeNotificationValue(isNotification)
     }
 
-    override fun checkTypeOfSelectLocation(): String {
-        return localData.checkTypeOfSelectLocation()
-    }
 
-    override fun changeWayOfSelectLocationValue(wayOfSelectLocation: String) {
-        localData.changeWayOfSelectLocationValue(wayOfSelectLocation)
-    }
+
+
 
     override fun checkIsFirstTimeOpenApp(): Boolean {
         return localData.checkIsFirstTimeOpenApp()

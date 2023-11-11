@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -13,6 +14,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.dialog.MaterialDialogs
 import com.kh.mo.weatherforecast.R
 import com.kh.mo.weatherforecast.databinding.FragmentMapBinding
 import com.kh.mo.weatherforecast.local.LocalDataImp
@@ -25,7 +27,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var binding: FragmentMapBinding
     private lateinit var locationData: LocationData
     private lateinit var mapViewModel: MapViewModel
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,7 +45,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     }
 
-  private fun receiveNameOfCaller() = MapFragmentArgs.fromBundle(requireArguments()).sourceOpenMap
+    private fun receiveNameOfCaller() = MapFragmentArgs.fromBundle(requireArguments()).sourceOpenMap
 
 
     private fun intiMapView(savedInstanceState: Bundle?) {
@@ -79,17 +80,21 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun createDialog(message: String) {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle("You are Select")
-            .setMessage(message)
-            .setNegativeButton("Cancel") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .setPositiveButton("Done") { dialog, _ ->
-              moveToNextScreen()
-                dialog.dismiss()
-            }
-            .show()
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("You are Select")
+                .setMessage(message)
+                .setNegativeButton("Cancel") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .setPositiveButton("Done") { dialog, _ ->
+                    moveToNextScreen()
+                    dialog.dismiss()
+                }
+                .setCancelable(false)
+                .show()
+
+
+
     }
 
 
@@ -109,18 +114,20 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun moveToNextScreen() {
-        when(receiveNameOfCaller()){
-           SourceOpenMap.SETTING_FRAGMENT ->{
+        when (receiveNameOfCaller()) {
+            SourceOpenMap.SETTING_FRAGMENT -> {
                 findNavController().navigate(
                     MapFragmentDirections.actionMapFragmentToSettings(
                         locationData
                     )
                 )
             }
-            SourceOpenMap.FAVORITE_FRAGMENT ->{ findNavController().navigate(
-            MapFragmentDirections.actionMapFragmentToFavourite(locationData)
-        )}
-            SourceOpenMap.INITIAL_FRAGMENT->{
+            SourceOpenMap.FAVORITE_FRAGMENT -> {
+                findNavController().navigate(
+                    MapFragmentDirections.actionMapFragmentToFavourite(locationData)
+                )
+            }
+            SourceOpenMap.INITIAL_FRAGMENT -> {
                 findNavController().navigate(
                     MapFragmentDirections.actionMapFragmentToHome(
                         locationData

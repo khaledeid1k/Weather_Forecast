@@ -2,11 +2,10 @@ package com.kh.mo.weatherforecast.local.db.sharedPref
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.kh.mo.weatherforecast.ui.setting.Language
 import com.kh.mo.weatherforecast.model.ui.Location
+import com.kh.mo.weatherforecast.ui.setting.Language
 import com.kh.mo.weatherforecast.ui.setting.Units
 import com.kh.mo.weatherforecast.utils.Constants.FIRST_TIME
-import com.kh.mo.weatherforecast.utils.Constants.GPS
 import com.kh.mo.weatherforecast.utils.Constants.LANGUAGE
 import com.kh.mo.weatherforecast.utils.Constants.LAT
 import com.kh.mo.weatherforecast.utils.Constants.LOCATION
@@ -15,7 +14,6 @@ import com.kh.mo.weatherforecast.utils.Constants.NAME_OF_CITY
 import com.kh.mo.weatherforecast.utils.Constants.NOTIFICATION
 import com.kh.mo.weatherforecast.utils.Constants.PREFERENCE_NAME
 import com.kh.mo.weatherforecast.utils.Constants.TEMP_UNIT
-import com.kh.mo.weatherforecast.utils.Constants.WAY_LOCATION
 import com.kh.mo.weatherforecast.utils.Constants.WIND_SPEED
 
 object SharedPreferencesWeather {
@@ -33,13 +31,7 @@ object SharedPreferencesWeather {
         get() = { this.edit().clear().apply() }
         set(value) {}
 
-    var SharedPreferences.wayForSelectLocation
-        get() = getString(WAY_LOCATION,GPS)
-        set(value) {
-            editMe {
-                it.putString(WAY_LOCATION, value)
-            }
-        }
+
     var SharedPreferences.isFirstTimeOpenApp
         get() = getBoolean(FIRST_TIME, true)
         set(value) {
@@ -50,18 +42,18 @@ object SharedPreferencesWeather {
         }
 
     var SharedPreferences.lat
-        get() = getFloat (LAT,0f)
+        get() = getString (LAT,"0.0")
         set(value) {
             editMe {
-                it.putFloat(LAT, value)
+                it.putString(LAT, value)
             }
         }
 
     var SharedPreferences.lon
-        get() = getFloat(LON, 0f)
+        get() = getString(LON, "0.0")
         set(value) {
             editMe {
-                it.putFloat(LON, value)
+                it.putString(LON, value)
             }
         }
 
@@ -119,5 +111,6 @@ object SharedPreferencesWeather {
                 it.putString(NAME_OF_CITY, value)
             }
         }
+
 
 }

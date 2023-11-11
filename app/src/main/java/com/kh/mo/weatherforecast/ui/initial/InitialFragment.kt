@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -11,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.kh.mo.weatherforecast.R
 import com.kh.mo.weatherforecast.databinding.FragmentInitialBinding
 import com.kh.mo.weatherforecast.local.LocalDataImp
+import com.kh.mo.weatherforecast.model.ui.Location
 import com.kh.mo.weatherforecast.ui.map.SourceOpenMap
 import com.kh.mo.weatherforecast.model.ui.LocationData
 import com.kh.mo.weatherforecast.remot.RemoteDataImp
@@ -84,11 +86,21 @@ class InitialFragment : Fragment() {
 
 
     private fun changeNotificationValue() {
+
         initialViewModel.changeNotificationValue(binding.materialSwitch.isChecked)
     }
 
     private fun changeWayOfSelectLocation() {
-        initialViewModel.changeWayOfSelectLocationValue(wayOfSelectLocation)
+        if (binding.radioGroup.findViewById<RadioButton>(
+                binding.radioGroup.checkedRadioButtonId
+            ).text
+            ==
+            Location.GPS.name
+        ) {
+            initialViewModel.setLocation(Location.GPS)
+        } else {
+            initialViewModel.setLocation(Location.MAP)
+        }
     }
 
 

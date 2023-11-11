@@ -36,8 +36,6 @@ interface Repo {
     fun checkIsNotificationAvailable(): Boolean
     fun changeNotificationValue(isNotification: Boolean)
 
-    fun checkTypeOfSelectLocation(): String
-    fun changeWayOfSelectLocationValue(wayOfSelectLocation: String)
 
     fun checkIsFirstTimeOpenApp(): Boolean
     fun changeValueOfFirstTimeOpenApp(isFirstTime: Boolean)
@@ -69,8 +67,8 @@ interface Repo {
     fun setTempUnit(unit: Units)
     fun getTempUnit(): String
 
-    fun setLat(lat: Float)
-    fun setLon(lon: Float)
+    fun setLat(lat: Double)
+    fun setLon(lon: Double)
 
     fun getLat():Double
     fun getLon():Double

@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
-import android.widget.RadioGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -20,14 +19,13 @@ import com.kh.mo.weatherforecast.model.ui.LocationData
 import com.kh.mo.weatherforecast.remot.RemoteDataImp
 import com.kh.mo.weatherforecast.repo.RepoIm
 import com.kh.mo.weatherforecast.ui.initial.LocationServiceChecker
-import kotlin.math.log
 
 
 class SettingsFragment : Fragment() {
     private lateinit var binding: FragmentSettingsBinding
     private lateinit var settingViewModel: SettingsViewModel
 
-    val TAG="SettingsFragment"
+    val TAG = "SettingsFragment"
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,16 +39,22 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         intiViewModel()
-        openMap()
         getValueOFTempUnit()
-        getValueOFLocation()
+
         getValueOFWindSpeed()
         getValueOFLanguage()
         getValueOFNotification()
         correspondWindSpeedAndUnitTemp()
+
+
     }
 
-
+    override fun onResume() {
+        super.onResume()
+        saveLocationByMap()
+        selectLocation()
+        getValueOFLocation()
+    }
     private fun intiViewModel() {
         val settingsViewModelFactory =
             SettingsViewModelFactory(
@@ -66,33 +70,39 @@ class SettingsFragment : Fragment() {
         )[SettingsViewModel::class.java]
 
     }
-    private fun receiveLocationData() = SettingsFragmentArgs.fromBundle(requireArguments()).locationData
-    private fun openMap(){
-        binding.locationMap.setOnClickListener {
-            findNavController().navigate(
-                SettingsFragmentDirections.actionSettingsToMapFragment(SourceOpenMap.SETTING_FRAGMENT))
-        }
-    }
 
+
+
+
+    private fun navigateToMapScreen() {
+        findNavController().navigate(
+            SettingsFragmentDirections.actionSettingsToMapFragment(SourceOpenMap.SETTING_FRAGMENT)
+        )
+
+    }
 
 
     private fun getValueOFLanguage() {
         if (settingViewModel.getLanguage() == Language.Arabic.name) binding.languageArabic.isChecked =
             true else binding.languageEnglish.isChecked = true
     }
+
     private fun getValueOFNotification() {
         if (settingViewModel.getNotification()) binding.notificationEnable.isChecked =
             true else binding.notificationDisable.isChecked = true
     }
+
     private fun getValueOFLocation() {
-        if (settingViewModel.getLocation() == Location.GPS.name) binding.locationGps.isChecked =
-            true else binding.locationMap.isChecked = true
+        if (settingViewModel.getLocation() == Location.GPS.name) makeGPSChecked() else makeMAPChecked()
     }
+
     private fun getValueOFWindSpeed() {
         val windSpeed = settingViewModel.getWindSpeed()
         Log.d(TAG, "getValueOFWindSpeed: $windSpeed")
-        if (settingViewModel.getWindSpeed() == Units.Metric.windSpeed || settingViewModel.getWindSpeed() == Units.Standard.windSpeed) binding.windSpeedMeter.isChecked = true else binding.windSpeedMiles.isChecked = true
+        if (settingViewModel.getWindSpeed() == Units.Metric.windSpeed || settingViewModel.getWindSpeed() == Units.Standard.windSpeed) binding.windSpeedMeter.isChecked =
+            true else binding.windSpeedMiles.isChecked = true
     }
+
     private fun getValueOFTempUnit() {
         val tempUnit = settingViewModel.getTempUnit()
         Log.d(TAG, "getValueOFTempUnit: $tempUnit")
@@ -104,19 +114,6 @@ class SettingsFragment : Fragment() {
 
 
     }
-    private fun getLocationData(callback: (LocationData) -> Unit) {
-        LocationServiceChecker(
-            requireContext(),
-            requireActivity()
-        ) { lat, lon ->
-            settingViewModel.getAddressLocation(lat, lon) { nameOfCity, _ ->
-                callback(LocationData(lat, lon, nameOfCity))
-            }
-        }
-    }
-
-
-
 
 
     private fun saveLanguage() {
@@ -132,38 +129,59 @@ class SettingsFragment : Fragment() {
         }
 
     }
-    private fun saveLocation() {
-        if (binding.radioGroupLocation.findViewById<RadioButton>(
-                binding.radioGroupLocation.checkedRadioButtonId
-            ).text
-            ==
-            Location.GPS.name
-        ) {
-            settingViewModel.setLocation(Location.GPS)
-        } else {
-            settingViewModel.setLocation(Location.MAP)
-        }
-    }
     private fun saveNotification() {
         settingViewModel.setNotification(binding.notificationEnable.isChecked)
     }
-    private fun saveLocationByMap(){
-        val locationData = receiveLocationData()
-        locationData?.let {
-            settingViewModel.saveLocationData(it)
-        } ?: makeGPSChecked()
 
 
-
+    private fun receiveLocationDataFromMap() =
+        SettingsFragmentArgs.fromBundle(requireArguments()).locationData
+    private fun getLocationDataGPS(callback: (LocationData) -> Unit) {
+        LocationServiceChecker(
+            requireContext(),
+            requireActivity()
+        ) { lat, lon ->
+            settingViewModel.getAddressLocation(lat, lon) { nameOfCity, _ ->
+                callback(LocationData(lat, lon, nameOfCity))
+            }
+        }
     }
-    private fun makeGPSChecked(){
-        binding.locationGps.isChecked=true
+
+    private fun makeMAPChecked() {
+        binding.locationMap.isChecked = true
     }
-    private fun saveLocationByGps(){
-        getLocationData{
+    private fun makeGPSChecked() {
+        binding.locationGps.isChecked = true
+    }
+
+    private fun saveLocationByMap() {
+        receiveLocationDataFromMap()?.let {
+            makeMAPChecked()
             settingViewModel.saveLocationData(it)
+            settingViewModel.setLocation(Location.MAP)
         }
 
+    }
+    private fun saveLocationByGps() {
+        getLocationDataGPS {
+            makeGPSChecked()
+            settingViewModel.saveLocationData(it)
+            settingViewModel.setLocation(Location.GPS)
+        }
+
+    }
+
+
+
+
+    private fun selectLocation() {
+        binding.locationGps.setOnClickListener {
+            saveLocationByGps()
+        }
+
+        binding.locationMap.setOnClickListener {
+            navigateToMapScreen()
+        }
     }
 
     private fun correspondWindSpeedAndUnitTemp() {
@@ -185,12 +203,13 @@ class SettingsFragment : Fragment() {
                     binding.windSpeedMeter.isChecked = true
                 }
                 R.id.units_fahrenheit -> {
-                    binding.windSpeedMiles .isChecked = true
+                    binding.windSpeedMiles.isChecked = true
 
                 }
             }
         }
     }
+
     private fun saveWindSpeed() {
         when (binding.radioGroupWindSpeed.findViewById<RadioButton>(
             binding.radioGroupWindSpeed.checkedRadioButtonId
@@ -201,10 +220,11 @@ class SettingsFragment : Fragment() {
         }
 
     }
+
     private fun saveTempUnit() {
         val checkedRadioButtonId = binding.radioGroupUnits.checkedRadioButtonId
         if (checkedRadioButtonId != -1) {
-            when (binding.radioGroupUnits.findViewById<RadioButton>(checkedRadioButtonId).text){
+            when (binding.radioGroupUnits.findViewById<RadioButton>(checkedRadioButtonId).text) {
                 Units.Metric.tempUnit -> settingViewModel.setTempUnit(Units.Metric)
                 Units.Imperial.tempUnit -> settingViewModel.setTempUnit(Units.Imperial)
                 Units.Standard.tempUnit -> settingViewModel.setTempUnit(Units.Standard)
@@ -213,28 +233,16 @@ class SettingsFragment : Fragment() {
         }
 
 
-
-
-
     }
 
-
-    override fun onPause() {
-        super.onPause()
-
-    }
 
     override fun onStop() {
         super.onStop()
         saveTempUnit()
         saveWindSpeed()
-        saveLocationByMap()
-        saveLocationByGps()
-        saveLocation()
         saveLanguage()
         saveNotification()
     }
-
 
 
 }

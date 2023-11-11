@@ -44,8 +44,9 @@ class SettingsViewModel(private val repo: Repo) : ViewModel() {
 
     fun getNotification() = repo.checkIsNotificationAvailable()
     fun saveLocationData(locationData: LocationData) {
-        repo.setLon(locationData.lat.toFloat())
-        repo.setLon(locationData.lon.toFloat())
+        repo.setLat(locationData.lat)
+        repo.setLon(locationData.lon)
+        locationData.nameOfCity?.let { repo.setCityName(it) }
     }
 
     fun getAddressLocation(lat: Double, lon: Double,
