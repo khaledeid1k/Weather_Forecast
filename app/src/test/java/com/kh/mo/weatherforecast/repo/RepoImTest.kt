@@ -5,20 +5,21 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kh.mo.weatherforecast.data.local.FakeLocalDataSource
 import com.kh.mo.weatherforecast.data.remote.FakeRemoteDataSource
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather
-import com.kh.mo.weatherforecast.model.*
 import com.kh.mo.weatherforecast.model.entity.CurrentWeather
 import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
 import com.kh.mo.weatherforecast.model.ui.WeatherHourData
 import com.kh.mo.weatherforecast.model.ui.WeatherWeekData
 import com.kh.mo.weatherforecast.remot.ApiSate
+import com.kh.mo.weatherforecast.ui.home.SourceOpenHome
+import com.kh.mo.weatherforecast.ui.setting.Units
+import com.kh.mo.weatherforecast.utils.nameOfCity
+import com.kh.mo.weatherforecast.utils.tempUnit
 import kotlinx.coroutines.test.runBlockingTest
 import org.hamcrest.core.IsEqual
-import org.junit.Assert.*
+import org.junit.Assert.assertThat
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import kotlin.properties.Delegates
 
 
 @RunWith(AndroidJUnit4::class)
@@ -31,8 +32,7 @@ class RepoImTest {
     private lateinit var favorites: MutableList<FavoriteEntity>
     private lateinit var sharedPreferences: SharedPreferencesWeather
 
-    private var lat by Delegates.notNull<Double>()
-    private var lon by Delegates.notNull<Double>()
+
 
 
     private fun fakeData() {
@@ -70,8 +70,16 @@ class RepoImTest {
             type = "current"
         )
 
-        favorites = mutableListOf()
+        favorites = mutableListOf(
+            FavoriteEntity(0.0, 0.0, "", "", SourceOpenHome.INITIAL_FRAGMENT),
+            FavoriteEntity(0.0, 0.0, "", "", SourceOpenHome.INITIAL_FRAGMENT),
+            FavoriteEntity(0.0, 0.0, "", "", SourceOpenHome.INITIAL_FRAGMENT),
+
+            )
         sharedPreferences = SharedPreferencesWeather(ApplicationProvider.getApplicationContext())
+        sharedPreferences.customPreference().tempUnit = Units.Standard.nameOfUnit
+        sharedPreferences.customPreference().nameOfCity = "Cairo"
+
     }
 
 
@@ -81,12 +89,10 @@ class RepoImTest {
 
     @Before
     fun setUp() {
-
         fakeRemoteDataSource = FakeRemoteDataSource()
         fakeLocalDataSource = FakeLocalDataSource(currentWeather, favorites, sharedPreferences)
         repo = RepoIm.getRepoImInstance(fakeLocalDataSource, fakeRemoteDataSource)
     }
-
 
 
     @Test
@@ -103,8 +109,30 @@ class RepoImTest {
 
     }
 
+    @Test
+    fun getFavorites_ThreeFavorite() = runBlockingTest {
+        repo.getFavorites().collect {
+            assertThat(it, IsEqual(favorites))
+        }
 
+    }
 
+    @Test
+    fun getTempUnit_UnitOfTypeStandard() {
+        val unit = repo.getTempUnit()
+        assertThat(unit, IsEqual("standard"))
 
+    }
 
+    @Test
+    fun getWindSpeed_WindSpeedOfTypeMetreToSec() {
+        val unitWindSpeed = repo.getWindSpeed()
+        assertThat(unitWindSpeed, IsEqual("metre/sec"))
+    }
+
+    @Test
+    fun getCityName_Cairo() {
+        val cityName= repo.getCityName()
+        assertThat(cityName, IsEqual("Cairo"))
+    }
 }
