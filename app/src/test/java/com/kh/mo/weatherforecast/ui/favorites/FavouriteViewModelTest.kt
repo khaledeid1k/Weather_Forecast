@@ -1,4 +1,4 @@
-package com.kh.mo.weatherforecast.ui.setting
+package com.kh.mo.weatherforecast.ui.favorites
 
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -11,25 +11,26 @@ import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
 import com.kh.mo.weatherforecast.model.ui.WeatherHourData
 import com.kh.mo.weatherforecast.model.ui.WeatherWeekData
 import com.kh.mo.weatherforecast.ui.home.SourceOpenHome
+import com.kh.mo.weatherforecast.ui.setting.SettingsViewModel
 import com.kh.mo.weatherforecast.utils.wayOfSelectLocation
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.runBlockingTest
 import org.hamcrest.core.IsEqual
 import org.junit.Assert.*
 import org.junit.Before
+
 import org.junit.Test
 import org.junit.runner.RunWith
 
-
 @RunWith(AndroidJUnit4::class)
-class SettingsViewModelTest{
+class FavouriteViewModelTest {
     private lateinit var fakeRemoteDataSource: FakeRemoteDataSource
     private lateinit var fakeLocalDataSource: FakeLocalDataSource
     private lateinit var currentWeather: CurrentWeather
     private lateinit var repo: FakeRepo
     private lateinit var favorites: MutableList<FavoriteEntity>
     private lateinit var sharedPreferences: SharedPreferencesWeather
-    private lateinit var viewModel: SettingsViewModel
-
-
+    private lateinit var viewModel: FavouriteViewModel
 
 
     private fun fakeData() {
@@ -85,27 +86,26 @@ class SettingsViewModelTest{
         fakeData()
     }
 
-
     @Before
     fun setUp() {
         fakeRemoteDataSource = FakeRemoteDataSource()
         fakeLocalDataSource = FakeLocalDataSource(currentWeather, favorites, sharedPreferences)
         repo = FakeRepo(fakeLocalDataSource, fakeRemoteDataSource)
-        viewModel= SettingsViewModel(repo)
+        viewModel= FavouriteViewModel(repo)
     }
 
-    @Test
-    fun getWayOfSelectLocation_MAP(){
-        val location = viewModel.getWayOfSelectLocation()
-        assertThat(location, IsEqual("MAP"))
-    }
-    @Test
-    fun checkIsNotificationAvailable_false(){
-        viewModel.setNotification(false)
-        val location = viewModel.getNotification()
-        assertThat(location, IsEqual(false))
-    }
 
+    @Test
+    fun `test favorites state flow`() = runBlockingTest {
+        var collectedValues : List<FavoriteEntity> = emptyList()
+        val job = launch {
+            viewModel.favorites.collect {
+                collectedValues=it
+            }
+        }
+        assertThat(favorites, IsEqual(collectedValues))
+        job.cancel()
+    }
 
 
 }
