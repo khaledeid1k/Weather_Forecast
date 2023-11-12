@@ -12,7 +12,6 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kh.mo.weatherforecast.R
 import com.kh.mo.weatherforecast.databinding.FragmentMapBinding
 import com.kh.mo.weatherforecast.local.LocalDataImp
@@ -103,14 +102,14 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             latLng.latitude,
             latLng.longitude
         ) { nameOfCity, nameOfCountry ->
-            intiLocationData(latLng, nameOfCity)
+            intiLocationData(latLng, nameOfCity,nameOfCountry)
             createDialog("$nameOfCountry , $nameOfCity")
         }
 
     }
 
-    private fun intiLocationData(latLng: LatLng, nameOfCity: String) {
-        locationData = LocationData(latLng.latitude, latLng.longitude, nameOfCity)
+    private fun intiLocationData(latLng: LatLng, nameOfCity: String,nameOfCountry:String) {
+        locationData = LocationData(latLng.latitude, latLng.longitude, nameOfCity,nameOfCountry)
     }
 
     private fun moveToNextScreen() {

@@ -7,7 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
 import com.kh.mo.weatherforecast.model.ui.LocationData
 import com.kh.mo.weatherforecast.repo.Repo
-import com.kh.mo.weatherforecast.repo.mapper.convertListOfFavoriteEntityToFavorites
+import com.kh.mo.weatherforecast.repo.mapper.convertFavoriteEntityToLocationData
+import com.kh.mo.weatherforecast.repo.mapper.convertLocationDataToFavoriteEntity
+import com.kh.mo.weatherforecast.ui.home.SourceOpenHome
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,8 +20,8 @@ class FavouriteViewModel(private val repo: Repo) : ViewModel(), FavouriteAdapter
     private val _favorites = MutableStateFlow<List<FavoriteEntity>>(emptyList())
     val favorites: StateFlow<List<FavoriteEntity>> = _favorites
 
-    private val _favoritesEvent = MutableLiveData<FavoriteEntity>()
-    val favoritesEvent: LiveData<FavoriteEntity> = _favoritesEvent
+    private val _favoritesEvent = MutableLiveData<LocationData>()
+    val favoritesEvent: LiveData<LocationData> = _favoritesEvent
 
 
     private val _deleteFavorite = MutableLiveData<String>()
@@ -42,7 +44,7 @@ class FavouriteViewModel(private val repo: Repo) : ViewModel(), FavouriteAdapter
 
      fun saveFavorite(favorite: LocationData) {
         viewModelScope.launch(Dispatchers.IO) {
-            repo.saveFavorite(favorite.convertListOfFavoriteEntityToFavorites())
+            repo.saveFavorite(favorite.convertLocationDataToFavoriteEntity())
 
         }
     }
@@ -57,7 +59,7 @@ class FavouriteViewModel(private val repo: Repo) : ViewModel(), FavouriteAdapter
     }
 
     override fun onClickFavourite(favorite: FavoriteEntity) {
-        _favoritesEvent.postValue(favorite)
+        _favoritesEvent.postValue(favorite.convertFavoriteEntityToLocationData(SourceOpenHome.FAVORITE_FRAGMENT))
 
     }
 

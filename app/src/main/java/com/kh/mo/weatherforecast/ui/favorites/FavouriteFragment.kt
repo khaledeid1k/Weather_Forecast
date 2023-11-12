@@ -1,6 +1,7 @@
 package com.kh.mo.weatherforecast.ui.favorites
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -126,16 +127,8 @@ class FavouriteFragment : Fragment() {
     private fun navigateToHome() {
         favouriteViewModel.favoritesEvent.observe(viewLifecycleOwner) {
             findNavController().navigate(
-                FavouriteFragmentDirections.actionFavouriteToShowWeatherData(
-                    LocationData(
-                        it.lat,
-                        it.lon,
-                        it.nameOfCity,
-                        type = SourceOpenHome.FAVORITE_FRAGMENT
-                    )
-                )
+                FavouriteFragmentDirections.actionFavouriteToShowWeatherData(it)
             )
-
         }
     }
 

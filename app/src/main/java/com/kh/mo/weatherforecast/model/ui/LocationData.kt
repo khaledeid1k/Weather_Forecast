@@ -6,17 +6,18 @@ import com.kh.mo.weatherforecast.ui.home.SourceOpenHome
 
 
 data class LocationData(
-    val lat: Double=0.0, val lon: Double=0.0,
-    val nameOfCity: String? ="",
-    val nameOfCountry:String?="",
-    val type: SourceOpenHome?= SourceOpenHome.INITIAL_FRAGMENT,
+    val lat: Double=0.0,
+    val lon: Double=0.0,
+    val nameOfCity: String ="",
+    val nameOfCountry: String ="",
+    val type: SourceOpenHome= SourceOpenHome.INITIAL_FRAGMENT,
 )
     :Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readDouble(),
         parcel.readDouble(),
-        parcel.readString(),
-        parcel.readString(),
+        parcel.readString().toString(),
+        parcel.readString().toString(),
 
     )
     override fun writeToParcel(parcel: Parcel, flags: Int) {

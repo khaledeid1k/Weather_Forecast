@@ -1,6 +1,5 @@
 package com.kh.mo.weatherforecast.repo.mapper
 
-import com.kh.mo.weatherforecast.R
 import com.kh.mo.weatherforecast.model.Daily
 import com.kh.mo.weatherforecast.model.Hourly
 import com.kh.mo.weatherforecast.model.Weather
@@ -9,6 +8,7 @@ import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
 import com.kh.mo.weatherforecast.model.ui.LocationData
 import com.kh.mo.weatherforecast.model.ui.WeatherHourData
 import com.kh.mo.weatherforecast.model.ui.WeatherWeekData
+import com.kh.mo.weatherforecast.ui.home.SourceOpenHome
 import com.kh.mo.weatherforecast.ui.setting.Units
 import com.kh.mo.weatherforecast.utils.convertUnixTimestampToDateTime
 
@@ -64,9 +64,21 @@ fun Weather.convertWeatherToCurrentWeather(
     }
 }
 
-fun LocationData.convertListOfFavoriteEntityToFavorites(): FavoriteEntity {
+fun LocationData.convertLocationDataToFavoriteEntity(): FavoriteEntity {
     return FavoriteEntity(
-        lat,lon,nameOfCity!!, nameOfCountry!!,type
+      lat =   lat,
+        lon = lon,
+        nameOfCity = nameOfCity,
+        nameOfCountry =  nameOfCountry,
+        type = type
+
+    )
+
+}
+
+fun FavoriteEntity.convertFavoriteEntityToLocationData(type: SourceOpenHome): LocationData {
+    return LocationData(
+        lat,lon,nameOfCity, nameOfCountry,type
 
     )
 
