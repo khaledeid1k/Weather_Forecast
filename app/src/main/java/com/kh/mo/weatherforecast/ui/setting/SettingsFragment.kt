@@ -214,7 +214,7 @@ class SettingsFragment : Fragment() {
         refreshActivity()
     }
     private fun refreshActivity(){
-        requireActivity().finish()
+       // requireActivity().finish()
         val intent = Intent(requireActivity(), MainActivity::class.java)
         startActivity(intent)
     }
