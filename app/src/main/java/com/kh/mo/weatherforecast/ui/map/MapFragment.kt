@@ -19,6 +19,7 @@ import com.kh.mo.weatherforecast.model.ui.LocationData
 import com.kh.mo.weatherforecast.remot.RemoteDataImp
 import com.kh.mo.weatherforecast.repo.RepoIm
 import com.kh.mo.weatherforecast.ui.base.BaseViewModelFactory
+import java.util.*
 
 class MapFragment : Fragment(), OnMapReadyCallback {
 
@@ -39,8 +40,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        intiMapView(savedInstanceState)
         intiViewModel()
+        intiMapView(savedInstanceState)
         setUp()
 
     }
@@ -49,8 +50,13 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
 
     private fun intiMapView(savedInstanceState: Bundle?) {
+        changeLanguageOfMap(mapViewModel.getLanguage())
         binding.mapView.onCreate(savedInstanceState)
         binding.mapView.getMapAsync(this)
+    }
+    private fun changeLanguageOfMap(language:String){
+        val arabicLocale = Locale(language)
+        Locale.setDefault(arabicLocale)
     }
 
     override fun onMapReady(p0: GoogleMap) {

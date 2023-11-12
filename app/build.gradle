@@ -60,7 +60,6 @@ dependencies {
 
 
 
-    //Coroutines Dependencies
     ext {
         coroutinesVersion = "1.5.0"
         androidXTestExtKotlinRunnerVersion = '1.1.3'
