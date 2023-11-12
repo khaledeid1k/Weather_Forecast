@@ -14,8 +14,8 @@ interface Repo {
 
 
     suspend fun getCurrentUpdatedWeatherState(
-        latitude: Double,
-        longitude: Double
+        latitude: Double?,
+        longitude: Double?
     ):Flow<ApiSate<Weather>>
 
 

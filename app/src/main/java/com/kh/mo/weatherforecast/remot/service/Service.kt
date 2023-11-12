@@ -9,7 +9,7 @@ interface Service {
 
     @GET("data/2.5/onecall")
     suspend fun getCurrentUpdatedWeatherState(
-        @Query("lat") latitude: Double,
-        @Query("lon") longitude: Double
+        @Query("lat") latitude: Double?,
+        @Query("lon") longitude: Double?
     ):Response<Weather>
 }

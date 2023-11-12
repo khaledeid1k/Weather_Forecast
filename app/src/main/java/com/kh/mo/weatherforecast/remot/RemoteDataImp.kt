@@ -14,8 +14,8 @@ class RemoteDataImp private constructor(val context: Context) : RemoteData {
 
 
 
-    override suspend fun getCurrentUpdatedWeatherState(latitude: Double,
-                                                       longitude: Double): Response<Weather> {
+    override suspend fun getCurrentUpdatedWeatherState(latitude: Double?,
+                                                       longitude: Double?): Response<Weather> {
        return netWork.getCurrentUpdatedWeatherState(latitude,longitude)
 
     }
