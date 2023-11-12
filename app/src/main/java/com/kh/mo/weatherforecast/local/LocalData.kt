@@ -15,7 +15,8 @@ interface LocalData {
         type:String,nameOfCity:String ): CurrentWeather
     suspend fun saveWeatherState(weatherState: CurrentWeather)
     suspend fun updateWeatherState(weatherState: CurrentWeather)
-    suspend fun deleteWeatherState(weatherState: CurrentWeather)
+
+
     suspend fun getFavorites(): Flow<List<FavoriteEntity>>
     suspend fun saveFavorite(favorite: FavoriteEntity)
     suspend fun deleteFavorite(nameOfCity: String)

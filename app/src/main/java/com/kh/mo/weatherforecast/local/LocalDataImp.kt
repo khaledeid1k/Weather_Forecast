@@ -44,9 +44,7 @@ class LocalDataImp private constructor(val context: Context) : LocalData {
         dataBase.updateWeatherState(weatherState)
     }
 
-    override suspend fun deleteWeatherState(weatherState: CurrentWeather) {
-        dataBase.deleteWeatherState(weatherState)
-    }
+
 
     override suspend fun getFavorites(): Flow<List<FavoriteEntity>> {
         return dataBase.getFavorites()

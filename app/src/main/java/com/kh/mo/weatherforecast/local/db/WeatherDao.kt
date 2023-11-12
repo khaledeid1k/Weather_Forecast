@@ -3,7 +3,6 @@ package com.kh.mo.weatherforecast.local.db
 import androidx.room.*
 import com.kh.mo.weatherforecast.model.entity.CurrentWeather
 import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
-import com.kh.mo.weatherforecast.model.ui.LocationData
 import kotlinx.coroutines.flow.Flow
 
 
@@ -18,8 +17,7 @@ interface WeatherDao {
     @Update
     suspend fun updateWeatherState(weatherState: CurrentWeather)
 
-    @Delete
-    suspend fun deleteWeatherState(weatherState: CurrentWeather)
+
 
     @Query("SELECT * FROM Favorite_Table")
     fun getFavorites(): Flow<List<FavoriteEntity>>
