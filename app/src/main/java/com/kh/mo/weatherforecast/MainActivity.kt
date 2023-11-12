@@ -10,9 +10,11 @@ import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kh.mo.weatherforecast.databinding.ActivityMainBinding
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather
-import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.isFirstTimeOpenApp
+import com.kh.mo.weatherforecast.utils.isFirstTimeOpenApp
 import com.kh.mo.weatherforecast.utils.makeGone
 import com.kh.mo.weatherforecast.utils.makeVisible
+
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -59,7 +61,7 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun checkIsFirstTimeOpenApp() =
-        SharedPreferencesWeather.customPreference(this).isFirstTimeOpenApp
+        SharedPreferencesWeather(this).customPreference().isFirstTimeOpenApp
 
     private fun skipInitFragment() {
         if (!checkIsFirstTimeOpenApp()) {

@@ -2,32 +2,22 @@ package com.kh.mo.weatherforecast.local
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.location.Geocoder
 import com.kh.mo.weatherforecast.R
 import com.kh.mo.weatherforecast.local.db.WeatherDataBase
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather
-import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.clearValues
-import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.isFirstTimeOpenApp
-import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.isNotificationAvailable
-import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.language
-import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.lat
-import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.location
-import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.lon
-import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.nameOfCity
-import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.tempUnit
-import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.windSpeed
 import com.kh.mo.weatherforecast.model.entity.CurrentWeather
 import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
 import com.kh.mo.weatherforecast.model.ui.Location
 import com.kh.mo.weatherforecast.ui.setting.Language
 import com.kh.mo.weatherforecast.ui.setting.Units
+import com.kh.mo.weatherforecast.utils.*
 import kotlinx.coroutines.flow.Flow
 import java.text.SimpleDateFormat
 import java.util.*
 
 class LocalDataImp private constructor(val context: Context) : LocalData {
     private val dataBase = WeatherDataBase.getWeatherDataBaseInstance(context).weatherDao()
-    private val sharedPreferencesWeather = SharedPreferencesWeather.customPreference(context)
+    private val sharedPreferencesWeather =    SharedPreferencesWeather(context).customPreference()
 
 
     //region room

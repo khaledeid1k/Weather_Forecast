@@ -15,102 +15,12 @@ import com.kh.mo.weatherforecast.utils.Constants.NOTIFICATION
 import com.kh.mo.weatherforecast.utils.Constants.PREFERENCE_NAME
 import com.kh.mo.weatherforecast.utils.Constants.TEMP_UNIT
 import com.kh.mo.weatherforecast.utils.Constants.WIND_SPEED
+ class SharedPreferencesWeather (val context: Context){
 
-object SharedPreferencesWeather {
-
-    fun customPreference(context: Context): SharedPreferences =
+    fun customPreference(): SharedPreferences =
 
         context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
 
-    private inline fun SharedPreferences.editMe(operation: (SharedPreferences.Editor) -> Unit) {
-        val editMe = edit()
-        operation(editMe)
-        editMe.apply()
-    }
-    var SharedPreferences.clearValues: () -> Unit
-        get() = { this.edit().clear().apply() }
-        set(value) {}
-
-
-    var SharedPreferences.isFirstTimeOpenApp
-        get() = getBoolean(FIRST_TIME, true)
-        set(value) {
-            editMe {
-
-                it.putBoolean(FIRST_TIME, value)
-            }
-        }
-
-    var SharedPreferences.lat
-        get() = getString (LAT,"0.0")
-        set(value) {
-            editMe {
-                it.putString(LAT, value)
-            }
-        }
-
-    var SharedPreferences.lon
-        get() = getString(LON, "0.0")
-        set(value) {
-            editMe {
-                it.putString(LON, value)
-            }
-        }
-
-    var SharedPreferences.tempUnit
-        get() = getString(TEMP_UNIT,Units.Metric.nameOfUnit)
-        set(value) {
-            editMe {
-                it.putString(TEMP_UNIT, value)
-            }
-        }
-
-
-    var SharedPreferences.isNotificationAvailable
-        get() = getBoolean(NOTIFICATION, true)
-        set(value) {
-            editMe {
-                it.putBoolean(NOTIFICATION, value)
-            }
-        }
-
-
-    var SharedPreferences.language
-        get() = getString(LANGUAGE, Language.en.name)
-        set(value) {
-            editMe {
-                it.putString(LANGUAGE, value)
-            }
-        }
-
-    var SharedPreferences.windSpeed
-        get() = getString(WIND_SPEED, Units.Metric.windSpeed)
-        set(value) {
-
-            editMe {
-                it.putString(WIND_SPEED, value)
-            }
-        }
-
-
-
-    var SharedPreferences.location
-        get() = getString(LOCATION, Location.GPS.name)
-        set(value) {
-            editMe {
-                it.putString(LOCATION, value)
-            }
-        }
-
-
-    var SharedPreferences.nameOfCity
-        get() = getString(NAME_OF_CITY, "")
-        set(value) {
-
-            editMe {
-                it.putString(NAME_OF_CITY, value)
-            }
-        }
 
 
 }
