@@ -102,12 +102,12 @@ override fun getWindSpeed(): String {
     return localData.getWindSpeed()
 }
 
-override fun setLocation(location: Location) {
-    localData.setLocation(location)
+override fun setWayOfSelectLocation(location: Location) {
+    localData.setWayOfSelectLocation(location)
 }
 
-override fun getLocation(): String {
-    return localData.getLocation()
+override fun getWayOfSelectLocation(): String {
+    return localData.getWayOfSelectLocation()
 }
 
 override fun changeLanguageApp(language: String) {

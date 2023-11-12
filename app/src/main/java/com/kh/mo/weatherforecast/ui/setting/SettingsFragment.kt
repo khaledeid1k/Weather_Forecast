@@ -19,7 +19,6 @@ import com.kh.mo.weatherforecast.remot.RemoteDataImp
 import com.kh.mo.weatherforecast.repo.RepoIm
 import com.kh.mo.weatherforecast.ui.initial.LocationServiceChecker
 import com.kh.mo.weatherforecast.ui.map.SourceOpenMap
-import java.util.*
 
 
 class SettingsFragment : Fragment() {
@@ -98,7 +97,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun getValueOFLocation() {
-        if (settingViewModel.getLocation() == Location.GPS.name) makeGPSChecked() else makeMAPChecked()
+        if (settingViewModel.getWayOfSelectLocation() == Location.GPS.name) makeGPSChecked() else makeMAPChecked()
     }
 
     private fun getValueOFWindSpeed() {

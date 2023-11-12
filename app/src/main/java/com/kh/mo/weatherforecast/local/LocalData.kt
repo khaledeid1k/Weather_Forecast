@@ -4,7 +4,6 @@ import com.kh.mo.weatherforecast.model.entity.CurrentWeather
 import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
 import com.kh.mo.weatherforecast.ui.setting.Language
 import com.kh.mo.weatherforecast.model.ui.Location
-import com.kh.mo.weatherforecast.model.ui.LocationData
 import com.kh.mo.weatherforecast.ui.setting.Units
 import kotlinx.coroutines.flow.Flow
 
@@ -41,8 +40,9 @@ interface LocalData {
     fun setWindSpeed(windSpeed: Units)
     fun getWindSpeed(): String
 
-    fun setLocation(location: Location)
-    fun getLocation(): String
+
+    fun setWayOfSelectLocation(location: Location)
+    fun getWayOfSelectLocation(): String
 
 
     fun checkIsNotificationAvailable(): Boolean

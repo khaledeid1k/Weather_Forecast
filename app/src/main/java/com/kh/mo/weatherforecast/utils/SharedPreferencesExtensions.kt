@@ -73,7 +73,7 @@ var SharedPreferences.windSpeed
 
 
 
-var SharedPreferences.location
+var SharedPreferences.wayOfSelectLocation
     get() = getString(Constants.LOCATION, Location.GPS.name)
     set(value) {
         editMe {

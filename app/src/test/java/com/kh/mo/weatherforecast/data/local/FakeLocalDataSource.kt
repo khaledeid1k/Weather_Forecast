@@ -85,19 +85,19 @@ class FakeLocalDataSource(
     }
 
     override fun setWindSpeed(windSpeed: Units) {
-        shared.location = windSpeed.windSpeed
+        shared.wayOfSelectLocation = windSpeed.windSpeed
     }
 
     override fun getWindSpeed(): String {
         return shared.windSpeed.toString()
     }
 
-    override fun setLocation(location: Location) {
-        shared.location = location.name
+    override fun setWayOfSelectLocation(location: Location) {
+        shared.wayOfSelectLocation = location.name
     }
 
-    override fun getLocation(): String {
-        return shared.location.toString()
+    override fun getWayOfSelectLocation(): String {
+        return shared.wayOfSelectLocation.toString()
     }
 
     override fun checkIsNotificationAvailable(): Boolean {

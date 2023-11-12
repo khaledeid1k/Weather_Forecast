@@ -6,7 +6,7 @@ import com.kh.mo.weatherforecast.repo.Repo
 
 class InitialViewModel(private val repo:Repo) : ViewModel() {
     fun setLocation(location: Location) {
-        repo.setLocation(location)
+        repo.setWayOfSelectLocation(location)
     }
 
 

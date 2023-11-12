@@ -120,11 +120,11 @@ class LocalDataImp private constructor(val context: Context) : LocalData {
 
     override fun getWindSpeed(): String = sharedPreferencesWeather.windSpeed.toString()
 
-    override fun setLocation(location: Location) {
-        sharedPreferencesWeather.location=location.name
+    override fun setWayOfSelectLocation(location: Location) {
+        sharedPreferencesWeather.wayOfSelectLocation=location.name
     }
 
-    override fun getLocation(): String =sharedPreferencesWeather.location.toString()
+    override fun getWayOfSelectLocation(): String =sharedPreferencesWeather.wayOfSelectLocation.toString()
 
     //endregion
 
