@@ -149,33 +149,7 @@ class LocalDataImp private constructor(val context: Context) : LocalData {
 
     }
 
-    override fun getAddressLocation(
-        lat: Double,
-        lon: Double,
-        getLocationData: (nameOfCity: String, nameOfCountry: String) -> Unit
-    ) {
-        val geocoder = Geocoder(context, Locale(getLanguage()))
-        try {
 
-
-        val addresses = geocoder.getFromLocation(
-            lat, lon, 1
-        ,)
-
-        if (addresses?.isNotEmpty() == true) {
-            val address = addresses[0]
-            val fullAddress = address.getAddressLine(0)
-            val addressData = fullAddress.split(",")
-            var nameOfCity = addressData[0]
-            if (addresses.size > 1) {
-                nameOfCity = addressData[1]
-            }
-            val nameOfCountry = addressData[addressData.size - 1]
-            getLocationData(nameOfCity, nameOfCountry)
-
-        }
-    }catch (e:Exception){}
-    }
 
     override fun changeLanguageApp(language: String) {
         val  myLocal = Locale(language)

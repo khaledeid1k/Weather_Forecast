@@ -162,7 +162,7 @@ class RepoIm private constructor(
             nameOfCountry: String
         ) -> Unit
     ) {
-        localData.getAddressLocation(lat, lon, getLocationData)
+        remoteData.getAddressLocation(lat, lon, getLanguage(),getLocationData)
     }
 
     override suspend fun getFavorites(): Flow<List<FavoriteEntity>> = localData.getFavorites()

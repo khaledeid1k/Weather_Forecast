@@ -59,13 +59,7 @@ interface LocalData {
 
     fun getCurrentDate(timestamp:Long): String
 
-    fun getAddressLocation(
-        lat: Double, lon: Double,
-        getLocationData: (
-            nameOfCity: String,
-            nameOfCountry: String
-        ) -> Unit
-    )
+
 
     fun changeLanguageApp(language: String)
 

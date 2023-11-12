@@ -8,4 +8,12 @@ interface RemoteData {
          latitude: Double,
         longitude: Double
     ): Response<Weather>
+
+    fun getAddressLocation(
+        lat: Double, lon: Double, language:String,
+        getLocationData: (
+            nameOfCity: String,
+            nameOfCountry: String
+        ) -> Unit
+    )
 }
