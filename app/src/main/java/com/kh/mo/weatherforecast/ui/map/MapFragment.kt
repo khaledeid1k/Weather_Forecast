@@ -19,6 +19,7 @@ import com.kh.mo.weatherforecast.local.LocalDataImp
 import com.kh.mo.weatherforecast.model.ui.LocationData
 import com.kh.mo.weatherforecast.remot.RemoteDataImp
 import com.kh.mo.weatherforecast.repo.RepoIm
+import com.kh.mo.weatherforecast.ui.base.BaseViewModelFactory
 
 class MapFragment : Fragment(), OnMapReadyCallback {
 
@@ -60,7 +61,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private fun intiViewModel() {
         val mapViewModelFactory =
-            MapViewModelFactory(
+            BaseViewModelFactory(
                 RepoIm.getRepoImInstance
                     (
                     LocalDataImp.getLocalDataImpInstance(requireContext()),

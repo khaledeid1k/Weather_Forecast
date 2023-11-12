@@ -14,6 +14,7 @@ import com.kh.mo.weatherforecast.local.LocalDataImp
 import com.kh.mo.weatherforecast.model.ui.LocationData
 import com.kh.mo.weatherforecast.remot.RemoteDataImp
 import com.kh.mo.weatherforecast.repo.RepoIm
+import com.kh.mo.weatherforecast.ui.base.BaseViewModelFactory
 import com.kh.mo.weatherforecast.utils.Constants
 import com.kh.mo.weatherforecast.utils.makeVisible
 
@@ -45,7 +46,7 @@ class HomeFragment : Fragment() {
 
     private fun intiViewModel() {
         val showProductsViewModelFactory =
-            HomeViewModelFactory(
+            BaseViewModelFactory(
                 RepoIm.getRepoImInstance
                     (
                     LocalDataImp.getLocalDataImpInstance(requireContext()),

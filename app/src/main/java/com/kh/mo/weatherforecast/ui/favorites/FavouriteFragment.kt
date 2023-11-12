@@ -19,6 +19,7 @@ import com.kh.mo.weatherforecast.ui.home.SourceOpenHome
 import com.kh.mo.weatherforecast.ui.map.SourceOpenMap
 import com.kh.mo.weatherforecast.remot.RemoteDataImp
 import com.kh.mo.weatherforecast.repo.RepoIm
+import com.kh.mo.weatherforecast.ui.base.BaseViewModelFactory
 import com.kh.mo.weatherforecast.utils.createDialog
 import com.kh.mo.weatherforecast.utils.makeGone
 import com.kh.mo.weatherforecast.utils.makeVisible
@@ -79,7 +80,7 @@ class FavouriteFragment : Fragment() {
 
     private fun intiViewModel() {
         val favoriteViewModelFactory =
-            FavoriteViewModelFactory(
+            BaseViewModelFactory(
                 RepoIm.getRepoImInstance
                     (
                     LocalDataImp.getLocalDataImpInstance(requireContext()),

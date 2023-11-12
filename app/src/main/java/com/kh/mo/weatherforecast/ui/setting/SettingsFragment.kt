@@ -17,6 +17,7 @@ import com.kh.mo.weatherforecast.model.ui.Location
 import com.kh.mo.weatherforecast.model.ui.LocationData
 import com.kh.mo.weatherforecast.remot.RemoteDataImp
 import com.kh.mo.weatherforecast.repo.RepoIm
+import com.kh.mo.weatherforecast.ui.base.BaseViewModelFactory
 import com.kh.mo.weatherforecast.ui.initial.LocationServiceChecker
 import com.kh.mo.weatherforecast.ui.map.SourceOpenMap
 
@@ -61,7 +62,7 @@ class SettingsFragment : Fragment() {
     }
     private fun intiViewModel() {
         val settingsViewModelFactory =
-            SettingsViewModelFactory(
+            BaseViewModelFactory(
                 RepoIm.getRepoImInstance
                     (
                     LocalDataImp.getLocalDataImpInstance(requireContext()),
