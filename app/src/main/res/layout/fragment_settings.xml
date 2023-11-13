@@ -33,8 +33,9 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/notification_card"
             android:layout_width="0dp"
+            app:cardElevation="0dp"
             android:layout_height="0dp"
-
+            android:backgroundTint="@android:color/transparent"
             app:layout_constraintTop_toBottomOf="@id/tile_of_setting"
             app:layout_constraintEnd_toStartOf="@+id/guideline1"
             app:layout_constraintStart_toStartOf="parent"
@@ -92,6 +93,9 @@
             android:id="@+id/language_card"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            app:cardElevation="0dp"
+            android:backgroundTint="@android:color/transparent"
+
             app:layout_constraintTop_toBottomOf="@id/tile_of_setting"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/guideline1"
@@ -148,6 +152,8 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/location_card"
             android:layout_width="0dp"
+            app:cardElevation="0dp"
+            android:backgroundTint="@android:color/transparent"
 
             android:layout_height="0dp"
             app:layout_constraintTop_toBottomOf="@+id/language_card"
@@ -205,14 +211,13 @@
 
 
         </androidx.cardview.widget.CardView>
-
-
-
-
         <androidx.cardview.widget.CardView
             android:id="@+id/wind_speed_card"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            app:cardElevation="0dp"
+            android:backgroundTint="@android:color/transparent"
+
             app:layout_constraintTop_toBottomOf="@+id/notification_card"
             app:layout_constraintEnd_toStartOf="@+id/guideline1"
             app:layout_constraintStart_toStartOf="parent"
@@ -276,11 +281,14 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/units_card"
             android:layout_width="0dp"
+            app:cardElevation="0dp"
+
             android:layout_height="0dp"
             app:layout_constraintTop_toBottomOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            android:backgroundTint="@android:color/transparent"
 
             >
 <!--            app:layout_constraintBottom_toTopOf="@+id/apply_changed"-->
