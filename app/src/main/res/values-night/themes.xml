@@ -17,7 +17,7 @@
         <item name="colorOnSecondaryContainer">@color/md_theme_dark_onSecondaryContainer</item>
         <item name="android:drawableTint">@color/md_theme_dark_onBackground_opacity</item>
         <item name="colorAccent">@color/back_text_dark</item>
-
+        <item name="android:colorBackgroundFloating">@color/back_text_dark</item>
         <item name="backgroundColor">@color/md_theme_dark_background</item>
 
     </style>
