@@ -4,7 +4,6 @@ import com.kh.mo.weatherforecast.model.entity.CurrentWeather
 import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
 import com.kh.mo.weatherforecast.ui.setting.Language
 import com.kh.mo.weatherforecast.model.ui.Location
-import com.kh.mo.weatherforecast.model.ui.LocationData
 import com.kh.mo.weatherforecast.ui.setting.Units
 import kotlinx.coroutines.flow.Flow
 
@@ -12,10 +11,11 @@ interface LocalData {
 
 
     suspend fun getSavedWeatherState(
-        type:String,nameOfCity:String ): CurrentWeather
+        type:String,nameOfCity:String ): CurrentWeather?
     suspend fun saveWeatherState(weatherState: CurrentWeather)
     suspend fun updateWeatherState(weatherState: CurrentWeather)
-    suspend fun deleteWeatherState(weatherState: CurrentWeather)
+
+
     suspend fun getFavorites(): Flow<List<FavoriteEntity>>
     suspend fun saveFavorite(favorite: FavoriteEntity)
     suspend fun deleteFavorite(nameOfCity: String)
@@ -40,8 +40,9 @@ interface LocalData {
     fun setWindSpeed(windSpeed: Units)
     fun getWindSpeed(): String
 
-    fun setLocation(location: Location)
-    fun getLocation(): String
+
+    fun setWayOfSelectLocation(location: Location)
+    fun getWayOfSelectLocation(): String
 
 
     fun checkIsNotificationAvailable(): Boolean
@@ -57,14 +58,12 @@ interface LocalData {
     fun clearSharedPreferences()
 
 
-    fun getCurrentDate(): String
+    fun getCurrentDate(timestamp:Long): String
 
-    fun getAddressLocation(
-        lat: Double, lon: Double,
-        getLocationData: (
-            nameOfCity: String,
-            nameOfCountry: String
-        ) -> Unit
-    )
+
+
+    fun changeLanguageApp(language: String)
+
+    fun daysName():List<String>
 
 }

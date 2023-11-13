@@ -1,24 +1,25 @@
 package com.kh.mo.weatherforecast.ui.setting
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioButton
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.kh.mo.weatherforecast.MainActivity
 import com.kh.mo.weatherforecast.R
 import com.kh.mo.weatherforecast.databinding.FragmentSettingsBinding
 import com.kh.mo.weatherforecast.local.LocalDataImp
-import com.kh.mo.weatherforecast.ui.map.SourceOpenMap
 import com.kh.mo.weatherforecast.model.ui.Location
 import com.kh.mo.weatherforecast.model.ui.LocationData
 import com.kh.mo.weatherforecast.remot.RemoteDataImp
 import com.kh.mo.weatherforecast.repo.RepoIm
+import com.kh.mo.weatherforecast.ui.base.BaseViewModelFactory
 import com.kh.mo.weatherforecast.ui.initial.LocationServiceChecker
+import com.kh.mo.weatherforecast.ui.map.SourceOpenMap
 
 
 class SettingsFragment : Fragment() {
@@ -44,8 +45,12 @@ class SettingsFragment : Fragment() {
         getValueOFWindSpeed()
         getValueOFLanguage()
         getValueOFNotification()
-        correspondWindSpeedAndUnitTemp()
 
+
+        saveTempUnit()
+        saveWindSpeed()
+        saveLanguage()
+        saveNotification()
 
     }
 
@@ -57,7 +62,7 @@ class SettingsFragment : Fragment() {
     }
     private fun intiViewModel() {
         val settingsViewModelFactory =
-            SettingsViewModelFactory(
+            BaseViewModelFactory(
                 RepoIm.getRepoImInstance
                     (
                     LocalDataImp.getLocalDataImpInstance(requireContext()),
@@ -83,7 +88,7 @@ class SettingsFragment : Fragment() {
 
 
     private fun getValueOFLanguage() {
-        if (settingViewModel.getLanguage() == Language.Arabic.name) binding.languageArabic.isChecked =
+        if (settingViewModel.getLanguage() == Language.ar.name) binding.languageArabic.isChecked =
             true else binding.languageEnglish.isChecked = true
     }
 
@@ -93,19 +98,15 @@ class SettingsFragment : Fragment() {
     }
 
     private fun getValueOFLocation() {
-        if (settingViewModel.getLocation() == Location.GPS.name) makeGPSChecked() else makeMAPChecked()
+        if (settingViewModel.getWayOfSelectLocation() == Location.GPS.name) makeGPSChecked() else makeMAPChecked()
     }
 
     private fun getValueOFWindSpeed() {
         val windSpeed = settingViewModel.getWindSpeed()
-        Log.d(TAG, "getValueOFWindSpeed: $windSpeed")
-        if (settingViewModel.getWindSpeed() == Units.Metric.windSpeed || settingViewModel.getWindSpeed() == Units.Standard.windSpeed) binding.windSpeedMeter.isChecked =
-            true else binding.windSpeedMiles.isChecked = true
+        if ( windSpeed== Units.Metric.windSpeed || windSpeed == Units.Standard.windSpeed) binding.windSpeedMetre.isChecked = true else binding.windSpeedMiles.isChecked = true
     }
 
     private fun getValueOFTempUnit() {
-        val tempUnit = settingViewModel.getTempUnit()
-        Log.d(TAG, "getValueOFTempUnit: $tempUnit")
         when (settingViewModel.getTempUnit()) {
             Units.Standard.nameOfUnit -> binding.unitsKelvin.isChecked = true
             Units.Metric.nameOfUnit -> binding.unitsCelsius.isChecked = true
@@ -116,19 +117,7 @@ class SettingsFragment : Fragment() {
     }
 
 
-    private fun saveLanguage() {
-        if (binding.radioGroupLanguage.findViewById<RadioButton>(
-                binding.radioGroupLanguage.checkedRadioButtonId
-            ).text
-            ==
-            Language.Arabic.name
-        ) {
-            settingViewModel.setLanguage(Language.Arabic)
-        } else {
-            settingViewModel.setLanguage(Language.English)
-        }
 
-    }
     private fun saveNotification() {
         settingViewModel.setNotification(binding.notificationEnable.isChecked)
     }
@@ -184,65 +173,59 @@ class SettingsFragment : Fragment() {
         }
     }
 
-    private fun correspondWindSpeedAndUnitTemp() {
-        binding.radioGroupWindSpeed.setOnCheckedChangeListener { _, checkedId ->
-            when (checkedId) {
-                R.id.wind_speed_miles -> {
-                    binding.unitsFahrenheit.isChecked = true
-                }
-                R.id.wind_speed_meter -> {
-                    binding.unitsKelvin.isChecked = true
-
-                }
-            }
-        }
-        binding.radioGroupUnits.setOnCheckedChangeListener { _, checkedId ->
-            when (checkedId) {
-                R.id.units_celsius,
-                R.id.units_kelvin -> {
-                    binding.windSpeedMeter.isChecked = true
-                }
-                R.id.units_fahrenheit -> {
-                    binding.windSpeedMiles.isChecked = true
-
-                }
-            }
-        }
-    }
 
     private fun saveWindSpeed() {
-        when (binding.radioGroupWindSpeed.findViewById<RadioButton>(
-            binding.radioGroupWindSpeed.checkedRadioButtonId
-        ).text) {
-            Units.Metric.windSpeed,
-            Units.Standard.windSpeed -> settingViewModel.setWindSpeed(Units.Metric)
-            Units.Imperial.windSpeed -> settingViewModel.setWindSpeed(Units.Imperial)
-        }
-
+        binding.windSpeedMiles.setOnClickListener {
+            binding.unitsFahrenheit.isChecked=true
+            settingViewModel.setTempUnit(Units.Imperial)
+            settingViewModel.setWindSpeed(Units.Imperial)
+         }
+        binding.windSpeedMetre.setOnClickListener {
+            binding.unitsCelsius.isChecked=true
+            settingViewModel.setWindSpeed(Units.Metric)
+            settingViewModel.setTempUnit(Units.Metric)}
     }
-
     private fun saveTempUnit() {
-        val checkedRadioButtonId = binding.radioGroupUnits.checkedRadioButtonId
-        if (checkedRadioButtonId != -1) {
-            when (binding.radioGroupUnits.findViewById<RadioButton>(checkedRadioButtonId).text) {
-                Units.Metric.tempUnit -> settingViewModel.setTempUnit(Units.Metric)
-                Units.Imperial.tempUnit -> settingViewModel.setTempUnit(Units.Imperial)
-                Units.Standard.tempUnit -> settingViewModel.setTempUnit(Units.Standard)
+            binding.unitsKelvin.setOnClickListener {
+                binding.windSpeedMetre.isChecked = true
+                settingViewModel.setTempUnit(Units.Standard)
+                settingViewModel.setWindSpeed(Units.Metric)
             }
+            binding.unitsCelsius.setOnClickListener {
+                binding.windSpeedMetre.isChecked = true
+                settingViewModel.setTempUnit(Units.Metric)
+                settingViewModel.setWindSpeed(Units.Metric)
+            }
+            binding.unitsFahrenheit.setOnClickListener {
+                binding.windSpeedMiles .isChecked = true
+                settingViewModel.setTempUnit(Units.Imperial)
+                settingViewModel.setWindSpeed(Units.Imperial)}
 
         }
 
 
+
+    private fun saveLanguage() {
+        binding.languageArabic.setOnClickListener {
+            settingViewModel.setLanguage(Language.ar)
+            changeLanguage(Language.ar.name)
+        }
+        binding.languageEnglish.setOnClickListener {
+            settingViewModel.setLanguage(Language.en)
+            changeLanguage(Language.en.name)
+        }
+    }
+    private fun changeLanguage(language: String) {
+        settingViewModel.changeLanguageApp(language)
+        refreshActivity()
+    }
+    private fun refreshActivity(){
+        requireActivity().finish()
+        val intent = Intent(requireActivity(), MainActivity::class.java)
+        startActivity(intent)
     }
 
 
-    override fun onStop() {
-        super.onStop()
-        saveTempUnit()
-        saveWindSpeed()
-        saveLanguage()
-        saveNotification()
-    }
 
 
 }

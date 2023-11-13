@@ -5,7 +5,6 @@ import com.kh.mo.weatherforecast.model.entity.CurrentWeather
 import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
 import com.kh.mo.weatherforecast.ui.setting.Language
 import com.kh.mo.weatherforecast.model.ui.Location
-import com.kh.mo.weatherforecast.model.ui.LocationData
 import com.kh.mo.weatherforecast.remot.ApiSate
 import com.kh.mo.weatherforecast.ui.setting.Units
 import kotlinx.coroutines.flow.Flow
@@ -14,8 +13,8 @@ interface Repo {
 
 
     suspend fun getCurrentUpdatedWeatherState(
-        latitude: Double,
-        longitude: Double
+        latitude: Double?,
+        longitude: Double?
     ):Flow<ApiSate<Weather>>
 
 
@@ -44,7 +43,7 @@ interface Repo {
 
 
 
-    fun getCurrentDate(): String
+    fun getCurrentDate(timestamp:Long): String
 
     fun getAddressLocation(lat: Double, lon: Double,
                            getLocationData:(nameOfCity:String,
@@ -56,7 +55,6 @@ interface Repo {
     suspend fun getSavedWeatherState(type:String,nameOfCity:String): Flow<ApiSate<CurrentWeather>>
     suspend fun saveWeatherState(weatherState: CurrentWeather)
     suspend fun updateWeatherState(weatherState: CurrentWeather)
-    suspend fun deleteWeatherState(weatherState: CurrentWeather)
     suspend fun getFavorites(): Flow<List<FavoriteEntity>>
     suspend fun saveFavorite(favorite: FavoriteEntity)
     suspend fun deleteFavorite(nameOfCity: String)
@@ -83,6 +81,9 @@ interface Repo {
     fun setWindSpeed(windSpeed: Units)
     fun getWindSpeed(): String
 
-    fun setLocation(location: Location)
-    fun getLocation(): String
+    fun setWayOfSelectLocation(location: Location)
+    fun getWayOfSelectLocation(): String
+    fun daysName():List<String>
+
+    fun changeLanguageApp(language: String)
 }

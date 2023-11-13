@@ -10,6 +10,7 @@ import com.kh.mo.weatherforecast.remot.RemoteData
 import com.kh.mo.weatherforecast.ui.setting.Language
 import com.kh.mo.weatherforecast.ui.setting.Units
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 
 class RepoIm private constructor(
@@ -19,172 +20,174 @@ class RepoIm private constructor(
 
 
     override suspend fun getCurrentUpdatedWeatherState(
-        latitude: Double,
-        longitude: Double
+        latitude: Double?,
+        longitude: Double?
     ): Flow<ApiSate<Weather>> {
 
         return flow {
-            try {
 
-                emit(ApiSate.Loading)
-                val currentUpdatedWeatherState =
-                    remoteData.getCurrentUpdatedWeatherState(latitude, longitude)
-                if (currentUpdatedWeatherState.isSuccessful) {
-                       remoteData.getCurrentUpdatedWeatherState(latitude, longitude).body()?.let { emit(ApiSate.Success(it)) }
-
-                } else {
-                     emit(ApiSate.Failure(currentUpdatedWeatherState .message()))
-
-                }
-
-            }catch (e:Exception){
-                emit(ApiSate.Failure(e.message!!))
-
-
+            emit(ApiSate.Loading)
+            val currentUpdatedWeatherState =
+                remoteData.getCurrentUpdatedWeatherState(latitude, longitude)
+            if (currentUpdatedWeatherState.isSuccessful) {
+                remoteData.getCurrentUpdatedWeatherState(latitude, longitude).body()
+                    ?.let { emit(ApiSate.Success(it)) }
+            } else {
+                emit(ApiSate.Failure(currentUpdatedWeatherState.message()))
             }
-        }
-    }
 
-    override suspend fun getSavedWeatherState(type:String,nameOfCity:String):
-            Flow<ApiSate<CurrentWeather>> {
-        return   flow {
-            emit(ApiSate.Success(localData.getSavedWeatherState(type,nameOfCity)))
-
+        }.catch {
+            emit(ApiSate.Failure(it.message!!))
         }
 
+}
+
+
+override suspend fun getSavedWeatherState(type: String, nameOfCity: String):
+        Flow<ApiSate<CurrentWeather>> {
+    return flow {
+        emit(ApiSate.Loading)
+        localData.getSavedWeatherState(type, nameOfCity)?.let {
+            emit(ApiSate.Success(it))
+        }?:   emit(ApiSate.Failure("No exit Data"))
+    }.catch {
+        emit(ApiSate.Failure(it.message.toString()))
     }
 
-    override suspend fun saveWeatherState(weatherState: CurrentWeather) {
-        localData.saveWeatherState(weatherState)
-    }
+}
 
-    override suspend fun updateWeatherState(weatherState: CurrentWeather) {
-        localData.updateWeatherState(weatherState)
-    }
+override suspend fun saveWeatherState(weatherState: CurrentWeather) {
+    localData.saveWeatherState(weatherState)
+}
 
-    override suspend fun deleteWeatherState(weatherState: CurrentWeather) {
-        localData.deleteWeatherState(weatherState)
-    }
-
-    override fun setLat(lat: Double) {
-        localData.setLat(lat)
-
-    }
-
-    override fun setLon(lon: Double) {
-        localData.setLon(lon)
-    }
-
-    override fun getLat(): Double {
-        return localData.getLat()
-    }
-
-    override fun getLon(): Double {
-        return localData.getLon()
-    }
-
-    override fun getCityName(): String {
-        return  localData.getCityName()
-    }
-
-    override fun setCityName(nameOfCity:String) {
-        localData.setCityName(nameOfCity)
-    }
-
-    override fun setLanguage(language: Language) {
-        localData.setLanguage(language)
-    }
-
-    override fun getLanguage(): String {
-        return localData.getLanguage()
-    }
-
-    override fun setWindSpeed(windSpeed: Units) {
-        localData.setWindSpeed(windSpeed)
-    }
-
-    override fun getWindSpeed(): String {
-        return localData.getWindSpeed()
-    }
-
-    override fun setLocation(location: Location) {
-        localData.setLocation(location)
-    }
-
-    override fun getLocation(): String {
-        return localData.getLocation()
-    }
-
-    override fun checkIsNotificationAvailable(): Boolean {
-        return localData.checkIsNotificationAvailable()
-    }
-
-    override fun changeNotificationValue(isNotification: Boolean) {
-        localData.changeNotificationValue(isNotification)
-    }
+override suspend fun updateWeatherState(weatherState: CurrentWeather) {
+    localData.updateWeatherState(weatherState)
+}
 
 
+override fun setLat(lat: Double) {
+    localData.setLat(lat)
+
+}
+
+override fun setLon(lon: Double) {
+    localData.setLon(lon)
+}
+
+override fun getLat(): Double {
+    return localData.getLat()
+}
+
+override fun getLon(): Double {
+    return localData.getLon()
+}
+
+override fun getCityName(): String {
+    return localData.getCityName()
+}
+
+override fun setCityName(nameOfCity: String) {
+    localData.setCityName(nameOfCity)
+}
+
+override fun setLanguage(language: Language) {
+    localData.setLanguage(language)
+}
+
+override fun getLanguage(): String {
+    return localData.getLanguage()
+}
+
+override fun setWindSpeed(windSpeed: Units) {
+    localData.setWindSpeed(windSpeed)
+}
+
+override fun getWindSpeed(): String {
+    return localData.getWindSpeed()
+}
+
+override fun setWayOfSelectLocation(location: Location) {
+    localData.setWayOfSelectLocation(location)
+}
+
+override fun getWayOfSelectLocation(): String {
+    return localData.getWayOfSelectLocation()
+}
+
+override fun changeLanguageApp(language: String) {
+    localData.changeLanguageApp(language)
+}
+
+override fun checkIsNotificationAvailable(): Boolean {
+    return localData.checkIsNotificationAvailable()
+}
+
+override fun changeNotificationValue(isNotification: Boolean) {
+    localData.changeNotificationValue(isNotification)
+}
 
 
+override fun checkIsFirstTimeOpenApp(): Boolean {
+    return localData.checkIsFirstTimeOpenApp()
+}
 
-    override fun checkIsFirstTimeOpenApp(): Boolean {
-        return localData.checkIsFirstTimeOpenApp()
-    }
+override fun changeValueOfFirstTimeOpenApp(isFirstTime: Boolean) {
+    localData.changeValueOfFirstTimeOpenApp(isFirstTime)
+}
 
-    override fun changeValueOfFirstTimeOpenApp(isFirstTime: Boolean) {
-        localData.changeValueOfFirstTimeOpenApp(isFirstTime)
-    }
+override fun clearSharedPreferences() {
+    localData.clearSharedPreferences()
+}
 
-    override fun clearSharedPreferences() {
-        localData.clearSharedPreferences()
-    }
+override fun setTempUnit(unit: Units) {
+    localData.setTempUnit(unit)
+}
 
-    override fun setTempUnit(unit: Units) {
-        localData.setTempUnit(unit)
-    }
+override fun getTempUnit(): String {
+    return localData.getTempUnit()
+}
 
-    override fun getTempUnit(): String {
-        return localData.getTempUnit()
-    }
+override fun getCurrentDate(timestamp: Long): String {
+    return localData.getCurrentDate(timestamp)
+}
 
-    override fun getCurrentDate(): String {
-        return localData.getCurrentDate()
-    }
+override fun getAddressLocation(
+    lat: Double, lon: Double,
+    getLocationData: (
+        nameOfCity: String,
+        nameOfCountry: String
+    ) -> Unit
+) {
+    remoteData.getAddressLocation(lat, lon, getLanguage(), getLocationData)
+}
 
-    override fun getAddressLocation(
-        lat: Double, lon: Double,
-        getLocationData: (
-            nameOfCity: String,
-            nameOfCountry: String
-        ) -> Unit
-    ) {
-        localData.getAddressLocation(lat, lon, getLocationData)
-    }
-
-    override suspend fun getFavorites(): Flow<List<FavoriteEntity>> = localData.getFavorites()
-
-
-    override suspend fun saveFavorite(favorite: FavoriteEntity) {
-        localData.saveFavorite(favorite)
-    }
-
-    override suspend fun deleteFavorite(nameOfCity: String) {
-        localData.deleteFavorite(nameOfCity)
-    }
+override suspend fun getFavorites(): Flow<List<FavoriteEntity>> = localData.getFavorites()
 
 
+override suspend fun saveFavorite(favorite: FavoriteEntity) {
+    localData.saveFavorite(favorite)
+}
+
+override suspend fun deleteFavorite(nameOfCity: String) {
+    localData.deleteFavorite(nameOfCity)
+}
 
 
-    companion object {
-        @Volatile
-        private var instance: RepoIm? = null
-        fun getRepoImInstance(localData: LocalData, remoteData: RemoteData): RepoIm {
-            return instance ?: synchronized(this) {
-                val instanceHolder = RepoIm(localData, remoteData)
-                instance = instanceHolder
-                instanceHolder
+override fun daysName(): List<String> {
+    return localData.daysName()
+}
 
-            }
+
+companion object {
+    @Volatile
+    private var instance: RepoIm? = null
+    fun getRepoImInstance(localData: LocalData, remoteData: RemoteData): RepoIm {
+        return instance ?: synchronized(this) {
+            val instanceHolder = RepoIm(localData, remoteData)
+            instance = instanceHolder
+            instanceHolder
+
         }
     }
+}
 }

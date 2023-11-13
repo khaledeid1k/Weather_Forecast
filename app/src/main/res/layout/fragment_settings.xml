@@ -5,16 +5,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
-        <variable
-            name="language"
-            type="com.kh.mo.weatherforecast.ui.setting.Language" />
-        <variable
-            name="location"
-            type="com.kh.mo.weatherforecast.model.ui.Location" />
-        <variable
-            name="units"
-            type="com.kh.mo.weatherforecast.ui.setting.Units" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -139,13 +129,13 @@
                         android:layout_height="0dp"
                         android:layout_weight="1"
                         android:id="@+id/language_arabic"
-                        android:text="@{language.Arabic.name()}" />
+                        android:text="@string/arabic" />
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_weight="1"
                         android:id="@+id/language_english"
-                        android:text="@{language.English.name()}"
+                        android:text="@string/english"
                         style="@style/small_title" />
 
 
@@ -197,7 +187,7 @@
                         android:layout_height="0dp"
                         android:id="@+id/location_gps"
                         android:layout_weight="1"
-                        android:text="@{location.GPS.name()}" />
+                        android:text="@string/gps" />
 
                     <RadioButton
                         android:layout_width="wrap_content"
@@ -206,7 +196,7 @@
                         style="@style/small_title"
                         android:id="@+id/location_map"
 
-                        android:text="@{location.MAP.name()}" />
+                        android:text="@string/map" />
 
 
 
@@ -260,15 +250,15 @@
                         android:layout_width="wrap_content"
                         android:layout_weight="1"
                         android:layout_height="@dimen/height_0"
-                        android:text="@{units.Imperial.windSpeed}"
+                        android:text="@string/miles_hour"
                   />
                     <RadioButton
-                        android:id="@+id/wind_speed_meter"
+                        android:id="@+id/wind_speed_metre"
                         android:layout_width="wrap_content"
                         android:layout_weight="1"
                         android:layout_height="@dimen/height_0"
                         style="@style/small_title"
-                        android:text="@{units.Metric.windSpeed}"
+                        android:text="@string/metre_sec"
                      />
 
                 </RadioGroup>

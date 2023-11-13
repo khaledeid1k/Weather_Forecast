@@ -2,36 +2,27 @@ package com.kh.mo.weatherforecast.local
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.location.Geocoder
+import com.kh.mo.weatherforecast.R
 import com.kh.mo.weatherforecast.local.db.WeatherDataBase
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather
-import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.clearValues
-import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.isFirstTimeOpenApp
-import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.isNotificationAvailable
-import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.language
-import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.lat
-import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.location
-import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.lon
-import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.nameOfCity
-import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.tempUnit
-import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.windSpeed
 import com.kh.mo.weatherforecast.model.entity.CurrentWeather
 import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
 import com.kh.mo.weatherforecast.model.ui.Location
 import com.kh.mo.weatherforecast.ui.setting.Language
 import com.kh.mo.weatherforecast.ui.setting.Units
+import com.kh.mo.weatherforecast.utils.*
 import kotlinx.coroutines.flow.Flow
 import java.text.SimpleDateFormat
 import java.util.*
 
 class LocalDataImp private constructor(val context: Context) : LocalData {
     private val dataBase = WeatherDataBase.getWeatherDataBaseInstance(context).weatherDao()
-    private val sharedPreferencesWeather = SharedPreferencesWeather.customPreference(context)
+    private val sharedPreferencesWeather =    SharedPreferencesWeather(context).customPreference()
 
 
     //region room
     override suspend fun getSavedWeatherState(type:String,nameOfCity:String
-    ): CurrentWeather{
+    ): CurrentWeather?{
         return dataBase.getSavedWeatherState(type,nameOfCity)
     }
 
@@ -43,9 +34,7 @@ class LocalDataImp private constructor(val context: Context) : LocalData {
         dataBase.updateWeatherState(weatherState)
     }
 
-    override suspend fun deleteWeatherState(weatherState: CurrentWeather) {
-        dataBase.deleteWeatherState(weatherState)
-    }
+
 
     override suspend fun getFavorites(): Flow<List<FavoriteEntity>> {
         return dataBase.getFavorites()
@@ -131,45 +120,32 @@ class LocalDataImp private constructor(val context: Context) : LocalData {
 
     override fun getWindSpeed(): String = sharedPreferencesWeather.windSpeed.toString()
 
-    override fun setLocation(location: Location) {
-        sharedPreferencesWeather.location=location.name
+    override fun setWayOfSelectLocation(location: Location) {
+        sharedPreferencesWeather.wayOfSelectLocation=location.name
     }
 
-    override fun getLocation(): String =sharedPreferencesWeather.location.toString()
+    override fun getWayOfSelectLocation(): String =sharedPreferencesWeather.wayOfSelectLocation.toString()
 
     //endregion
 
     // region util
-    override fun getCurrentDate(): String {
-        return SimpleDateFormat("dd MMM, yyyy", Locale.ENGLISH).format(Date())
+    override fun getCurrentDate(timestamp:Long): String {
+        val date = Date(timestamp * 1000)
+
+
+        return SimpleDateFormat("dd MMM, yyyy", Locale(getLanguage())).format(date)
+
     }
 
-    override fun getAddressLocation(
-        lat: Double,
-        lon: Double,
-        getLocationData: (nameOfCity: String, nameOfCountry: String) -> Unit
-    ) {
-        val geocoder = Geocoder(context, Locale.getDefault())
-        try {
 
 
-        val addresses = geocoder.getFromLocation(
-            lat, lon, 1
-        ,)
-
-        if (addresses?.isNotEmpty() == true) {
-            val address = addresses[0]
-            val fullAddress = address.getAddressLine(0)
-            val addressData = fullAddress.split(",")
-            var nameOfCity = addressData[0]
-            if (addresses.size > 1) {
-                nameOfCity = addressData[1]
-            }
-            val nameOfCountry = addressData[addressData.size - 1]
-            getLocationData(nameOfCity, nameOfCountry)
-
-        }
-    }catch (e:Exception){}
+    override fun changeLanguageApp(language: String) {
+        val  myLocal = Locale(language)
+        val resources = context.resources
+        val displayMetrics = resources.displayMetrics
+        val configuration = resources.configuration
+        configuration.locale = myLocal
+        resources.updateConfiguration(configuration, displayMetrics)
     }
 
     //endregion
@@ -187,5 +163,10 @@ class LocalDataImp private constructor(val context: Context) : LocalData {
             }
         }
     }
-
+override  fun daysName():List<String>{
+    return listOf(context.getString(R.string.sat),
+        context.getString(R.string.sun), context.getString(R.string.mon),
+        context.getString(R.string.tue), context.getString(R.string.wen),
+        context.getString(R.string.thu), context.getString(R.string.fri))
+}
 }

@@ -4,5 +4,6 @@ data class WeatherWeekData (
     val nameOfDay: String,
     val weatherIcon: String,
     val description: String,
-    val temperature: Double
+    val temperature: Double,
+   val  unit:String
         )

@@ -14,7 +14,7 @@ import com.kh.mo.weatherforecast.local.LocalDataImp
 import com.kh.mo.weatherforecast.model.ui.LocationData
 import com.kh.mo.weatherforecast.remot.RemoteDataImp
 import com.kh.mo.weatherforecast.repo.RepoIm
-import com.kh.mo.weatherforecast.utils.Constants
+import com.kh.mo.weatherforecast.ui.base.BaseViewModelFactory
 import com.kh.mo.weatherforecast.utils.makeVisible
 
 class HomeFragment : Fragment() {
@@ -45,7 +45,7 @@ class HomeFragment : Fragment() {
 
     private fun intiViewModel() {
         val showProductsViewModelFactory =
-            HomeViewModelFactory(
+            BaseViewModelFactory(
                 RepoIm.getRepoImInstance
                     (
                     LocalDataImp.getLocalDataImpInstance(requireContext()),
@@ -67,13 +67,15 @@ class HomeFragment : Fragment() {
     }
 
     private fun checkFromNavBarOrFragment() {
-        val locationData = receiveLocationData() ?: getSavedLanAndLon()
-        checkSourceIsFavorite(locationData)
-       sendLocationDataToViewModel(locationData)
+        val locationData = receiveLocationData() ?: getSavedLanAndLonToMakeNewRequest()
+        binding.locationData = locationData
+        checkSourceIsFavorite(locationData.type)
+        sendLocationDataToViewModel(locationData)
     }
-    private fun checkSourceIsFavorite(locationData:LocationData){
-        if (locationData.type == SourceOpenHome.FAVORITE_FRAGMENT) {
-        binding.apply {
+
+    private fun checkSourceIsFavorite(type: SourceOpenHome?) {
+        if (type == SourceOpenHome.FAVORITE_FRAGMENT) {
+            binding.apply {
                 backTofavorite.makeVisible()
                 tileOfHome.text = requireContext().getString(R.string.favourite)
             }
@@ -92,7 +94,8 @@ class HomeFragment : Fragment() {
         homeViewModel.changeValueOfFirstTimeOpenApp(false)
     }
 
-    private fun getSavedLanAndLon() = homeViewModel.let { LocationData(it.getLat(), it.getLon(),it.getCityName()) }
+    private fun getSavedLanAndLonToMakeNewRequest() =
+        homeViewModel.let { LocationData(it.getLat(), it.getLon(), it.getCityName()) }
 
     private fun backToFavorite() {
         binding.backTofavorite.setOnClickListener {
@@ -101,7 +104,6 @@ class HomeFragment : Fragment() {
             )
         }
     }
-
 
 
 }

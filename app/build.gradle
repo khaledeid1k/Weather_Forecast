@@ -60,9 +60,15 @@ dependencies {
 
 
 
-    //Coroutines Dependencies
+    ext {
+        coroutinesVersion = "1.5.0"
+        androidXTestExtKotlinRunnerVersion = '1.1.3'
+        androidXTestCoreVersion = '1.3.0'
+
+    }
+
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2"
     //Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -107,5 +113,17 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:18.2.0'
 
 
+    // InstantTaskExecutorRule
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
+    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
 
+    //kotlinx-coroutines test
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
+
+
+    // AndroidX and Robolectric
+    testImplementation "androidx.test.ext:junit-ktx:$androidXTestExtKotlinRunnerVersion"
+    testImplementation "androidx.test:core-ktx:$androidXTestCoreVersion"
+    testImplementation "org.robolectric:robolectric:4.8"
 }

@@ -1,12 +1,13 @@
 package com.kh.mo.weatherforecast.ui.home
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kh.mo.weatherforecast.model.Weather
 import com.kh.mo.weatherforecast.model.entity.CurrentWeather
 import com.kh.mo.weatherforecast.model.ui.LocationData
 import com.kh.mo.weatherforecast.remot.ApiSate
 import com.kh.mo.weatherforecast.repo.Repo
+import com.kh.mo.weatherforecast.repo.mapper.convertUnitToTempUnit
 import com.kh.mo.weatherforecast.repo.mapper.convertWeatherToCurrentWeather
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,37 +26,13 @@ class HomeViewModel(private val repo: Repo) : ViewModel() {
                 .collect {
                     when (it) {
                         is ApiSate.Failure -> {
-
-                            locationData.nameOfCity?.let { it1 ->
-                                Log.d("TAG", "$it1 getCurrentUpdatedWeatherState: ")
-                                locationData.type?.name?.let { it2 ->
-                                    getSavedWeatherState(
-                                        it2,
-                                        it1
-                                    )
-                                }
-                            }
+                            failure(locationData)
                         }
-                        ApiSate.Loading -> {
+                        is ApiSate.Loading -> {
                             _weather.value = ApiSate.Loading
                         }
                         is ApiSate.Success -> {
-                            val data = it.data
-                            saveDataIfFirstTimeOpenApp(locationData)
-                            val nameOfCity = getNameOfCity(data.lat, data.lon).first
-                            val nameOfCountry = getNameOfCity(data.lat, data.lon).second
-                            val currentTime = getCurrentTime()
-                            val unit = getUnit()
-                            val currentWeather =
-                                data.convertWeatherToCurrentWeather(
-                                    nameOfCity,
-                                    nameOfCountry,
-                                    currentTime,
-                                    unit, locationData.type!!.name
-                                )
-                            saveCurrentWeather(currentWeather)
-                            _weather.value = ApiSate.Success(currentWeather)
-
+                            success(it.data,locationData)
                         }
                     }
 
@@ -64,19 +41,14 @@ class HomeViewModel(private val repo: Repo) : ViewModel() {
         }
     }
 
-    private fun saveDataIfFirstTimeOpenApp(locationData: LocationData) {
+    private fun saveLocationDataIfFirstTimeOpenApp(locationData: LocationData) {
         if (locationData.type == SourceOpenHome.INITIAL_FRAGMENT) {
             saveLat(locationData.lat)
             saveLon(locationData.lon)
-            Log.d("TAG", "saveDataIfFirstTimeOpenApp: ${locationData.nameOfCity}")
-            setCityName(locationData.nameOfCity.toString())
+            setCityName(locationData.nameOfCity)
         }
     }
 
-
-    fun changeValueOfFirstTimeOpenApp(isFirstTime: Boolean) {
-        repo.changeValueOfFirstTimeOpenApp(isFirstTime)
-    }
 
 
     private fun getNameOfCity(lat: Double, lon: Double): Pair<String, String> {
@@ -89,7 +61,12 @@ class HomeViewModel(private val repo: Repo) : ViewModel() {
         return Pair(nameOfCity, nameOfCountry)
     }
 
-    private fun getCurrentTime(): String = repo.getCurrentDate()
+    fun changeValueOfFirstTimeOpenApp(isFirstTime: Boolean) {
+        repo.changeValueOfFirstTimeOpenApp(isFirstTime)
+    }
+
+    private fun getCurrentTime(timestamp: Long): String = repo.getCurrentDate(timestamp)
+
     private fun getUnit(): String = repo.getTempUnit()
 
     private fun saveLat(lat: Double) {
@@ -112,7 +89,7 @@ class HomeViewModel(private val repo: Repo) : ViewModel() {
         return repo.getCityName()
     }
 
-    private fun setCityName(nameOfCity:String){
+    private fun setCityName(nameOfCity: String) {
         repo.setCityName(nameOfCity)
     }
 
@@ -122,9 +99,9 @@ class HomeViewModel(private val repo: Repo) : ViewModel() {
         }
     }
 
-    private fun getSavedWeatherState(type:String,nameOfCity:String) {
+    private fun getSavedWeatherState(type: String, nameOfCity: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            repo.getSavedWeatherState(type,nameOfCity).collect {
+            repo.getSavedWeatherState(type, nameOfCity).collect {
                 when (it) {
                     is ApiSate.Failure -> {
                         _weather.value = ApiSate.Failure(it.msg)
@@ -140,6 +117,37 @@ class HomeViewModel(private val repo: Repo) : ViewModel() {
             }
         }
     }
+
+    private fun getDaysWeek() = repo.daysName()
+
+
+    private fun success(weather: Weather,locationData: LocationData){
+        saveLocationDataIfFirstTimeOpenApp(locationData)
+        val nameOfCity = getNameOfCity(weather.lat, weather.lon).first
+        val nameOfCountry = getNameOfCity(weather.lat, weather.lon).second
+        val currentTime = getCurrentTime(weather.current.dt)
+        val unit = getUnit().convertUnitToTempUnit()
+        val dayNames = getDaysWeek()
+        val currentWeather = weather.convertWeatherToCurrentWeather(
+            nameOfCity,
+            nameOfCountry,
+            currentTime,
+            unit,
+            locationData.type.name,
+            dayNames)
+        saveCurrentWeather(currentWeather)
+        _weather.value = ApiSate.Success(currentWeather)
+    }
+   private fun failure(locationData:LocationData){
+        getSavedWeatherState(locationData.type.name, locationData.nameOfCity)
+
+    }
+
+     fun retryToConnectNetWork(locationData: LocationData){
+        getCurrentUpdatedWeatherState(locationData)
+    }
+
+
 }
 
 

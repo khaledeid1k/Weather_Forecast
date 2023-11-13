@@ -17,6 +17,7 @@ import com.kh.mo.weatherforecast.ui.map.SourceOpenMap
 import com.kh.mo.weatherforecast.model.ui.LocationData
 import com.kh.mo.weatherforecast.remot.RemoteDataImp
 import com.kh.mo.weatherforecast.repo.RepoIm
+import com.kh.mo.weatherforecast.ui.base.BaseViewModelFactory
 import com.kh.mo.weatherforecast.utils.Constants.GPS
 import com.kh.mo.weatherforecast.utils.Constants.MAP
 
@@ -49,7 +50,7 @@ class InitialFragment : Fragment() {
 
     private fun intiViewModel() {
         val initialViewModelFactory =
-            InitialViewModelFactory(
+            BaseViewModelFactory(
                 RepoIm.getRepoImInstance
                     (
                     LocalDataImp.getLocalDataImpInstance(requireContext()),

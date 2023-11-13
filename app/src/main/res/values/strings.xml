@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">Weather Forecast</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="initial_setup">Initial SetUp</string>
     <string name="location">Location</string>
     <string name="gps">GPS</string>
@@ -20,7 +18,7 @@
     <string name="english">English</string>
     <string name="arabic">Arabic</string>
     <string name="wind_speed">Wind Speed</string>
-    <string name="meter_sec">meter/sec</string>
+    <string name="metre_sec">metre/sec</string>
     <string name="miles_hour">miles/hour</string>
     <string name="units">Units</string>
     <string name="kelvin">Kelvin</string>
@@ -28,4 +26,18 @@
     <string name="fahrenheit">Fahrenheit</string>
     <string name="apply_changed">Apply Changes</string>
     <string name="retry">Retry</string>
+    <string name="are_you_sure">Are You Sure ?</string>
+    <string name="cancel">Cancel</string>
+    <string name="done">Done</string>
+    <string name="your_chosen_location">"Your Chosen Location "</string>
+    <string name="k">°K</string>
+    <string name="f">°F</string>
+    <string name="c">°C</string>
+    <string name="sat">Sat</string>
+    <string name="sun">Sun</string>
+    <string name="mon">Mon</string>
+    <string name="tue">Tue</string>
+    <string name="wen">Wed</string>
+    <string name="thu">Thu</string>
+    <string name="fri">Fri</string>
 </resources>

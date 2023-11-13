@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kh.mo.weatherforecast.R
 import com.kh.mo.weatherforecast.databinding.FavoriteItemBinding
 import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
+import com.kh.mo.weatherforecast.ui.base.BaseDataDiffUtil
 
 class FavouriteAdapter(private val favouriteListener: FavouriteListener)
     : RecyclerView.Adapter<FavouriteAdapter.FavoriteViewHolder>() {
@@ -42,33 +43,17 @@ class FavouriteAdapter(private val favouriteListener: FavouriteListener)
     }
 
     fun setItems(newItems: List<FavoriteEntity>) {
-        val diffResult = DiffUtil.calculateDiff(FavoriteDataDiffUtil(favorites, newItems))
+        val diffResult = DiffUtil.calculateDiff(
+            BaseDataDiffUtil(favorites, newItems,
+                checkItemsTheSame=    { oldItemPosition, newItemPosition -> favorites[oldItemPosition].nameOfCity == newItems[newItemPosition].nameOfCity },
+                checkContentsTheSame=  { oldItemPosition, newItemPosition -> favorites[oldItemPosition] == newItems[newItemPosition] }
+            )
+        )
         favorites = newItems
         diffResult.dispatchUpdatesTo(this)
     }
 
 
-    class FavoriteDataDiffUtil(
-        private val oldList: List<FavoriteEntity>, private val newList: List<FavoriteEntity>
-    ) : DiffUtil.Callback(){
-
-
-        override fun getOldListSize()=oldList.size
-
-
-        override fun getNewListSize()=newList.size
-
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldList[oldItemPosition].nameOfCity == newList[newItemPosition].nameOfCity
-
-        }
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldList[oldItemPosition] == newList[newItemPosition]
-
-        }
-
-    }
 
 
 

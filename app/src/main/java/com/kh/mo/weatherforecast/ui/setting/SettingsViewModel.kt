@@ -1,11 +1,9 @@
 package com.kh.mo.weatherforecast.ui.setting
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.kh.mo.weatherforecast.model.ui.Location
 import com.kh.mo.weatherforecast.model.ui.LocationData
 import com.kh.mo.weatherforecast.repo.Repo
-import kotlin.math.log
 
 class SettingsViewModel(private val repo: Repo) : ViewModel() {
 
@@ -25,10 +23,10 @@ class SettingsViewModel(private val repo: Repo) : ViewModel() {
 
 
     fun setLocation(location: Location) {
-        repo.setLocation(location)
+        repo.setWayOfSelectLocation(location)
     }
 
-    fun getLocation() = repo.getLocation()
+    fun getWayOfSelectLocation() = repo.getWayOfSelectLocation()
 
 
     fun setWindSpeed(unit: Units) {
@@ -55,5 +53,7 @@ class SettingsViewModel(private val repo: Repo) : ViewModel() {
         repo.getAddressLocation(lat, lon, getLocationData)
     }
 
-
+    fun changeLanguageApp(language: String) {
+        repo.changeLanguageApp(language)
+    }
 }

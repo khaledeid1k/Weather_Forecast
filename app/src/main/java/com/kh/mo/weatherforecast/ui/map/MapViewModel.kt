@@ -10,5 +10,7 @@ class MapViewModel(private val repo:Repo) : ViewModel() {
                                             nameOfCountry:String)->Unit){
         repo.getAddressLocation(lat, lon, getLocationData)
     }
+    fun getLanguage()=repo.getLanguage()
+
 
 }

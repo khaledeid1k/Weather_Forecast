@@ -12,13 +12,14 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kh.mo.weatherforecast.R
 import com.kh.mo.weatherforecast.databinding.FragmentMapBinding
 import com.kh.mo.weatherforecast.local.LocalDataImp
 import com.kh.mo.weatherforecast.model.ui.LocationData
 import com.kh.mo.weatherforecast.remot.RemoteDataImp
 import com.kh.mo.weatherforecast.repo.RepoIm
+import com.kh.mo.weatherforecast.ui.base.BaseViewModelFactory
+import java.util.*
 
 class MapFragment : Fragment(), OnMapReadyCallback {
 
@@ -39,8 +40,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        intiMapView(savedInstanceState)
         intiViewModel()
+        intiMapView(savedInstanceState)
         setUp()
 
     }
@@ -49,8 +50,13 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
 
     private fun intiMapView(savedInstanceState: Bundle?) {
+        changeLanguageOfMap(mapViewModel.getLanguage())
         binding.mapView.onCreate(savedInstanceState)
         binding.mapView.getMapAsync(this)
+    }
+    private fun changeLanguageOfMap(language:String){
+        val arabicLocale = Locale(language)
+        Locale.setDefault(arabicLocale)
     }
 
     override fun onMapReady(p0: GoogleMap) {
@@ -60,7 +66,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private fun intiViewModel() {
         val mapViewModelFactory =
-            MapViewModelFactory(
+            BaseViewModelFactory(
                 RepoIm.getRepoImInstance
                     (
                     LocalDataImp.getLocalDataImpInstance(requireContext()),
@@ -81,23 +87,16 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private fun createDialog(message: String) {
         if (!isDialogShowing) {
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle("You are Select")
-                .setMessage(message)
-                .setNegativeButton("Cancel") { dialog, _ ->
-                    isDialogShowing = false
-                    dialog.dismiss()
-
-                }
-                .setPositiveButton("Done") { dialog, _ ->
-                    isDialogShowing = false
+            com.kh.mo.weatherforecast.utils.createDialog(
+                title = getString(R.string.your_chosen_location),
+                message = message,
+                context = requireContext(),
+                cancel = { isDialogShowing = false },
+                sure = { isDialogShowing = false
                     moveToNextScreen()
-                    dialog.dismiss()
                 }
-                .setCancelable(false)
-                .show()
+            )
             isDialogShowing = true
-
 
 
         }
@@ -109,14 +108,14 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             latLng.latitude,
             latLng.longitude
         ) { nameOfCity, nameOfCountry ->
-            intiLocationData(latLng, nameOfCity)
+            intiLocationData(latLng, nameOfCity,nameOfCountry)
             createDialog("$nameOfCountry , $nameOfCity")
         }
 
     }
 
-    private fun intiLocationData(latLng: LatLng, nameOfCity: String) {
-        locationData = LocationData(latLng.latitude, latLng.longitude, nameOfCity)
+    private fun intiLocationData(latLng: LatLng, nameOfCity: String,nameOfCountry:String) {
+        locationData = LocationData(latLng.latitude, latLng.longitude, nameOfCity,nameOfCountry)
     }
 
     private fun moveToNextScreen() {

@@ -8,33 +8,36 @@ import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
 import com.kh.mo.weatherforecast.model.ui.LocationData
 import com.kh.mo.weatherforecast.model.ui.WeatherHourData
 import com.kh.mo.weatherforecast.model.ui.WeatherWeekData
+import com.kh.mo.weatherforecast.ui.home.SourceOpenHome
+import com.kh.mo.weatherforecast.ui.setting.Units
 import com.kh.mo.weatherforecast.utils.convertUnixTimestampToDateTime
 
-fun List<Hourly>.convertListOfHourlyToWeatherHoursData(): List<WeatherHourData> {
+fun List<Hourly>.convertListOfHourlyToWeatherHoursData(unit:String): List<WeatherHourData> {
     return this.map {
         WeatherHourData(
             it.dt.convertUnixTimestampToDateTime(),
             it.weather[0].icon,
-            it.temp
+            it.temp,
+            unit
         )
     }
 }
 
-fun List<Daily>.convertWeatherToWeatherWeekData(): List<WeatherWeekData> {
-    val dayNames = listOf("Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri")
+fun List<Daily>.convertWeatherToWeatherWeekData(dayNames:List<String>,unit:String): List<WeatherWeekData> {
     return this.drop(1).mapIndexed { index, daily ->
         WeatherWeekData(
             index.takeIf { index < this.size }.let { dayNames[it!!] },
             daily.weather[0].icon,
             daily.weather[0].description,
-            daily.temp.day
+            daily.temp.day,
+            unit
         )
     }
 }
 
 fun Weather.convertWeatherToCurrentWeather(
     nameOfCity: String, nameOfCountry: String, currentTime: String,
-    unit: String, type: String
+    unit: String, type: String,dayNames:List<String>
 ): CurrentWeather {
     return this.let {
         CurrentWeather(
@@ -51,8 +54,8 @@ fun Weather.convertWeatherToCurrentWeather(
             it.current.clouds,
             it.current.wind_speed,
             it.current.pressure,
-            hourly,
-            daily,
+            hourly.convertListOfHourlyToWeatherHoursData(unit),
+            daily.convertWeatherToWeatherWeekData(dayNames,unit),
             type
 
         )
@@ -61,12 +64,33 @@ fun Weather.convertWeatherToCurrentWeather(
     }
 }
 
-fun LocationData.convertListOfFavoriteEntityToFavorites(): FavoriteEntity {
+fun LocationData.convertLocationDataToFavoriteEntity(): FavoriteEntity {
     return FavoriteEntity(
-        lat,lon,nameOfCity!!, nameOfCountry!!,type
+      lat =   lat,
+        lon = lon,
+        nameOfCity = nameOfCity,
+        nameOfCountry =  nameOfCountry,
+        type = type
 
     )
 
+}
+
+fun FavoriteEntity.convertFavoriteEntityToLocationData(type: SourceOpenHome): LocationData {
+    return LocationData(
+        lat,lon,nameOfCity, nameOfCountry,type
+
+    )
+
+}
+
+fun String.convertUnitToTempUnit():String{
+  return  when(this){
+        Units.Standard.nameOfUnit->"°K"
+        Units.Imperial.nameOfUnit->"°F"
+        Units.Metric.nameOfUnit->"°C"
+        else -> ""
+    }
 }
 
 

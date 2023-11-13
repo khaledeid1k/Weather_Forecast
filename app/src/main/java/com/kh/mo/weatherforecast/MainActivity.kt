@@ -3,28 +3,40 @@ package com.kh.mo.weatherforecast
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kh.mo.weatherforecast.databinding.ActivityMainBinding
+import com.kh.mo.weatherforecast.local.LocalDataImp
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather
-import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather.isFirstTimeOpenApp
+import com.kh.mo.weatherforecast.remot.RemoteDataImp
+import com.kh.mo.weatherforecast.repo.RepoIm
+import com.kh.mo.weatherforecast.ui.base.BaseViewModelFactory
+import com.kh.mo.weatherforecast.ui.setting.SettingsViewModel
+import com.kh.mo.weatherforecast.utils.isFirstTimeOpenApp
 import com.kh.mo.weatherforecast.utils.makeGone
 import com.kh.mo.weatherforecast.utils.makeVisible
+
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var controller: NavController
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var navHostFragment: NavHostFragment
+    private lateinit var sharedViewModel: SharedViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        intiViewModel()
+        sharedViewModel.changeLanguageApp()
+
         binding  = DataBindingUtil.setContentView(
             this,R.layout.activity_main
         )
+
         setUpBottomNavigationView()
         disappearAndShowBottomNavigation()
         skipInitFragment()
@@ -32,6 +44,19 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+
+    private fun intiViewModel() {
+        val sharedViewModelFactory =
+            BaseViewModelFactory(
+                RepoIm.getRepoImInstance
+                    (
+                    LocalDataImp.getLocalDataImpInstance(this),
+                    RemoteDataImp.getRemoteDataImpInstance(this)
+                )
+            )
+        sharedViewModel = ViewModelProvider(this, sharedViewModelFactory)[SharedViewModel::class.java]
+
+    }
 
     private fun setUpBottomNavigationView() {
         bottomNavigationView = findViewById(R.id.bottom_navigation)
@@ -59,8 +84,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun checkIsFirstTimeOpenApp() =
-        SharedPreferencesWeather.customPreference(this).isFirstTimeOpenApp
+    private fun checkIsFirstTimeOpenApp() =sharedViewModel.checkIsFirstTimeOpenApp()
 
     private fun skipInitFragment() {
         if (!checkIsFirstTimeOpenApp()) {
@@ -69,6 +93,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun deleteInitialFragmentFromStack(){controller.popBackStack(R.id.initialFragment,true) }
-    fun getLastFragmentOrGoToHome(){ controller.navigate(controller.currentDestination?.id ?: R.id.home) }
+    private fun deleteInitialFragmentFromStack(){controller.popBackStack(R.id.initialFragment,true) }
+    private fun getLastFragmentOrGoToHome(){ controller.navigate(controller.currentDestination?.id ?: R.id.home) }
 }

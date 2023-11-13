@@ -70,11 +70,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_8"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:text="@{String.valueOf( weatherWeekData.temperature + ` °C`)}"
-                tools:text="23/13°C" />
+                android:text="@{String.valueOf( weatherWeekData.temperature + weatherWeekData.unit)}"
+                tools:text="23/13" />
+
+<!--            <TextView-->
+<!--                android:id="@+id/weather_state_unit_home"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:addUnit="@{weatherWeekData.unit}"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/state_number_day"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                tools:text="°C" />-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

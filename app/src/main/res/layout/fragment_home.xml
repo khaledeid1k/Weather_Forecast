@@ -7,6 +7,9 @@
         <variable
             name="viewModel"
             type="com.kh.mo.weatherforecast.ui.home.HomeViewModel" />
+    <variable
+        name="locationData"
+        type="com.kh.mo.weatherforecast.model.ui.LocationData" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,6 +25,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:showWhenError="@{viewModel.weather}"
+
             app:layout_constraintTop_toTopOf="parent"
             app:lottie_rawRes="@raw/error_network"
             android:visibility="visible"
@@ -35,11 +39,12 @@
             android:layout_marginHorizontal="@dimen/margin_60"
             android:layout_marginTop="@dimen/margin_32"
             app:showWhenError="@{viewModel.weather}"
-
             android:background="@drawable/rounded_button"
             android:backgroundTint="@color/delete_color"
             android:text="@string/retry"
             android:textColor="@color/white"
+            android:onClick="@{() -> viewModel.retryToConnectNetWork(locationData)}"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/lottie_animation_error" />
@@ -131,7 +136,7 @@
                     android:id="@+id/weather_state_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin_32"
+                    android:layout_margin="@dimen/margin_16"
                     app:cardCornerRadius="@dimen/radius_16"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -146,24 +151,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="@dimen/margin_16"
-                            android:text="@{String.valueOf(viewModel.weather.toData().temp)}"
                             android:textSize="@dimen/font_size_50"
                             android:textStyle="bold"
+                            android:text="@{String.valueOf(viewModel.weather.toData().temp + viewModel.weather.toData().unit)}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             tools:text="50" />
-
-                        <TextView
-                            android:id="@+id/weather_state_unit_home"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginVertical="@dimen/margin_16"
-                            android:layout_marginStart="@dimen/margin_6"
-                            android:text="°C"
-                            android:textSize="@dimen/font_size_28"
-                            app:layout_constraintBottom_toBottomOf="@+id/weather_state_number_home"
-                            app:layout_constraintStart_toEndOf="@+id/weather_state_number_home" />
 
                         <TextView
                             android:id="@+id/weather_state_text_home"

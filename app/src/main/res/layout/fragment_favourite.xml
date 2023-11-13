@@ -57,6 +57,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_margin="@dimen/margin_16"
+            android:textDirection="ltr"
             app:srcCompat="@drawable/add" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

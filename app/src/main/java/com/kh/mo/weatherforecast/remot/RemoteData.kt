@@ -5,7 +5,15 @@ import retrofit2.Response
 
 interface RemoteData {
     suspend fun getCurrentUpdatedWeatherState(
-         latitude: Double,
-        longitude: Double
+         latitude: Double?,
+        longitude: Double?
     ): Response<Weather>
+
+    fun getAddressLocation(
+        lat: Double, lon: Double, language:String,
+        getLocationData: (
+            nameOfCity: String,
+            nameOfCountry: String
+        ) -> Unit
+    )
 }
