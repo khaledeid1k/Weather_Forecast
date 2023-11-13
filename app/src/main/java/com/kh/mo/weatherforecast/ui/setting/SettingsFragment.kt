@@ -177,23 +177,29 @@ class SettingsFragment : Fragment() {
     private fun saveWindSpeed() {
         binding.windSpeedMiles.setOnClickListener {
             binding.unitsFahrenheit.isChecked=true
-
+            settingViewModel.setTempUnit(Units.Imperial)
             settingViewModel.setWindSpeed(Units.Imperial)
          }
         binding.windSpeedMetre.setOnClickListener {
-            binding.unitsKelvin.isChecked=true
-            settingViewModel.setWindSpeed(Units.Metric)   }
+            binding.unitsCelsius.isChecked=true
+            settingViewModel.setWindSpeed(Units.Metric)
+            settingViewModel.setTempUnit(Units.Metric)}
     }
     private fun saveTempUnit() {
             binding.unitsKelvin.setOnClickListener {
                 binding.windSpeedMetre.isChecked = true
-                settingViewModel.setTempUnit(Units.Standard)}
+                settingViewModel.setTempUnit(Units.Standard)
+                settingViewModel.setWindSpeed(Units.Metric)
+            }
             binding.unitsCelsius.setOnClickListener {
                 binding.windSpeedMetre.isChecked = true
-                settingViewModel.setTempUnit(Units.Metric) }
+                settingViewModel.setTempUnit(Units.Metric)
+                settingViewModel.setWindSpeed(Units.Metric)
+            }
             binding.unitsFahrenheit.setOnClickListener {
                 binding.windSpeedMiles .isChecked = true
-                settingViewModel.setTempUnit(Units.Imperial) }
+                settingViewModel.setTempUnit(Units.Imperial)
+                settingViewModel.setWindSpeed(Units.Imperial)}
 
         }
 
@@ -214,6 +220,7 @@ class SettingsFragment : Fragment() {
         refreshActivity()
     }
     private fun refreshActivity(){
+        requireActivity().finish()
         val intent = Intent(requireActivity(), MainActivity::class.java)
         startActivity(intent)
     }
