@@ -7,6 +7,9 @@
         <variable
             name="viewModel"
             type="com.kh.mo.weatherforecast.ui.home.HomeViewModel" />
+    <variable
+        name="locationData"
+        type="com.kh.mo.weatherforecast.model.ui.LocationData" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,6 +25,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:showWhenError="@{viewModel.weather}"
+
             app:layout_constraintTop_toTopOf="parent"
             app:lottie_rawRes="@raw/error_network"
             android:visibility="visible"
@@ -35,11 +39,12 @@
             android:layout_marginHorizontal="@dimen/margin_60"
             android:layout_marginTop="@dimen/margin_32"
             app:showWhenError="@{viewModel.weather}"
-
             android:background="@drawable/rounded_button"
             android:backgroundTint="@color/delete_color"
             android:text="@string/retry"
             android:textColor="@color/white"
+            android:onClick="@{() -> viewModel.retryToConnectNetWork(locationData)}"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/lottie_animation_error" />

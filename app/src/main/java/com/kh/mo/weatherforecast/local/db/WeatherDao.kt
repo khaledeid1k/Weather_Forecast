@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface WeatherDao {
     @Query("SELECT * FROM WeatherState_Table WHERE type = :typeQ AND nameOfCity = :nameOfCityQ")
-    suspend fun getSavedWeatherState(typeQ: String, nameOfCityQ: String): CurrentWeather
+    suspend fun getSavedWeatherState(typeQ: String, nameOfCityQ: String): CurrentWeather?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveWeatherState(weatherState: CurrentWeather)

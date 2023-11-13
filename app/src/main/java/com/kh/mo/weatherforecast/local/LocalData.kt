@@ -11,7 +11,7 @@ interface LocalData {
 
 
     suspend fun getSavedWeatherState(
-        type:String,nameOfCity:String ): CurrentWeather
+        type:String,nameOfCity:String ): CurrentWeather?
     suspend fun saveWeatherState(weatherState: CurrentWeather)
     suspend fun updateWeatherState(weatherState: CurrentWeather)
 

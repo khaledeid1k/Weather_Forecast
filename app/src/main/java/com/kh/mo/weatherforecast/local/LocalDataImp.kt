@@ -22,7 +22,7 @@ class LocalDataImp private constructor(val context: Context) : LocalData {
 
     //region room
     override suspend fun getSavedWeatherState(type:String,nameOfCity:String
-    ): CurrentWeather{
+    ): CurrentWeather?{
         return dataBase.getSavedWeatherState(type,nameOfCity)
     }
 

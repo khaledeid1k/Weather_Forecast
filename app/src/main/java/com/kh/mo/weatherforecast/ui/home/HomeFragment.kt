@@ -68,12 +68,14 @@ class HomeFragment : Fragment() {
 
     private fun checkFromNavBarOrFragment() {
         val locationData = receiveLocationData() ?: getSavedLanAndLonToMakeNewRequest()
+        binding.locationData = locationData
         checkSourceIsFavorite(locationData.type)
-       sendLocationDataToViewModel(locationData)
+        sendLocationDataToViewModel(locationData)
     }
-    private fun checkSourceIsFavorite(type:SourceOpenHome?){
+
+    private fun checkSourceIsFavorite(type: SourceOpenHome?) {
         if (type == SourceOpenHome.FAVORITE_FRAGMENT) {
-        binding.apply {
+            binding.apply {
                 backTofavorite.makeVisible()
                 tileOfHome.text = requireContext().getString(R.string.favourite)
             }
@@ -92,7 +94,8 @@ class HomeFragment : Fragment() {
         homeViewModel.changeValueOfFirstTimeOpenApp(false)
     }
 
-    private fun getSavedLanAndLonToMakeNewRequest() = homeViewModel.let { LocationData(it.getLat(), it.getLon(),it.getCityName()) }
+    private fun getSavedLanAndLonToMakeNewRequest() =
+        homeViewModel.let { LocationData(it.getLat(), it.getLon(), it.getCityName()) }
 
     private fun backToFavorite() {
         binding.backTofavorite.setOnClickListener {
@@ -101,7 +104,6 @@ class HomeFragment : Fragment() {
             )
         }
     }
-
 
 
 }

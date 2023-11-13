@@ -142,6 +142,12 @@ class HomeViewModel(private val repo: Repo) : ViewModel() {
         getSavedWeatherState(locationData.type.name, locationData.nameOfCity)
 
     }
+
+     fun retryToConnectNetWork(locationData: LocationData){
+        getCurrentUpdatedWeatherState(locationData)
+    }
+
+
 }
 
 

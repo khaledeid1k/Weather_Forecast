@@ -46,8 +46,12 @@ class RepoIm private constructor(
 override suspend fun getSavedWeatherState(type: String, nameOfCity: String):
         Flow<ApiSate<CurrentWeather>> {
     return flow {
-        emit(ApiSate.Success(localData.getSavedWeatherState(type, nameOfCity)))
-
+        emit(ApiSate.Loading)
+        localData.getSavedWeatherState(type, nameOfCity)?.let {
+            emit(ApiSate.Success(it))
+        }?:   emit(ApiSate.Failure("No exit Data"))
+    }.catch {
+        emit(ApiSate.Failure(it.message.toString()))
     }
 
 }
