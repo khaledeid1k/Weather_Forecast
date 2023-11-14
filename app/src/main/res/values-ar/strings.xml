@@ -37,4 +37,13 @@
     <string name="wen">الأربع</string>
     <string name="thu">"الخميس "</string>
     <string name="fri">الجمعة</string>
+    <string name="alerts">النبهات</string>
+    <string name="from">من</string>
+    <string name="to">الي</string>
+    <string name="alarm">منبه</string>
+    <string name="Add_new_alarm">إضافه منبه جديد</string>
+    <string name="chose_your_start_and_end_time">اختر تاريخ البدايه والنهاية</string>
+    <string name="select_date">اختر التاريخ</string>
+    <string name="select_time">اختر الساعه</string>
+    <string name="channelName">المنبة</string>
 </resources>

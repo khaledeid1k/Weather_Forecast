@@ -1,6 +1,7 @@
 package com.kh.mo.weatherforecast.repo
 
 import com.kh.mo.weatherforecast.model.Weather
+import com.kh.mo.weatherforecast.model.entity.AlertEntity
 import com.kh.mo.weatherforecast.model.entity.CurrentWeather
 import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
 import com.kh.mo.weatherforecast.ui.setting.Language
@@ -59,7 +60,9 @@ interface Repo {
     suspend fun saveFavorite(favorite: FavoriteEntity)
     suspend fun deleteFavorite(nameOfCity: String)
 
-
+    fun getAlerts(): Flow<List<AlertEntity>>
+    suspend fun saveAlert(alertEntity: AlertEntity)
+    suspend fun deleteAlert(alertEntity: AlertEntity)
 
 
     fun setTempUnit(unit: Units)

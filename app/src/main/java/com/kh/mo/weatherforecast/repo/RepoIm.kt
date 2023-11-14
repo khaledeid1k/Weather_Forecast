@@ -2,6 +2,7 @@ package com.kh.mo.weatherforecast.repo
 
 import com.kh.mo.weatherforecast.local.LocalData
 import com.kh.mo.weatherforecast.model.Weather
+import com.kh.mo.weatherforecast.model.entity.AlertEntity
 import com.kh.mo.weatherforecast.model.entity.CurrentWeather
 import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
 import com.kh.mo.weatherforecast.model.ui.Location
@@ -172,8 +173,20 @@ override suspend fun deleteFavorite(nameOfCity: String) {
     localData.deleteFavorite(nameOfCity)
 }
 
+    override fun getAlerts(): Flow<List<AlertEntity>> {
+        return localData.getAlerts()
+    }
 
-override fun daysName(): List<String> {
+    override suspend fun saveAlert(alertEntity: AlertEntity) {
+      localData.saveAlert(alertEntity)
+    }
+
+    override suspend fun deleteAlert(alertEntity: AlertEntity) {
+        localData.deleteAlert(alertEntity)
+    }
+
+
+    override fun daysName(): List<String> {
     return localData.daysName()
 }
 

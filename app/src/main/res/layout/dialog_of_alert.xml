@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="@dimen/margin_16"
+        android:layout_marginVertical="@dimen/margin_4"
+        android:padding="@dimen/padding_8"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".5" />
+
+        <Button
+            android:id="@+id/from"
+            android:layout_width="wrap_content"
+            android:clickable="false"
+            android:layout_height="wrap_content"
+            android:text="@string/from"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.cardview.widget.CardView
+
+            android:id="@+id/start_time_card"
+            app:cardCornerRadius="@dimen/margin_16"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/recycle_alert_country"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_margin="@dimen/margin_12"
+            app:layout_constraintTop_toBottomOf="@+id/from">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:padding="@dimen/margin_12"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/from_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="00:00"
+                    app:layout_constraintStart_toStartOf="@+id/from_date"
+                    app:layout_constraintEnd_toEndOf="@+id/from_date"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/from_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="d MM yyyy"
+                    android:layout_marginTop="@dimen/margin_4"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/from_time" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:text="@string/to"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/guideline"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/end_time_card"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/margin_16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/guideline"
+            app:layout_constraintBottom_toTopOf="@+id/recycle_alert_country"
+            android:layout_margin="@dimen/margin_12"
+
+            app:layout_constraintTop_toBottomOf="@+id/to">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:padding="@dimen/margin_12"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/end_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="00:00"
+                    app:layout_constraintStart_toStartOf="@+id/end_date"
+                    app:layout_constraintEnd_toEndOf="@+id/end_date"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/end_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="d MM yyyy"
+                    android:layout_marginTop="@dimen/margin_4"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/end_time" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycle_alert_country"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:itemCount="7"
+            app:layout_constraintBottom_toTopOf="@+id/radioGroup_alert"
+
+            tools:listitem="@layout/alert_country_item" />
+        <RadioGroup
+            android:id="@+id/radioGroup_alert"
+            android:layout_width="0dp"
+            android:weightSum="3"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <RadioButton
+                android:id="@+id/notification_enable"
+                style="@style/small_title"
+                android:layout_width="0dp"
+                android:checked="true"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="@string/notification" />
+
+            <RadioButton
+                android:id="@+id/notification_disable"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@style/small_title"
+                android:text="@string/alarm" />
+        </RadioGroup>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

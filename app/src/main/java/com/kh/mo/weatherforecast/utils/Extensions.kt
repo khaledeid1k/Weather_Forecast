@@ -4,6 +4,8 @@ import android.content.Context
 import android.location.Geocoder
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
+import android.widget.Toast.makeText
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -43,11 +45,13 @@ fun View.makeInVisible() {
 
 private var isDialogShowing = false
 
-fun createDialog(title:String,message:String="",context: Context,sure:()->Unit,cancel:()->Unit){
+fun createDialog(title:String="",message:String="",view: View?=null,
+                 context: Context,sure:()->Unit,cancel:()->Unit){
     if (!isDialogShowing) {
         MaterialAlertDialogBuilder(context)
             .setTitle(title)
             .setMessage(message)
+            .setView(view)
             .setNegativeButton(context.getString(R.string.cancel)) { dialog, _ ->
                 cancel()
                 dialog.dismiss()

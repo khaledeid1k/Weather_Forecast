@@ -1,6 +1,7 @@
 package com.kh.mo.weatherforecast.local.db
 
 import androidx.room.*
+import com.kh.mo.weatherforecast.model.entity.AlertEntity
 import com.kh.mo.weatherforecast.model.entity.CurrentWeather
 import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
 import kotlinx.coroutines.flow.Flow
@@ -27,6 +28,17 @@ interface WeatherDao {
 
     @Query("DELETE FROM Favorite_Table WHERE nameOfCity = :nameOfCityQ")
     suspend fun deleteFavorite(nameOfCityQ: String)
+
+
+
+    @Query("SELECT * FROM Alert_Table")
+    fun getAlerts(): Flow<List<AlertEntity>>
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun saveAlert(alertEntity: AlertEntity)
+
+    @Delete
+    suspend fun deleteAlert(alertEntity: AlertEntity)
 
 
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.kh.mo.weatherforecast.SharedViewModel
 import com.kh.mo.weatherforecast.repo.Repo
+import com.kh.mo.weatherforecast.ui.alert.AlertViewModel
 import com.kh.mo.weatherforecast.ui.favorites.FavouriteViewModel
 import com.kh.mo.weatherforecast.ui.home.HomeViewModel
 import com.kh.mo.weatherforecast.ui.initial.InitialViewModel
@@ -19,6 +20,7 @@ class BaseViewModelFactory(private val repo: Repo) : ViewModelProvider.Factory {
             HomeViewModel::class.java -> HomeViewModel(repo) as T
             FavouriteViewModel::class.java -> FavouriteViewModel(repo) as T
             SharedViewModel::class.java -> SharedViewModel(repo) as T
+            AlertViewModel::class.java -> AlertViewModel(repo) as T
 
             else -> throw Throwable("Unsupported view model")
         }

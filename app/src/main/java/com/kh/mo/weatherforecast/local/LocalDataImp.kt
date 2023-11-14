@@ -5,6 +5,7 @@ import android.content.Context
 import com.kh.mo.weatherforecast.R
 import com.kh.mo.weatherforecast.local.db.WeatherDataBase
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather
+import com.kh.mo.weatherforecast.model.entity.AlertEntity
 import com.kh.mo.weatherforecast.model.entity.CurrentWeather
 import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
 import com.kh.mo.weatherforecast.model.ui.Location
@@ -46,6 +47,18 @@ class LocalDataImp private constructor(val context: Context) : LocalData {
 
     override suspend fun deleteFavorite(nameOfCity: String) {
         dataBase.deleteFavorite(nameOfCity)
+    }
+
+    override fun getAlerts(): Flow<List<AlertEntity>> {
+        return dataBase.getAlerts()
+    }
+
+    override suspend fun saveAlert(alertEntity: AlertEntity) {
+        dataBase.saveAlert(alertEntity)
+    }
+
+    override suspend fun deleteAlert(alertEntity: AlertEntity) {
+        dataBase.deleteAlert(alertEntity)
     }
 
 

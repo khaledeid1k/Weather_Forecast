@@ -1,20 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
 
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
 
     </data>
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.alert.AlertFragment">
+        tools:context=".ui.favorites.FavouriteFragment">
+        <TextView
+            android:id="@+id/tile_of_favorite"
+            style="@style/TextAppearance.Material3.HeadlineLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/margin_16"
+            android:text="@string/alerts"
+            app:layout_constraintEnd_toEndOf="parent"
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-       />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </FrameLayout>
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottie_animation_no_alarms"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tile_of_favorite"
+            app:lottie_rawRes="@raw/no_alerts"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycle_alarms"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/margin_8"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tile_of_favorite"
+            tools:itemCount="7"
+
+
+            tools:listitem="@layout/alert_item" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floating_action_button_alarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_margin="@dimen/margin_16"
+            android:textDirection="ltr"
+            app:srcCompat="@drawable/add_alarm" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -19,5 +19,10 @@ object Constants {
     const val NAME_OF_CITY = "NAME_OF_CITY"
 
 
+    const val DATE="Date"
+    const val TIME="Time"
+    const val NOTIFICATION_DATA="notificationData"
+
+    const val CHANNEL_ID="Channel_id"
 
 }

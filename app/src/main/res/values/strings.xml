@@ -40,4 +40,13 @@
     <string name="wen">Wed</string>
     <string name="thu">Thu</string>
     <string name="fri">Fri</string>
+    <string name="alerts">Alerts</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="alarm">Alarm</string>
+    <string name="Add_new_alarm">Add New Alarm</string>
+    <string name="chose_your_start_and_end_time">chose your start and end time</string>
+    <string name="select_date">Select date</string>
+    <string name="select_time">Select time</string>
+    <string name="channelName">alert</string>
 </resources>

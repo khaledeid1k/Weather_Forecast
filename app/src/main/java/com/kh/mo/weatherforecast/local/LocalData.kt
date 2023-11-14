@@ -1,5 +1,10 @@
 package com.kh.mo.weatherforecast.local
 
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import com.kh.mo.weatherforecast.model.entity.AlertEntity
 import com.kh.mo.weatherforecast.model.entity.CurrentWeather
 import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
 import com.kh.mo.weatherforecast.ui.setting.Language
@@ -20,7 +25,9 @@ interface LocalData {
     suspend fun saveFavorite(favorite: FavoriteEntity)
     suspend fun deleteFavorite(nameOfCity: String)
 
-
+    fun getAlerts(): Flow<List<AlertEntity>>
+    suspend fun saveAlert(alertEntity: AlertEntity)
+    suspend fun deleteAlert(alertEntity: AlertEntity)
 
     fun setTempUnit(unit: Units)
     fun getTempUnit(): String
