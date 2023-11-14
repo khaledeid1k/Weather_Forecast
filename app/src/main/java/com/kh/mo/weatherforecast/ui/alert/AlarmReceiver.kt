@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.kh.mo.weatherforecast.MainActivity
 import com.kh.mo.weatherforecast.R
@@ -29,6 +30,8 @@ class AlarmReceiver : BroadcastReceiver() {
 
 
         val locationData = intent?.getParcelableExtra<LocationData>(NOTIFICATION_DATA)!!
+        Log.d("TAG", "onReceive: $locationData")
+
         getCurrentUpdatedWeatherState(locationData,context)
     }
 
@@ -51,6 +54,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
                         }
                         is ApiSate.Success -> {
+                            Log.d("TAG", "getCurrentUpdatedWeatherState:${it.data} ")
                             createNotification(context,locationData)
                         }
                     }

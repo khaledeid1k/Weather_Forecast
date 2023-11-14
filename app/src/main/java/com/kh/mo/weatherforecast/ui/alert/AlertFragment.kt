@@ -35,6 +35,7 @@ import com.kh.mo.weatherforecast.utils.makeVisible
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.log
 
 
 class AlertFragment : Fragment() {
@@ -60,6 +61,7 @@ class AlertFragment : Fragment() {
         Calendar.getInstance()
     }
     var flagDataComplete = false
+    var flagStart = true
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -170,6 +172,7 @@ class AlertFragment : Fragment() {
                                 fromTime.text = time
                                 startDateValue=date
                                 startTimeValue=time
+                                flagDataComplete = true
                                 clickEndTime()
                             }
                         }
@@ -192,7 +195,6 @@ class AlertFragment : Fragment() {
                                 endTime.text = time
                                 endDateValue=date
                                 endTimeValue=time
-                                flagDataComplete = true
 
                             }
                         }
@@ -245,8 +247,12 @@ class AlertFragment : Fragment() {
         val selectedHour = timePicker.hour
         val selectedMinute = timePicker.minute
         val selectedCalendar = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, selectedHour)
-            set(Calendar.MINUTE, selectedMinute)
+            if (flagStart){
+                set(Calendar.HOUR_OF_DAY, selectedHour)
+                set(Calendar.MINUTE, selectedMinute)
+                flagStart=false
+            }
+
             calendarAlert.set(Calendar.HOUR_OF_DAY, selectedHour)
             calendarAlert.set(Calendar.MINUTE, selectedMinute)
         }
@@ -260,18 +266,22 @@ class AlertFragment : Fragment() {
         val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
         val selectedCalendar = Calendar.getInstance().apply {
             timeInMillis = selectedDate
-            calendarAlert.timeInMillis = selectedDate
+            if (flagStart) {
+                calendarAlert.timeInMillis = selectedDate
+            }
         }
         return dateFormat.format(selectedCalendar.time)
     }
 
 
     private fun createAlarManager(locationData: LocationData?) {
+        Log.d("TAG", "createAlarManager: ")
         alarmManager = requireContext().getSystemService(AlarmManager::class.java)
         val intent = Intent(requireActivity(), AlarmReceiver::class.java)
         intent.putExtra(NOTIFICATION_DATA, locationData)
         pendingIntent =
             PendingIntent.getBroadcast(requireContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE)
+        Log.d("TAG", "createAlarManager: ${calendarAlert.timeInMillis}")
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
             calendarAlert.timeInMillis,
