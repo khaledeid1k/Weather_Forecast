@@ -2,6 +2,7 @@ package com.kh.mo.weatherforecast.data.local
 
 import com.kh.mo.weatherforecast.local.LocalData
 import com.kh.mo.weatherforecast.local.db.sharedPref.SharedPreferencesWeather
+import com.kh.mo.weatherforecast.model.entity.AlertEntity
 import com.kh.mo.weatherforecast.model.entity.CurrentWeather
 import com.kh.mo.weatherforecast.model.entity.FavoriteEntity
 import com.kh.mo.weatherforecast.model.ui.Location
@@ -42,6 +43,20 @@ class FakeLocalDataSource(
 
     override suspend fun deleteFavorite(nameOfCity: String) {
         favorites.removeIf { it.nameOfCity == nameOfCity }
+    }
+
+    override fun getAlerts(): Flow<List<AlertEntity>> {
+     return   flow {
+            emit(emptyList())
+        }
+    }
+
+    override suspend fun saveAlert(alertEntity: AlertEntity) {
+
+    }
+
+    override suspend fun deleteAlert(alertEntity: AlertEntity) {
+
     }
 
     override fun setTempUnit(unit: Units) {
